@@ -1,5 +1,8 @@
 #### Change the parameters in a model ####
 
+#' @include model.R
+NULL
+
 #' Change model parameters
 #'
 #' The \code{change_params()} function is for changing the parameters in a \code{model} object that has already been constructed. Note that this function is implemented only for \code{model} objects that have one \code{elemental} function for each \code{control} slot. In the future, this may be changed.

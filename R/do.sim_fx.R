@@ -1,5 +1,8 @@
 #### do.element ####
 
+#' @include make.sim_functions.R
+NULL
+
 #' Call a simulation function
 #'
 #' Call a simulation function made by \code{\link{make.expt_functions}}.

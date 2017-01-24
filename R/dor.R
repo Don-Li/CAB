@@ -149,7 +149,7 @@ hyperbolic_DOR_fx = function( max, scale, IRI_resp_times, reserve_value ){
 
 #' @rdname class.DOR
 #' @format The \code{show} method prints the function that is contained in the \code{DOR} object as well as the type of object (i.e. "elemental") and the class (i.e. "DOR" ).
-#' @exportMethod DOR.show
+#' @export DOR.show
 
 DOR.show = setMethod( "show", signature( object = "DOR" ), function( object ) e_show( object ) )
 
