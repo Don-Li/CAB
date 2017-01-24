@@ -39,7 +39,7 @@ NULL
 #'     \item{\code{scale}}{A scaling factor on the DOR. The scaling is independent of \code{max}.}
 #'     \item{\code{IRI_resp_times}}{A vector containing response times counting backward from the most recent reinforcement time.}
 #'     \item{\code{reserve}}{A numeric specifying the value of the reserve.}
-#'     \item{Each of these arguments can instead be a string specifying the variable that should be taken as the argument from a \code{input} object.}
+#'     \item{Each of these arguments can instead be a string specifying the variable that should be taken as the argument from a \code{input} object.}{}
 #' }
 #' The DOR function will return the value of the reserve after the increment.
 #' }
@@ -72,36 +72,36 @@ NULL
 # #' # Look at the form of the DOR with the "DOR" object
 # #' my_DOR2 = linear_DOR@DOR( max = 1, scale = 10, iri_resp_times, reserve_value = 0, ylab = "increment to the reserve", xlab = "time since last rft" )
 # #' plot( iri_resp_times, my_DOR2 )
+# #'
+# #' # Look at the exponential DOR
+# #' exponential_DOR_fx
+# #' my_expo_DOR = exponential_DOR_fx( max = 1, scale = 10, iri_resp_times, reserve_value = 0 )
+# #' plot( iri_resp_times, my_expo_DOR, ylab = "increment to the reserve", xlab = "time since last rft" )
+# #'
+# #' @seealso
+# #' \code{\link{make.control}} for making \code{DOR_control} objects.
+# #'
+# #' \code{\link{set.custom_elemental}} for setting custom elemental classes.
 #'
-#' # Look at the exponential DOR
-#' exponential_DOR_fx
-#' my_expo_DOR = exponential_DOR_fx( max = 1, scale = 10, iri_resp_times, reserve_value = 0 )
-#' plot( iri_resp_times, my_expo_DOR, ylab = "increment to the reserve", xlab = "time since last rft" )
+# #' \code{\link{make.custom_elemental}} for making custom elemental objects.
 #'
-#' @seealso
-#' \code{\link{make.control}} for making \code{DOR_control} objects.
-#'
-#' \code{\link{set.custom_elemental}} for setting custom elemental classes.
-#'
-#' \code{\link{make.custom_elemental}} for making custom elemental objects.
-#'
-#' \code{\link{e_show}} for the function that is called by the \code{show} method.
-#'
-#' \code{\link{accessor_helpers}} for the helper functions used in the built-in DOR functions.
-#'
-#' \code{\link{class.elemental}} for the parent \code{elemental} class.
-#'
-#' \code{\link{get.reserve}} for a helper function that gets the reserve value.
-#'
-#' \code{\link{get.IRI_resp_times}} for a helper function that gets the inter-reinforcement interval response times.
+# #' \code{\link{e_show}} for the function that is called by the \code{show} method.
+# #'
+# #' \code{\link{accessor_helpers}} for the helper functions used in the built-in DOR functions.
+# #'
+# #' \code{\link{class.elemental}} for the parent \code{elemental} class.
+# #'
+# #' \code{\link{get.reserve}} for a helper function that gets the reserve value.
+# #'
+# #' \code{\link{get.IRI_resp_times}} for a helper function that gets the inter-reinforcement interval response times.
 #'
 #' @rdname class.DOR
 #' @aliases DOR
 #'
-#' @references
-#' Berg, J. P., & McDowell, J. J (2011). Quantitative, steady-state properties of Catania's computational model of the operant reserve. Behavioural Processes, 87(1), 71-83. \link{https://doi.org/10.1016/j.beproc.2011.01.006}
-#'
-#' Catania, A. C. (2005). The operant reserve: A computer simulation in (accelerated) real time. Behavioural Processes, 69(2), 257-278. \link{https://doi.org/10.1016/j.beproc.2005.02.009}
+# #' @references
+# #' Berg, J. P., & McDowell, J. J (2011). Quantitative, steady-state properties of Catania's computational model of the operant reserve. Behavioural Processes, 87(1), 71-83. \link{https://doi.org/10.1016/j.beproc.2011.01.006}
+# #'
+# #' Catania, A. C. (2005). The operant reserve: A computer simulation in (accelerated) real time. Behavioural Processes, 69(2), 257-278. \link{https://doi.org/10.1016/j.beproc.2005.02.009}
 #'
 #' @export linear_DOR_fx
 #' @export exponential_DOR_fx
@@ -148,7 +148,7 @@ hyperbolic_DOR_fx = function( max, scale, IRI_resp_times, reserve_value ){
 #### DOR show methods ####
 
 #' @rdname class.DOR
-#' @format The \code{show} method prints the function that is contained in the \code{DOR} object as well as the type of object (i.e. "elemental") and the class (i.e. "DOR" ).
+# #' @format The \code{show} method prints the function that is contained in the \code{DOR} object as well as the type of object (i.e. "elemental") and the class (i.e. "DOR" ).
 #' @export DOR.show
 
 DOR.show = setMethod( "show", signature( object = "DOR" ), function( object ) e_show( object ) )
