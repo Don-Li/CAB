@@ -112,7 +112,7 @@ make.input = function( var_names ){
 #'          Returns the vector in the \code{input} object that is specified by \code{v}. See example.
 #'      }
 #' }
-#' @exportMethod index.input
+#' @export index.input
 
 index.input = setMethod( "[", signature( x = "input" ),
     function( x, v ){
@@ -122,7 +122,7 @@ index.input = setMethod( "[", signature( x = "input" ),
 
 #' @rdname class.input
 #' @format The \code{show} method for the \code{input} class prints the names of the variables in the \code{input} object as well as the events/counts that they store. Remove this \code{show} method by calling \code{remove.input.show().}
-#' @exportMethod input.show
+#' @export input.show
 
 input.show = setMethod( "show", signature( object = "input" ),
     function( object ){
