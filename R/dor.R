@@ -55,9 +55,9 @@ NULL
 #'             \item{\code{name}}{A character vector specifying the name of your \code{DOR} object}
 #'         }
 #'     }
-#'     \subsection{Value}{
-#'         Returns a \code{DOR} object.
-#'         }
+# #'     \subsection{Value}{
+# #'         Returns a \code{DOR} object.
+# #'         }
 #' }
 #'
 #' @examples
