@@ -81,7 +81,7 @@ constant_food_duration_fx = function( food_dur, time ){
 
 #' @rdname class.food_duration
 #' @format The \code{show} method prints the function that is contained in the \code{food_duration} object as well as the type of object (i.e. "elemental") and the class (i.e. "food_duration" ).
-#' @exportMethod food_duration.show
+#' @export food_duration.show
 
 food_duration.show = setMethod( "show", signature( object = "food_duration" ), function( object ) e_show( object ) )
 

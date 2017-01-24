@@ -95,7 +95,7 @@ FR_fx = function( FR_length, resps ) FR_length + get.resps( resps )
 
 #' @rdname class.stimulus
 #' @format The \code{show} method prints the function that is contained in the \code{stimulus} object as well as the type of object (i.e. "elemental") and the class (i.e. "stimulus" ).
-#' @exportMethod stimulus.show
+#' @export stimulus.show
 
 stimulus.show = setMethod( "show", signature( object = "stimulus" ), function( object ) e_show( object ) )
 

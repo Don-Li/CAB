@@ -90,7 +90,7 @@ constant_dep_fx = function( deplete, reserve_value ){
 
 #' @rdname class.dep
 #' @format The \code{show} method prints the function that is contained in the \code{dep} object as well as the type of object (i.e. "elemental") and the class (i.e. "dep" ).
-#' @exportMethod dep.show
+#' @export dep.show
 
 dep.show = setMethod( "show", signature( object = "dep" ), function( object ) e_show( object ) )
 

@@ -55,23 +55,23 @@ NULL
 #'             \item{\code{name}}{A character vector specifying the name of your \code{DOR} object}
 #'         }
 #'     }
-# #'     \subsection{Value}{
-# #'         Returns a \code{DOR} object.
-# #'         }
+#'     \subsection{Value}{
+#'         Returns a \code{DOR} object.
+#'         }
 #' }
 #'
 #' @examples
-#' # Look at the definition of the linear DOR
-#' linear_DOR_fx
-#' # Look at the form of the DOR
-#' iri_resp_times = seq(0, 15 , by = 0.1 )
-#' my_DOR = linear_DOR_fx( max = 1, scale = 10, iri_resp_times, reserve_value = 0 )
-#' plot( iri_resp_times, my_DOR, ylab = "increment to the reserve", xlab = "time since last rft" )
-#' # Make a DOR object out of the linear DOR function
-#' linear_DOR = make.DOR( linear_DOR_fx, "linear_DOR" )
-#' # Look at the form of the DOR with the "DOR" object
-#' my_DOR2 = linear_DOR@DOR( max = 1, scale = 10, iri_resp_times, reserve_value = 0, ylab = "increment to the reserve", xlab = "time since last rft" )
-#' plot( iri_resp_times, my_DOR2 )
+# #' # Look at the definition of the linear DOR
+# #' linear_DOR_fx
+# #' # Look at the form of the DOR
+# #' iri_resp_times = seq(0, 15 , by = 0.1 )
+# #' my_DOR = linear_DOR_fx( max = 1, scale = 10, iri_resp_times, reserve_value = 0 )
+# #' plot( iri_resp_times, my_DOR, ylab = "increment to the reserve", xlab = "time since last rft" )
+# #' # Make a DOR object out of the linear DOR function
+# #' linear_DOR = make.DOR( linear_DOR_fx, "linear_DOR" )
+# #' # Look at the form of the DOR with the "DOR" object
+# #' my_DOR2 = linear_DOR@DOR( max = 1, scale = 10, iri_resp_times, reserve_value = 0, ylab = "increment to the reserve", xlab = "time since last rft" )
+# #' plot( iri_resp_times, my_DOR2 )
 #'
 #' # Look at the exponential DOR
 #' exponential_DOR_fx

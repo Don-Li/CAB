@@ -84,7 +84,7 @@ G_E_emission_fx = function( reserve_value, time, min_IRT ){
 
 #' @rdname class.emission
 #' @format The \code{show} method prints the function that is contained in the \code{emission} object as well as the type of object (i.e. "elemental") and the class (i.e. "emission" ).
-#' @exportMethod emission.show
+#' @export emission.show
 
 emission.show = setMethod( "show", signature( object = "emission" ), function( object ) e_show( object ) )
 

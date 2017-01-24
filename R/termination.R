@@ -92,7 +92,7 @@ resp_termination_fx = function( resp, finish_resp ){
 
 #' @rdname class.termination
 #' @format The \code{show} method prints the function that is contained in the \code{termination} object as well as the type of object (i.e. "elemental") and the class (i.e. "termination" ).
-#' @exportMethod termination.show
+#' @export termination.show
 
 termination.show = setMethod( "show", signature( object = "termination"), function( object ) e_show( object ) )
 

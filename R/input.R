@@ -256,7 +256,7 @@ setMethod( "assign.input", signature( input = "input", v = "character", indices 
 #'         Also, note that the \code{next.input} function finds the next available element in the vector by taking the index that is 1 larger than the associated \code{counts}. Hence, this will overwrite any stored information in the index regardless if it is \code{NaN}.
 #'     }
 #' }
-#' @exportMethod next.input
+#' @export next.input
 
 setGeneric( "next.input", function( input, v, value ) standardGeneric( "next.input" ) )
 

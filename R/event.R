@@ -94,7 +94,7 @@ FR_fx = function( FR_length, resps ) FR_length + get.resps( resps )
 
 #' @rdname class.event
 #' @format The \code{show} method prints the function that is contained in the \code{event} object as well as the type of object (i.e. "elemental") and the class (i.e. "event" ).
-#' @exportMethod event.show
+#' @export event.show
 
 event.show = setMethod( "show", signature( object = "event" ), function( object ) e_show( object ) )
 
