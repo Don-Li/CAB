@@ -68,6 +68,9 @@ class.emission = setClass( "emission", slots = list( emission = "function" ), co
 
 #### Make an Emission object from a function ####
 
+#' @rdname make.emission
+#' @export make.emission
+
 make.emission = function( emission_fx, name ){
     if ( !is.function( emission_fx ) ) stop( "Please enter your emission funciton as a function" )
     if ( !is.character( name ) ) stop( "Enter emission function name as character" )
@@ -75,6 +78,8 @@ make.emission = function( emission_fx, name ){
 }
 
 #### Built-in Emission functions ####
+#' @rdname G_E_emission_fx
+#' @export G_E_emission_fx
 
 G_E_emission_fx = function( reserve_value, time, min_IRT ){
     rexp( 1, -log(1- get.reserve( reserve_value ) ) ) + min_IRT + get.time( time )

@@ -343,6 +343,8 @@ setMethod( "tail.input", signature( input = "input", v = "character" ),
 #'         }
 #'     }
 #' }
+#'
+#' @exportMethod reset.input
 
 setGeneric( "reset.input", function( input, v ) standardGeneric( "reset.input" ) )
 
