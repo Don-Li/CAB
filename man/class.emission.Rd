@@ -2,14 +2,20 @@
 % Please edit documentation in R/emission.R
 \docType{class}
 \name{emission-class}
+\alias{G_E_emission_fx}
 \alias{class.emission}
 \alias{emission}
 \alias{emission-class}
 \alias{emission.show}
+\alias{make.emission}
 \alias{remove.emission.show}
 \title{Emission Function class}
 \format{The \code{show} method prints the function that is contained in the \code{emission} object as well as the type of object (i.e. "elemental") and the class (i.e. "emission" ).}
 \usage{
+make.emission(emission_fx, name)
+
+G_E_emission_fx(reserve_value, time, min_IRT)
+
 emission.show
 
 remove.emission.show()
