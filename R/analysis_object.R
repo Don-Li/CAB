@@ -7,7 +7,7 @@ NULL
 #'
 #' \code{analysis_object} are objects for data analysis.
 #'
-#' In the \code{CAB} package, data is typically stored in an \code{analysis_object} of which there are multiple kinds. \code{analysis_object}s are created by running a simulation or by importing some experimental data.
+#' In the \code{CAB} package, data is typically stored in an \code{analysis_object} of which there are multiple child classes. \code{analysis_object}s are created by running a simulation or by importing some experimental data.
 #'
 #' The parent class \code{analysis_object} does not really do anything. The real work is done by other classes that inherit from \code{analysis_object}.
 #'

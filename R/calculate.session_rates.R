@@ -52,18 +52,6 @@ event_time_compute.session_rate = function( event_time_data, rft_duration, sessi
     (counts / session_time)[dims]
 }
 
-# analysis_object_compute.session_rate = function( simulation_analysis_object, rft_duration, session_duration = NULL, dims = NULL ){
-#     if ( is.null( dims ) ) dims = names( simulation_analysis_object )
-#     if ( is.null(session_duration) ){
-#         search_dims = unique( c( names( rft_duration ), dims ) )
-#         session_duration = max( sapply( simulation_analysis_object[ search_dims ], max ) )
-#     }
-#     rfts = sapply( simulation_analysis_object[ names(rft_duration) ], function( x ) length(x < session_duration ) )
-#     rft_time = drop( rfts %*% unlist( rft_duration ) )
-#     session_duration = session_duration - rft_time
-#     lengths( simulation_analysis_object[ dims ] ) / session_duration
-# }
-
 analysis_object_compute.session_rate = function( simulation_analysis_object, rft_duration, session_duration = NULL, dims = NULL ){
     if ( is.null( dims ) ) dims = names( simulation_analysis_object )
     if ( is.null(session_duration) ){
