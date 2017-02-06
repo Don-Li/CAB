@@ -157,7 +157,8 @@ compute.I_xx_I.sim_analysis_object = function( data, x_event, break_event, x_off
     break_event_times = unlist( data[ break_event ], use.names = F )
     x_event_times = data[[ x_event ]]
     if ( length( x_event_times ) == 1 ) return( Inf )
-    break_on_x = findInterval( break_event_times, x_event_times )
+    if ( is.nan( break_event_times ) ) break_on_x = x_event_times
+    else break_on_x = findInterval( break_event_times, x_event_times )
 
     x = diff( x_event_times )[ -(break_on_x) ]
     if ( length(x) == 0 ) return( Inf )

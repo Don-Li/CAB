@@ -55,7 +55,7 @@ import_medpc_to_UOA = function( partial_file_name, variable_arrays = NULL, event
     return_list = list( "analysis_objects" = 1, "meta_data" = 1 )
 
     return_list$analysis_objects = lapply( partial_file_matches, mpc_read_helper, variable_arrays = variable_arrays, event_arrays = event_arrays, general_arrays = general_arrays )
-    return_list$meta_data = as.data.frame( t( vapply( analysis_obj_list, function(x) x$meta_data, FUN.VALUE = as.list( 1:9 )) ), stringsAsFactors = F )
+    return_list$meta_data = as.data.frame( t( vapply( return_list$analysis_objects, function(x) x$meta_data, FUN.VALUE = as.list( 1:9 )) ), stringsAsFactors = F )
     setwd( original_wd )
 
     return_list
