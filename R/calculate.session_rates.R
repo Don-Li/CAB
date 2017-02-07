@@ -27,6 +27,9 @@ NULL
 #'
 #' With respect to efficiency, the \code{compute.session_rates} method for \code{simulation_analysis_object} is about 5 times faster than the method for \code{analysis_object}. For standard data analysis, where time is not a big concern, either method is fine. In fact, the method using \code{analysis_object} may be better because it uses the \code{event_time} dataframe in the parent \code{analysis_object} class, so it is functionally more convenient. When doing simulations, time is a concern. Hence, the method with \code{simulation_analysis_object} should be used. Hopefully, this gives the reader some understanding about the design rationale for this method.
 #'
+#' \subsection{Computing rates for objects of \code{dataset}}
+#' To calculate the rates for the multiple sessions that are stored in a \code{dataset} object,
+#'
 #' @seealso
 #' \code{\link{class.analysis_object}} For constructing arguments for \code{data} parameter..
 #'
@@ -49,7 +52,9 @@ event_time_compute.session_rate = function( event_time_data, rft_duration, sessi
     session_time = session_duration - rft_time
 
     if ( is.null( dims ) ) dims = names( counts )
-    (counts / session_time)[dims]
+    x = as.numeric( (counts / session_time)[dims] )
+    names( x ) = dims
+    x
 }
 
 analysis_object_compute.session_rate = function( simulation_analysis_object, rft_duration, session_duration = NULL, dims = NULL ){
@@ -67,18 +72,18 @@ analysis_object_compute.session_rate = function( simulation_analysis_object, rft
 #' @rdname compute.session_rates
 #' @exportMethod compute.session_rates
 
-setMethod( "compute.session_rates", signature( data = "analysis_object" ),
+setMethod( "compute.session_rates", signature( data = "analysis_object", rft_duration = "list" ),
     function( data, rft_duration, dims, session_duration){
         if ( !is.null(session_duration) && !is.numeric(session_duration) ) stop( "'session_duration' must be numeric" )
         if ( !is.null(dims) && !is.character(dims ) ) stop("'dimension' must be a character vector")
-        event_time_compute.session_rate( data@analysis_object, rft_duration, dims, session_duration )
+        event_time_compute.session_rate( data@analysis_object, rft_duration, session_duration, dims )
     }
 )
 
 #' @rdname compute.session_rates
 #' @exportMethod compute.session_rates
 
-setMethod( "compute.session_rates", signature( data = "simulation_analysis_object" ),
+setMethod( "compute.session_rates", signature( data = "simulation_analysis_object", rft_duration = "list" ),
     function( data, rft_duration, dims, session_duration){
         if ( !is.null(session_duration) && !is.numeric(session_duration) ) stop( "'session_duration' must be numeric" )
         if ( !is.null(dims) && !is.character(dims ) ) stop("'dimension' must be a character vector")
@@ -86,13 +91,21 @@ setMethod( "compute.session_rates", signature( data = "simulation_analysis_objec
     }
 )
 
-# #' @rdname compute.session_rates
-# #' @exportMethod compute.session_rates
-#
-# setMethod( "compute.session_rates", signature( data = "dataset", rft_duration = "list" ),
-#     function( data, rft_duration, dims, session_duration ){
-#         if ( !is.null(session_duration) && !is.numeric(session_duration) ) stop( "'session_duration' must be numeric" )
-#         if ( !is.null(dimension) && !is.character(dimension ) ) stop("'dimension' must be a character vector")
-#         print( "You need to finish this" )
-#     }
-# )
+#' @rdname compute.session_rates
+#' @exportMethod compute.session_rates
+
+setMethod( "compute.session_rates", signature( data = "dataset", rft_duration = "list" ),
+    function( data, rft_duration, dims, session_duration ){
+        if ( !is.null(session_duration) && !is.numeric(session_duration) ) stop( "'session_duration' must be numeric" )
+        if ( !is.null(dims) && !is.character(dims ) ) stop("'dimension' must be a character vector")
+        expt_data = data@analysis_objects
+        rates = lapply( expt_data, compute.session_rates, rft_duration = rft_duration, dims = dims, session_duration = session_duration )
+        dim_names = names( rates[[1]] )
+        rates = data.table::transpose( rates )
+        attr( rates, "class" ) = "data.frame"
+        attr( rates, "row.names" ) = 1:length(rates[[1]])
+        attr( rates, "names" ) = dim_names
+        rates
+    }
+)
+

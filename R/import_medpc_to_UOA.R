@@ -1,6 +1,6 @@
 #### import data ####
 
-#' @include analysis_object.R
+#' @include analysis_object.R dataset.R
 NULL
 
 #' Import data from Med-PC to a \code{UOA_analysis_object}
@@ -52,15 +52,12 @@ import_medpc_to_UOA = function( partial_file_name, variable_arrays = NULL, event
     wd_files = list.files()
     partial_file_matches = wd_files[ startsWith( wd_files, partial_file_name ) ]
 
-    return_list = list( "analysis_objects" = 1, "meta_data" = 1 )
-
-    return_list$analysis_objects = lapply( partial_file_matches, mpc_read_helper, variable_arrays = variable_arrays, event_arrays = event_arrays, general_arrays = general_arrays )
-    return_list$meta_data = as.data.frame( t( vapply( return_list$analysis_objects, function(x) x$meta_data, FUN.VALUE = as.list( 1:9 )) ), stringsAsFactors = F )
+    analysis_objects = lapply( partial_file_matches, mpc_read_helper, variable_arrays = variable_arrays, event_arrays = event_arrays, general_arrays = general_arrays )
+    meta_data = as.data.frame( t( vapply( analysis_objects, function(x) x@meta_data, FUN.VALUE = as.list( 1:9 )) ), stringsAsFactors = F )
     setwd( original_wd )
 
-    return_list
+    new( "dataset", analysis_objects = analysis_objects, meta_data = meta_data )
 }
-
 
 mpc_read_helper = function(partial_file_match, variable_arrays, event_arrays, general_arrays){
     slot_names = slotNames( "UOA_analysis_object" )
@@ -85,22 +82,21 @@ mpc_read_helper = function(partial_file_match, variable_arrays, event_arrays, ge
     data_arrays = lapply( 1:length(indices), function(x) as.numeric( data[[2]][ ( grab_indices[x]+1 ):( grab_indices[x+1] - 1) ] ) )
     names( data_arrays ) = names( arrays )[ordering]
 
-    new.args$analysis_object = mpc_process_event_array( data_arrays[[ names( event_arrays ) ]], event_arrays )
+    variable_ar = list( data_arrays[[ names(variable_arrays) ]] )
+    names( variable_ar ) = names( variable_arrays )
 
-    names( data_arrays[[ names( variable_arrays ) ]] ) = names( variable_arrays[[1]] )
-    names( data_arrays[ names( general_arrays ) ] ) = unlist( general_arrays, use.names = F )
-
-    new.args$variable_arrays = data_arrays[[ names(variable_arrays) ]]
-    new.args$general_arrays = data_arrays[ names( general_arrays ) ]
-    new.args$meta_data = meta_data
-    new.args
+    new( "UOA_analysis_object",
+        variable_arrays = variable_ar,
+        general_arrays = data_arrays[ names( general_arrays ) ],
+        analysis_object = mpc_process_event_array( data_arrays[[ names( event_arrays ) ]], event_arrays ),
+        meta_data = meta_data )
 }
 
 mpc_process_event_array = function( event_array, event_arrays ){
     num_base = 10^floor( log( event_array[1], 10 ) )
     codes = event_array %/% num_base
     event_list = list( "event" = 1, "time" = 1 )
-    event_list$event = names( event_arrays[[1]] )[ match( codes, unlist( event_arrays, use.names = F ) ) ]
+    event_list$event = names( unlist( event_arrays[[1]] ) )[ match( codes, unlist( event_arrays, use.names = F ) ) ]
     event_list$time = event_array - codes*num_base
     attributes( event_list )$class = "data.frame"
     attributes( event_list )$row.names = 1:length(event_list$event)

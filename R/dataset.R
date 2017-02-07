@@ -50,7 +50,7 @@ class.dataset = setClass( "dataset", slots = list( meta_data = "data.frame", ana
 #'
 #' @seealso
 #' \code{\link{analysis_object}} For analogous examples for the usage of \code{set.custom_dataset} and \code{make.custom_dataset_object}.
-#'
+#' \code{\link{import_medpc_to_UOA}}
 #' @export set.custom_dataset
 
 set.custom_dataset = function( class_name, slotnames ){

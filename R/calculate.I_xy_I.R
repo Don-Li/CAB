@@ -1,6 +1,6 @@
 #### Calulating the time elapsed between events
 
-#' @include analysis_object.R
+#' @include analysis_object.R analysis_object.R dataset.R
 NULL
 
 #' Calulating the time elapsed between events in a simulation
@@ -29,6 +29,8 @@ NULL
 #' With respect to efficiency, the \code{compute.IxyI} method for \code{simulation_analysis_object} is anywhere between twice to five times as fast as the method for \code{analysis_object}. However, to achieve a noticible difference in actual time, the functions would need to be run on the order of 10000 times.
 #'
 #' In cases where there is only once instance of a particular event, the value returned is a single \code{Inf}. An example is for the calculation of the inter-response times when only once response occurs during a simulation. Another example is is for the calculation of post-reinforcement pauses, but no responses follow a reinforcement delivery.
+#'
+#' When the \code{compute.IxyI} is called for objects of class \code{dataset.R}, a list of the requested statistic is computed.
 #'
 #' @seealso
 #' \code{\link{class.analysis_object}} For constructing arguments for \code{data} parameter.
@@ -289,3 +291,12 @@ setMethod( "compute.IxyI", signature( data = "simulation_analysis_object" ),
         }
     }
 )
+
+#' @rdname compute.IxyI
+#' @exportMethod compute.IxyI
+
+setMethod( "compute.IxyI", signature( data = "dataset" ),
+    function( data, x_event, x_offset, y_event, break_event ){
+        expt_data = data@analysis_objects
+        lapply( expt_data, compute.IxyI, x_event = x_event, x_offset = x_offset, y_event = y_event, break_event = break_event )
+} )
