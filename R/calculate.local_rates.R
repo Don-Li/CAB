@@ -21,6 +21,10 @@ NULL
 #' In situations where there is only one \code{marker} event, \code{compute.local_rates} returns a single \code{Inf}. This would be the case if the user were to calculate the inter-reinforcement response times, but only one reinforcement delivery occurred during a particular simulation.
 #' }
 #'
+#' \subsection{Method for the \code{dataset} class}{
+#' When \code{compute.local_rates} is called on a \code{dataset} class, it calls the appropriate \code{compute.local_rates} for each element in the \code{analysis_objects} slot
+#' }
+#'
 #' @examples
 #' #Suppose "d" is your data in an "analysis_object", "resp_time" is the response time, "rft_time" is the reinforcement time, reinforcement is delivered for 3 units of time and the operandum takes 1 unit of time to operate.
 #' #Compute the local response rate accounting for the time to make a response and the time taken up by reinforcment
@@ -69,3 +73,27 @@ local_rate_helper = function( marker_times, event_times, x_offset, marker_offset
     }
     reset_event_times
 }
+
+#' @rdname compute.local_rates
+#' @aliases local_rates
+#' @exportMethod
+
+setMethod( "compute.local_rates", signature( data = "analysis_object" ),
+    function( data, x_event, marker, x_offset, marker_offset ){
+        data = data@analysis_object
+        event_times = data[ data[,"event"] %in% x_event, "time" ]
+        marker_times = data[ data[,"event"] %in% marker, "time" ]
+        local_rate_helper( marker_times = marker_times, event_times = event_times, x_offset = x_offset, marker_offset = marker_offset )
+    } )
+
+#' @rdname compute.local_rates
+#' @aliases local_rates
+#' @exportMethod compute.local_rates
+
+setMethod( "compute.local_rates", signature( data = "dataset" ),
+    function( data, x_event, marker, x_offset, marker_offset ){
+        expt_data = data@analysis_objects
+        lapply( expt_data, compute.local_rates, x_event = x_event, marker = marker, x_offset = x_offset, marker_offset = marker_offset )
+    }
+)
+

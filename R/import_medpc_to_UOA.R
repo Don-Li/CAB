@@ -12,6 +12,7 @@ NULL
 #' @param event_arrays A nested list. At the first level, a named list specifying the name of the array that is recorded in MED-PC. At the second level, the event codes that are associated with the elements of the array. Defaults to \code{NULL}.
 #' @param general_arrays A one-level list. The names of each element should correspond to the arrays that are recorded in MED-PC. Each element should be a name describing what that array is recording. Defaults to \code{NULL}.
 #' @param file_path A string specifying the file path for \code{partial_file_name}. Defaults to \code{NULL}, which uses the current working directory.
+#' @param precision The number of decimal places to round the data. Defaults to \code{NULL} for no rounding. Rounding is recommended to avoid integer under/overflow.
 #'
 #' @details
 #' In the event array, it is assumed that each event is recorded as a number. The leading values of the event should correspond to some event. The trailing values should correspond to the time at which an event occurred. For example, let 9000000 indicate a response and let 1320 be the number of seconds at which a response occurred. The event would then be recorded as 9001320.
@@ -43,7 +44,7 @@ NULL
 #'
 #' @export import_medpc_to_UOA
 
-import_medpc_to_UOA = function( partial_file_name, variable_arrays = NULL, event_arrays = NULL, general_arrays = NULL, file_path = NULL ){
+import_medpc_to_UOA = function( partial_file_name, variable_arrays = NULL, event_arrays = NULL, general_arrays = NULL, file_path = NULL, precision = NULL ){
 
     if ( !is.null( file_path ) ){
         original_wd = getwd()
@@ -82,22 +83,30 @@ mpc_read_helper = function(partial_file_match, variable_arrays, event_arrays, ge
     data_arrays = lapply( 1:length(indices), function(x) as.numeric( data[[2]][ ( grab_indices[x]+1 ):( grab_indices[x+1] - 1) ] ) )
     names( data_arrays ) = names( arrays )[ordering]
 
-    variable_ar = list( data_arrays[[ names(variable_arrays) ]] )
+    if ( !is.null( precision ) ){
+        gen_ar = round( data_arrays[ names( general_arrays ) ], precision )
+        variable_ar = round( list( data_arrays[[ names(variable_arrays) ]] ), precision )
+    }
+    else{
+        gen_ar = data_arrays[ names( general_arrays ) ]
+        variable_ar = list( data_arrays[[ names(variable_arrays) ]] )
+    }
     names( variable_ar ) = names( variable_arrays )
 
     new( "UOA_analysis_object",
         variable_arrays = variable_ar,
-        general_arrays = data_arrays[ names( general_arrays ) ],
+        general_arrays = gen_ar,
         analysis_object = mpc_process_event_array( data_arrays[[ names( event_arrays ) ]], event_arrays ),
         meta_data = meta_data )
 }
 
-mpc_process_event_array = function( event_array, event_arrays ){
+mpc_process_event_array = function( event_array, event_arrays, precision ){
     num_base = 10^floor( log( event_array[1], 10 ) )
     codes = event_array %/% num_base
     event_list = list( "event" = 1, "time" = 1 )
     event_list$event = names( unlist( event_arrays[[1]] ) )[ match( codes, unlist( event_arrays, use.names = F ) ) ]
-    event_list$time = event_array - codes*num_base
+    if ( !is.null( precision ) ) event_list$time = round( event_array - codes*num_base, precision )
+    else event_list$time = event_array - codes*num_base
     attributes( event_list )$class = "data.frame"
     attributes( event_list )$row.names = 1:length(event_list$event)
     event_list
