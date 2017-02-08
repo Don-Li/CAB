@@ -53,14 +53,14 @@ import_medpc_to_UOA = function( partial_file_name, variable_arrays = NULL, event
     wd_files = list.files()
     partial_file_matches = wd_files[ startsWith( wd_files, partial_file_name ) ]
 
-    analysis_objects = lapply( partial_file_matches, mpc_read_helper, variable_arrays = variable_arrays, event_arrays = event_arrays, general_arrays = general_arrays )
+    analysis_objects = lapply( partial_file_matches, mpc_read_helper, variable_arrays = variable_arrays, event_arrays = event_arrays, general_arrays = general_arrays, precision = precision )
     meta_data = as.data.frame( t( vapply( analysis_objects, function(x) x@meta_data, FUN.VALUE = as.list( 1:9 )) ), stringsAsFactors = F )
     setwd( original_wd )
 
     new( "dataset", analysis_objects = analysis_objects, meta_data = meta_data )
 }
 
-mpc_read_helper = function(partial_file_match, variable_arrays, event_arrays, general_arrays){
+mpc_read_helper = function(partial_file_match, variable_arrays, event_arrays, general_arrays, precision){
     slot_names = slotNames( "UOA_analysis_object" )
     new.args = vector( "list", length( slot_names ) )
     names( new.args ) = slot_names
@@ -84,8 +84,8 @@ mpc_read_helper = function(partial_file_match, variable_arrays, event_arrays, ge
     names( data_arrays ) = names( arrays )[ordering]
 
     if ( !is.null( precision ) ){
-        gen_ar = round( data_arrays[ names( general_arrays ) ], precision )
-        variable_ar = round( list( data_arrays[[ names(variable_arrays) ]] ), precision )
+        gen_ar = lapply( data_arrays[ names( general_arrays ) ], round, precision )
+        variable_ar = list( round( data_arrays[[ names(variable_arrays) ]], precision ) )
     }
     else{
         gen_ar = data_arrays[ names( general_arrays ) ]
@@ -96,8 +96,8 @@ mpc_read_helper = function(partial_file_match, variable_arrays, event_arrays, ge
     new( "UOA_analysis_object",
         variable_arrays = variable_ar,
         general_arrays = gen_ar,
-        analysis_object = mpc_process_event_array( data_arrays[[ names( event_arrays ) ]], event_arrays ),
-        meta_data = meta_data )
+        analysis_object = mpc_process_event_array( data_arrays[[ names( event_arrays ) ]], event_arrays, precision = precision ),
+        meta_data = meta_data)
 }
 
 mpc_process_event_array = function( event_array, event_arrays, precision ){
