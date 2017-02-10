@@ -1,6 +1,6 @@
 #### Calulating the time elapsed between events
 
-#' @include analysis_object.R analysis_object.R dataset.R
+#' @include analysis_object.R dataset.R
 NULL
 
 #' Calulating the time elapsed between events in a simulation
@@ -159,7 +159,7 @@ compute.I_xx_I.sim_analysis_object = function( data, x_event, break_event, x_off
     break_event_times = unlist( data[ break_event ], use.names = F )
     x_event_times = data[[ x_event ]]
     if ( length( x_event_times ) == 1 ) return( Inf )
-    if ( is.nan( break_event_times ) ) break_on_x = x_event_times
+    if ( any( is.nan( break_event_times ) ) ) break_on_x = x_event_times
     else break_on_x = findInterval( break_event_times, x_event_times )
 
     x = diff( x_event_times )[ -(break_on_x) ]
@@ -259,6 +259,7 @@ compute.I_xy_I.sim_analysis_object = function( data, x_event, y_event, break_eve
     if ( length( remove ) > 0 ){
         x = x[ -remove]
     }
+    if ( length(x) < 1 ) return( Inf )
 
     if ( x_offset != 0 ) x+ x_offset
     else x[!is.na(x)]
