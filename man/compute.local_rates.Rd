@@ -3,6 +3,8 @@
 \docType{methods}
 \name{compute.local_rates}
 \alias{compute.local_rates}
+\alias{compute.local_rates,analysis_object-method}
+\alias{compute.local_rates,dataset-method}
 \alias{compute.local_rates,simulation_analysis_object-method}
 \alias{local_rates}
 \title{Compute local rates}
@@ -11,6 +13,12 @@ compute.local_rates(data, x_event, marker, x_offset = 0, marker_offset = 0)
 
 \S4method{compute.local_rates}{simulation_analysis_object}(data, x_event,
   marker, x_offset = 0, marker_offset = 0)
+
+\S4method{compute.local_rates}{analysis_object}(data, x_event, marker,
+  x_offset = 0, marker_offset = 0)
+
+\S4method{compute.local_rates}{dataset}(data, x_event, marker, x_offset = 0,
+  marker_offset = 0)
 }
 \arguments{
 \item{data}{Either an object of class \code{simulation_analysis_object}, \code{analysis_object}, or \code{dataset}.}
@@ -32,6 +40,10 @@ If the \code{x_event} or the \code{marker} event have non-zero durations, the \c
 }
 \subsection{Exceptions}{
 In situations where there is only one \code{marker} event, \code{compute.local_rates} returns a single \code{Inf}. This would be the case if the user were to calculate the inter-reinforcement response times, but only one reinforcement delivery occurred during a particular simulation.
+}
+
+\subsection{Method for the \code{dataset} class}{
+When \code{compute.local_rates} is called on a \code{dataset} class, it calls the appropriate \code{compute.local_rates} for each element in the \code{analysis_objects} slot
 }
 }
 \examples{

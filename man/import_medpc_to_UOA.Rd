@@ -5,7 +5,8 @@
 \title{Import data from Med-PC to a \code{UOA_analysis_object}}
 \usage{
 import_medpc_to_UOA(partial_file_name, variable_arrays = NULL,
-  event_arrays = NULL, general_arrays = NULL, file_path = NULL)
+  event_arrays = NULL, general_arrays = NULL, file_path = NULL,
+  precision = NULL)
 }
 \arguments{
 \item{partial_file_name}{A string that specifies a partial file name. The \code{import_medpc_to_UOA} function searches through a directory for all files that match the (partial) file name.}
@@ -17,6 +18,8 @@ import_medpc_to_UOA(partial_file_name, variable_arrays = NULL,
 \item{general_arrays}{A one-level list. The names of each element should correspond to the arrays that are recorded in MED-PC. Each element should be a name describing what that array is recording. Defaults to \code{NULL}.}
 
 \item{file_path}{A string specifying the file path for \code{partial_file_name}. Defaults to \code{NULL}, which uses the current working directory.}
+
+\item{precision}{The number of decimal places to round the data. Defaults to \code{NULL} for no rounding. Rounding is recommended to avoid integer under/overflow.}
 }
 \description{
 \code{import_medpc_to_UOA} is a function for importing data from MED-PC backup files into a list \code{UOA_analysis_object}s and an associated list of meta data.

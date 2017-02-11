@@ -55,5 +55,6 @@ To create an object of the newly set \code{dataset} child class, the \code{make.
 }
 \seealso{
 \code{\link{analysis_object}} For analogous examples for the usage of \code{set.custom_dataset} and \code{make.custom_dataset_object}.
+\code{\link{import_medpc_to_UOA}}
 }
 
