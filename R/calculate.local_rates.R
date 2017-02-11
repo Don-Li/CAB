@@ -76,7 +76,7 @@ local_rate_helper = function( marker_times, event_times, x_offset, marker_offset
 
 #' @rdname compute.local_rates
 #' @aliases local_rates
-#' @exportMethod
+#' @exportMethod compute.local_rates
 
 setMethod( "compute.local_rates", signature( data = "analysis_object" ),
     function( data, x_event, marker, x_offset, marker_offset ){

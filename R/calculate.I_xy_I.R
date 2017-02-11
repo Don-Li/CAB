@@ -295,7 +295,6 @@ setMethod( "compute.IxyI", signature( data = "simulation_analysis_object" ),
 
 #' @rdname compute.IxyI
 #' @exportMethod compute.IxyI
-#' @include dataset.R
 
 setMethod( "compute.IxyI", signature( data = "dataset" ),
     function( data, x_event, x_offset, y_event, break_event ){
