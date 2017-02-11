@@ -47,10 +47,11 @@ When the rate is calculated, regardless of the method, the number of times that 
 
 With respect to efficiency, the \code{compute.session_rates} method for \code{simulation_analysis_object} is about 5 times faster than the method for \code{analysis_object}. For standard data analysis, where time is not a big concern, either method is fine. In fact, the method using \code{analysis_object} may be better because it uses the \code{event_time} dataframe in the parent \code{analysis_object} class, so it is functionally more convenient. When doing simulations, time is a concern. Hence, the method with \code{simulation_analysis_object} should be used. Hopefully, this gives the reader some understanding about the design rationale for this method.
 
-\subsection{Computing rates for objects of \code{dataset}}
-To calculate the rates for the multiple sessions that are stored in a \code{dataset} object,
+\subsection{Computing rates for objects of \code{dataset}}{
+To calculate the rates for the multiple sessions that are stored in a \code{dataset} object, we essentially call \code{lapply} over all of the \code{analysis_objct}s in the \code{dataset}.
+}
 }
 \seealso{
-\code{\link{class.analysis_object}} For constructing arguments for \code{data} parameter..
+\code{\link{class.analysis_object}} For constructing arguments for \code{data} parameter.
 }
 
