@@ -18,7 +18,6 @@ Collate:
     'analysis_object.R'
     'dataset.R'
     'calculate.I_xy_I.R'
-    'calculate.R'
     'calculate.local_rates.R'
     'calculate.session_rates.R'
     'custom_elemental.R'

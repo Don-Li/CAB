@@ -2,7 +2,7 @@
 
 #' @include sim_input.R
 NULL
-
+#' @rdname class.analysis_object
 #' \code{CAB} Analysis Objects
 #'
 #' \code{analysis_object} are objects for data analysis.
@@ -14,7 +14,6 @@ NULL
 #' @slot analysis_object A \code{data.frame} that contains the data.
 #' @slot meta_data A \code{list} that contains the information about the experiment or simulation.
 #'
-#' @rdname class.analysis_object
 #' @exportClass analysis_object
 
 setClass( "analysis_object", slots = list( analysis_object = "data.frame", meta_data = "list") )

@@ -41,7 +41,7 @@ NULL
 #' import_medpc_to_UOA( partial_file_name, variable_arrays, event_arrays, general_arrays, file_path )
 #'
 #' @seealso class.analysis_object
-#'
+#' @rdname import
 #' @export import_medpc_to_UOA
 
 import_medpc_to_UOA = function( partial_file_name, variable_arrays = NULL, event_arrays = NULL, general_arrays = NULL, file_path = NULL, precision = NULL ){
