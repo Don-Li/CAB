@@ -1,4 +1,4 @@
-#### EBD population ####
+#### EBD population
 
 #' @include e_show.R elemental_get_helpers.R elemental.R
 NULL
@@ -22,8 +22,6 @@ NULL
 #' @export make.EBD_pop
 
 class.EBD_pop = setClass( "EBD_pop", slots = list( phenotype = "numeric", genotype = "matrix", info = "list"), contains = "elemental" )
-
-#'
 
 make.EBD_pop = function( pop_size, behaviour_domain, obj_name = "population" ){
     if ( !is.numeric( pop_size ) ) stop( "Enter pop_size as 'numeric'")

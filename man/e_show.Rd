@@ -7,7 +7,7 @@
 \usage{
 e_show(object)
 
-remove.show.custom_elemental(object_name)
+remove.show.custom_elemental(class_name)
 }
 \description{
 This is a \code{show} function for elementary objects. This is just to print the elementary objects in a nice way.

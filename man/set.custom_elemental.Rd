@@ -10,7 +10,7 @@ set.custom_elemental(class_name, set_show_method = T)
 
 make.custom_elemental(custom_elemental_fx, custom_elemental_name, class)
 
-remove.show.custom_elemental(object_name)
+remove.show.custom_elemental(class_name)
 }
 \arguments{
 \item{class_name}{A character string specifying the name of the custom elemental class. The name of the slot in the custom elemental object that contains the elemental function will be the same as the \code{class} name.}
