@@ -227,7 +227,7 @@ compute.I_xy_I.all_break.sim_analysis_object = function( data, x_event, y_event,
 compute.I_xy_I.no_break.sim_analysis_object = function( data, x_event, y_event, x_offset = 0 ){
     for_x_next_y = unique( findInterval( data[[ y_event ]], data[[ x_event ]] ) )
     for_x_next_y = for_x_next_y[ for_x_next_y > 0 ]
-    if ( length( for_x_next_y ) == 0 ) return( Inf )
+    if ( length( for_x_next_y ) <= 1 ) return( Inf )
 
     for_y_previous_x = findInterval( data[[ x_event ]], data[[ y_event ]] ) + 1
     new_y_times = data[[ y_event ]][ unique( for_y_previous_x ) ]
