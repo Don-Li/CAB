@@ -82,7 +82,7 @@ setMethod( "pop.set", signature( pop = "EBD_pop",  phenotypes = "numeric", index
 } )
 
 
-setMethod( "pop.set", signature( pop = "EBD_pop", phenotypes = "missing", index = "numeric", genotypes = "matrix" ), function( pop, index, genotypes ){
+setMethod( "pop.set", signature( pop = "EBD_pop", phenotypes = "missing", index = "integer", genotypes = "matrix" ), function( pop, index, genotypes ){
     EBD.insert_genotype( pop, genotypes, index )
 } )
 
