@@ -77,7 +77,7 @@ EBD.insert_genotype = function( pop, genotypes, index ){
     pop@phenotype$phenotype[ index ] = bin2int( genotypes )
 }
 
-setMethod( "pop.set", signature( pop = "EBD_pop",  phenotypes = "numeric", index = "integer", genotypes = "missing" ), function( pop, phenotypes, index ){
+setMethod( "pop.set", signature( pop = "EBD_pop",  phenotypes = "integer", index = "integer", genotypes = "missing" ), function( pop, phenotypes, index ){
     EBD.insert_phenotype( pop, phenotypes, index )
 } )
 

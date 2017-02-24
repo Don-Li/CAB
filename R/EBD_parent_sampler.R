@@ -9,10 +9,20 @@ NULL
 #'
 #' @exportMethod EBD_parent_sampler
 
-setGeneric( "EBD_parent_sampler", function( pop, fitness, weights ) standardGeneric( "EBD_parent_sampler" ) )
+setGeneric( "EBD_parent_sampler", function( pop, fitness = NULL, weights = NULL ) standardGeneric( "EBD_parent_sampler" ) )
 
-setMethod( "EBD_parent_sampler", signature( pop = "EBD_pop" ),
-    function(pop, fitness, weights) EBD_get_parents( pop, fitness, weights ) )
+setMethod( "EBD_parent_sampler", signature( pop = "EBD_pop", fitness = "numeric", weights = "numeric" ),
+    function(pop, fitness, weights){
+        EBD_get_parents( pop, fitness, weights )
+    }
+)
+
+setMethod( "EBD_parent_sampler", signature( pop = "EBD_pop", fitness = "missing", weights = "missing" ),
+    function(pop){
+        EBD_random_parents( pop )
+    }
+)
+
 
 EBD_get_parents = function( pop, fitness, weights ){
     size = pop@info$size
@@ -30,4 +40,12 @@ EBD_get_parents = function( pop, fitness, weights ){
     }, FUN.VALUE = 1:10*1.0 )
 
     cbind( fathers, mothers )
+}
+
+EBD_random_parents = function( pop ){
+    z = vapply( 1:pop@info$size, function(x){
+        sample( 1:pop@info$size, 2, replace = F )
+    }, FUN.VALUE = 1:2*1.0 )
+
+    cbind( pop@genotype$genotype[, z[1,] ], pop@genotype$genotype[, z[2,] ] )
 }

@@ -17,6 +17,7 @@ Collate:
     'EBD_pop.R'
     'EBD_fitness_def.R'
     'EBD_fitness_fx.R'
+    'EBD_mutation.R'
     'EBD_operant_class.R'
     'EBD_sample.R'
     'EBD_parent_sampler.R'
