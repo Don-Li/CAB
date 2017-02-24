@@ -26,6 +26,7 @@ setMethod( "EBD_parent_sampler", signature( pop = "EBD_pop", fitness = "missing"
 
 EBD_get_parents = function( pop, fitness, weights ){
     size = pop@info$size
+    mother_vapply_value = ( 1:ceiling( log( max( pop@info$domain ), 2 ) ) )*1.0
     unique_fitnesses = !duplicated( fitness )
     father_fitnesses = sample( unique(fitness), size = size, replace = T, prob = weights[unique_fitnesses] )
     father_index = match( father_fitnesses, fitness )
@@ -37,7 +38,7 @@ EBD_get_parents = function( pop, fitness, weights ){
         mother_fitness = sample( unique( candidate_fitnesses ), 1, prob = weights[-x][unique_candidates] )
         mother_index = match( mother_fitness, candidate_fitnesses )
         pop@genotype$genotype[,-x][,mother_index]
-    }, FUN.VALUE = 1:10*1.0 )
+    }, FUN.VALUE = mother_vapply_value )
 
     cbind( fathers, mothers )
 }
