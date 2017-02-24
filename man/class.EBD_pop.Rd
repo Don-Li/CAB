@@ -4,12 +4,22 @@
 \name{EBD_pop-class}
 \alias{EBD_pop-class}
 \alias{class.EBD_pop}
+\alias{insert_genotype}
+\alias{insert_phenotype}
+\alias{pop.set}
 \title{Evolutionary Behaviour Dynamics population class}
+\usage{
+pop.set(pop, phenotypes, index, genotypes)
+}
 \description{
 In Evolutionary Behaviour Dynamics, the organism is represented as a population of behaviours. This represents the domain of behaviours that the organism can emit at a given time. Each behaviour has dual representation as an integer and as a binary string. The integer represents a "phenotype" and the binary string represents a "genotype". The \code{EBD_pop} class is for these populations. See McDowell (2004).
 }
 \details{
-Objects of the \code{EBD_pop} class have two slots. A vector of integers for the phenotypes and a matrix of binaries for the genotypes. The indices are such that the same index for the genotype vector corresponds to the row of the genotype matrix. In addition, there is a class of \code{info} to contain two attributes: the size of the population and a vector containing the domain of integers that can be behaviours.
+Objects of the \code{EBD_pop} class have two slots. A vector of integers for the phenotypes and a matrix of binaries for the genotypes. The indices are such that the same index for the genotype vector corresponds to the column of the genotype matrix. In addition, there is a class of \code{info} to contain two attributes: the size of the population and a vector containing the domain of integers that can be behaviours.
+
+The underlying implementaiton is that the \code{phenotype} and \code{genotype} slots contain an \code{environment} that contains their respective values. This means that the \code{phenotype}s and \code{genotype}s can be modified in place.
+
+When the binary strings are specified for vectors in the \code{phenotype} matrix, the binary string is reversed. For example, a binary string of length 10 representing the integer "1" would be "100000000" instead of "000000001". This is just because of the way \code{R} formats \code{raw} objects.
 }
 \section{Slots}{
 
@@ -24,6 +34,25 @@ Objects of the \code{EBD_pop} class have two slots. A vector of integers for the
 
 \item{\code{type}}{Contains the string "elemental". Inherited from \code{\link{class.elemental}}.}
 }}
+\section{Change the \code{genotype} or \code{phenotype} in a population}{
+{
+The \code{pop.set} method is available for changing the behaviours in a population.
+    \subsection{Usage}{
+        \code{pop.set(pop, phenotypes, index, genotypes)}
+    }
+    \subsection{Arguments}{
+        \describe{
+            \item{\code{pop}}{A \code{EBD_pop} object}
+            \item{\code{phenotypes}}{A vector of integers}
+            \item{\code{index}}{A vector of indices for each behaviour to be inserted}
+            \item{\code{genotypes}}{A matrix of binary strings with each binary string as a column}
+        }
+    }
+    \subsection{Notes}{
+        To use the \code{pop.set} method, either the \code{genotypes} or \code{phenotypes} argument must be specified. If the \code{genotypes} argument is specified and the \code{phenotypes} argument is missing, then the integers contained in the \code{genotypes} argument are inserted into the population at the indices specified by \code{index}. The associated phenotypes are obtained by converting the integers into binary strings and are inserted into the column that corresponds to the indices. If the \code{phenotypes} argument is provided and the \code{genotypes} argument is missing, the phenotypes are obtained by converting the genotypes provided and inserting them in the appropriate indices.
+    }
+}
+}
 \references{
 McDowell, J. J. (2004). A computational model of selection by consequences. Journal of the Experimental Analysis of Behavior, 81(3), 297–317. \link{https://doi.org/10.1901/jeab.2004.81-297}
 }
