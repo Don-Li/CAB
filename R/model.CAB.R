@@ -69,7 +69,7 @@ model_constructor = function( model_name, slot_names ){
     names( slots ) = slot_names
     setClass( model_name, slots = slots, contains = "CAB.model" )
 
-    model_construction = function( organism_params, ... ){
+    return( function( organism_params, ... ){
         dot_args = list( ... )
         if ( !all( slot_names %in% names( dot_args ) ) ){
             stop( paste( "A slot in", model_name, "has not been specified" ) )
@@ -81,7 +81,7 @@ model_constructor = function( model_name, slot_names ){
         dot_args$Class = model_name
 
         do.call( new, dot_args )
-    }
+    } )
 }
 
 setMethod( "show", signature( object = "CAB.model" ), function( object ){
