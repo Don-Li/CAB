@@ -1,0 +1,57 @@
+#### do function ####
+
+#' @include model.CAB.R
+NULL
+
+#' Call a function in a model object
+#'
+#' In the \code{CAB} package, models are implemented in \code{CAB.model} child classes. The model child classes contain slots that hold functions that are necessary for the model. The model child classes also contain a slot called \code{organism} that contains all the parameters that are necessary for the model. The \code{model_do} function calls specific model functions and automatically finds their parameters in the \code{organism} slot.
+#'
+#' @section \code{model_do}:{
+#'     For calling functions in a \code{CAB.model} object.
+#'     \subsection{Usage}{
+#'         \code{model_do(model, fx_name)}
+#'     }
+#'     \subsection{Arguments}{
+#'         \describe{
+#'             \item{\code{model}}{A \code{CAB.model} object.}
+#'             \item{\code{fx_name}}{A name of a model function. This refers to the slot in the \code{CAB.model} object, not the name of the function as it is in the global environment.}
+#'         }
+#'     }
+#'     \subsection{Value}{
+#'         Returns the value that the associated function returns. If a parameter in \code{organism} is changed, use \code{\link{o_set}} to assign it.
+#'     }
+#' }
+#'
+#' @rdname model_do
+#' @seealso
+#' \code{\link{class.CAB.model}}
+#' \code{\link{o_set}} also for the example
+#'
+#' @examples
+#' # Carrying on from the example in class.CAB.models:
+#' good_times_model
+#'
+#' # Take our initial value of "happiness_level" to be 100
+#' # Use the plus_happy function in the "plus_happy" slot to add 10 to the happiness
+#' new_happiness = model_do( good_times_model, "plus_happy" )
+#' new_happiness
+#' # Change the model value
+#' o_set( good_times_model, "happiness_level", new_happiness, i = 1 )
+#' # Check the new value
+#' good_times_model
+#'
+#' @exportMethod model_do
+
+setGeneric( "model_do", function( model, fx_name ) standardGeneric( "model_do" ) )
+
+setMethod( "model_do", signature( model = "CAB.model", fx_name = "character" ),
+    function( model, fx_name ){
+        model.do( model@organism, slot( model, fx_name ) )
+    }
+)
+
+model.do = function( organism, fx ){
+    args = names(formals(fx))
+    do.call( fx, mget( args, organism ) )
+}

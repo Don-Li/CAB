@@ -11,6 +11,8 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
 Collate:
+    'model.CAB.R'
+    'CAB.extract.R'
     'elemental_get_helpers.R'
     'e_show.R'
     'elemental.R'
@@ -22,6 +24,7 @@ Collate:
     'EBD_sample.R'
     'EBD_parent_sampler.R'
     'EBD_reproduction.R'
+    'EBD_utilities.R'
     'analysis_helpers.R'
     'input.R'
     'sim_input.R'
@@ -45,6 +48,7 @@ Collate:
     'dor.R'
     'emission.R'
     'event.R'
+    'event_record.R'
     'food_duration.R'
     'format.time_event.R'
     'import_medpc_to_UOA.R'
@@ -55,8 +59,11 @@ Collate:
     'stimulus.R'
     'model.COR.R'
     'model.run.R'
+    'model_do.R'
     'new.R'
+    'o_set.R'
     'remove.excesss.R'
+    'reset_model.R'
     'store_data.R'
     'tidy.simulation___DEPRECATED.R'
     'trim.input_monitor.R'
