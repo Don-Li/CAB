@@ -115,6 +115,10 @@ EBD.replace_genotype = function( EBD_model, genotypes ){
     EBD_model@organism$phenotypes = bin2int( genotypes )
 }
 
+#' @rdname EBD_utilities
+#' @aliases EBD_set
+#' @exportMethod EBD_set
+
 setMethod( "EBD_set", signature( EBD_model = "EBD",  phenotypes = "integer", index = "integer", genotypes = "missing" ), function( EBD_model, phenotypes, index ){
     EBD.insert_phenotype( EBD_model, phenotypes, index )
 } )
