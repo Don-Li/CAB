@@ -67,7 +67,7 @@ class.CAB.model = setClass( "CAB.model", slots = list( organism = "environment" 
 model_constructor = function( model_name, slot_names ){
     slots = rep( "function", length( slot_names ) )
     names( slots ) = slot_names
-    setClass( model_name, slots = slots, contains = "CAB.model" )
+    setClass( model_name, slots = slots, contains = "CAB.model", where = globalenv() )
 
     function( organism_params, ... ){
         dot_args = list( ... )
@@ -77,7 +77,7 @@ model_constructor = function( model_name, slot_names ){
         if ( !is.list( organism_params ) ){
             stop( "organism_params must be a list" )
         }
-        #dot_args$organism = list2env( organism_params, parent = emptyenv() )
+        dot_args$organism = list2env( organism_params, parent = emptyenv() )
         dot_args$Class = model_name
 
         do.call( new, dot_args )
