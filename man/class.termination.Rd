@@ -3,7 +3,6 @@
 \docType{class}
 \name{termination-class}
 \alias{class.termination}
-\alias{remove.termination.show}
 \alias{termination}
 \alias{termination-class}
 \alias{termination.show}
@@ -11,8 +10,6 @@
 \format{The \code{show} method prints the function that is contained in the \code{termination} object as well as the type of object (i.e. "elemental") and the class (i.e. "termination" ).}
 \usage{
 termination.show
-
-remove.termination.show()
 }
 \description{
 Termination functions are general functions for representing the stopping conditions for an experiment.

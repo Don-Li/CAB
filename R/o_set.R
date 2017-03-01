@@ -48,6 +48,7 @@ NULL
 #'         If the variable is a \code{numeric} vector, the argument \code{i} will change the ith element. Specifying \code{j} will return an error.
 #'         Do not use the syntax \code{x[v,i,j] <- value}. For classes in base \code{R}, these would be equivalent, but defining custom methods for \code{"[<-"} has produced strange results. In using the \code{x[v,i,j] <- value} syntax, the assignment will occur at the wrong level and you will destroy your model object. Use the "[<-"(x,v,i,j,value) syntax for desired results.
 #'         If both \code{i} and \code{j} are missing, a replacement of the variable in the \code{organism} slot is done. If the class of the new object is different from that of the object originally in the variable, then an error is thrown.
+#'         MORE NOTES: The standard indexing x[i,j,whatever] now works. I have not updated the documentation for it.
 #'     }
 #' }
 #'
@@ -94,15 +95,29 @@ o_set.helper3 = function( model, variable, value ){
 #' @rdname o_set
 #' @exportMethod "[<-"
 
-setMethod( "[<-", signature( x = "CAB.model", i = "ANY", j = "ANY", value = "ANY" ),
+setMethod( "[<-", signature( x = "CAB.model", i = "numeric", j = "numeric", value = "ANY" ),
     function( x, v, i, j, value ){
         x@organism[[v]][i,j] <- value
+        x
     }
 )
 
-setMethod( "[<-", signature( x = "CAB.model", i = "ANY", j = "missing", value = "ANY" ),
+setMethod( "[<-", signature( x = "CAB.model", i = "numeric", j = "missing", value = "ANY" ),
     function( x, v, i, j, value ){
-        if ( is.matrix( x@organism[[v]] ) ) x@organism[[v]][i,] <- value
-        if ( is.numeric( x@organism[[v]] ) ) x@organism[[v]][i] <- value
+        if ( is.matrix( x@organism[[v]] ) ){
+            x@organism[[v]][i,] <- value
+            return( x )
+        }
+        if ( is.numeric( x@organism[[v]] ) ){
+            x@organism[[v]][i] <- value
+            return( x )
+        }
+    }
+)
+
+setMethod( "[<-", signature( x = "CAB.model", i = "missing", j = "numeric", value = "ANY" ),
+    function( x, v, i, j, value ){
+        x@organism[[v]][,j] <- value
+        x
     }
 )

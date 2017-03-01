@@ -4,7 +4,6 @@
 \name{sim_input-class}
 \alias{class.sim_input}
 \alias{make.sim_input}
-\alias{remove.sim_input.show}
 \alias{sim_input-class}
 \alias{sim_input.show}
 \title{Simulation input class}
@@ -13,8 +12,6 @@
 make.sim_input(...)
 
 sim_input.show
-
-remove.sim_input.show()
 }
 \arguments{
 \item{...}{The names of the desired \code{input} objects, separated by commas.}

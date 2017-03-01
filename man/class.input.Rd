@@ -9,7 +9,6 @@
 \alias{input.show}
 \alias{make.input}
 \alias{next.input}
-\alias{remove.input.show}
 \alias{reset.input}
 \alias{setup.input}
 \alias{setup.input,input,numeric-method}
@@ -23,8 +22,6 @@ make.input(var_names)
 index.input
 
 input.show
-
-remove.input.show()
 
 setup.input(input, lengths)
 

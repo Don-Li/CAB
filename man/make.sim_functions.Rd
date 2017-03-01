@@ -5,7 +5,6 @@
 \alias{class.element_fx_closure}
 \alias{element_fx_closure-class}
 \alias{make.sim_functions}
-\alias{remove.show.element_fx_closure}
 \alias{show.element_fx_closure}
 \title{Make simulation functions (closures)}
 \format{In \code{R}, closures are shown with the code with which they were defined. Hence, the actual information that is contained in the closure will not be shown. Here, we have a special \code{show} function that shows the elemental function as well as the associated parameters in the closure. As with all \code{show} functions in \code{CAB}, the user is able to remove the \code{show} method with \code{remove.show.element_fx_closure()} and reinstate it with \code{show.closure.helper}.}
@@ -13,8 +12,6 @@
 make.sim_functions(conditions, model_object)
 
 show.element_fx_closure
-
-remove.show.element_fx_closure()
 }
 \arguments{
 \item{conditions}{A list of conditions. See \code{\link{get.model_conditions}} for a nice way to specify this argument.}

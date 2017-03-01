@@ -1,6 +1,6 @@
 #### Termination function ####
 
-#' @include e_show.R analysis_helpers.R elemental.R
+#' @include e_show.R elemental.R
 NULL
 
 #' Termination Function class
@@ -96,8 +96,8 @@ resp_termination_fx = function( resp, finish_resp ){
 
 termination.show = setMethod( "show", signature( object = "termination"), function( object ) e_show( object ) )
 
-#' @rdname class.termination
-#' @export remove.termination.show
-
-remove.termination.show = function() removeMethod( "show", signature( object = "termination") )
+# #' @rdname class.termination
+# #' @export remove.termination.show
+#
+# remove.termination.show = function() removeMethod( "show", signature( object = "termination") )
 

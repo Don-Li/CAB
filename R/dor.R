@@ -153,7 +153,7 @@ hyperbolic_DOR_fx = function( max, scale, IRI_resp_times, reserve_value ){
 
 DOR.show = setMethod( "show", signature( object = "DOR" ), function( object ) e_show( object ) )
 
-#' @rdname class.DOR
-#' @export remove.DOR.show
-
-remove.DOR.show = function() removeMethod( "show", signature( object = "DOR" ) )
+# #' @rdname class.DOR
+# #' @export remove.DOR.show
+#
+# remove.DOR.show = function() removeMethod( "show", signature( object = "DOR" ) )

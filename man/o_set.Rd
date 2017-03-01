@@ -3,13 +3,13 @@
 \docType{methods}
 \name{o_set}
 \alias{CAB.repalcement}
-\alias{[<-,CAB.model,ANY,ANY-method}
+\alias{[<-,CAB.model,numeric,numeric-method}
 \alias{o_set}
 \title{Change values in a model}
 \usage{
 o_set(model, variable, value, i, j)
 
-\S4method{[}{CAB.model,ANY,ANY}(x, v, i, j) <- value
+\S4method{[}{CAB.model,numeric,numeric}(x, v, i, j) <- value
 }
 \description{
 In the \code{CAB} package, models are implemented in \code{CAB.model} child classes. The child classes contain slots that hold functions that are necessary for the model. The model child classes also contain a slot called \code{organisms} that contains the necessary parameters. We have two functions for repalcemen, the \code{o_set} method, and the \code{"[<-"} method. Be aware that \code{"[<-"} does not work in the same way as in base \code{R}.
@@ -58,6 +58,7 @@ In the \code{CAB} package, models are implemented in \code{CAB.model} child clas
         If the variable is a \code{numeric} vector, the argument \code{i} will change the ith element. Specifying \code{j} will return an error.
         Do not use the syntax \code{x[v,i,j] <- value}. For classes in base \code{R}, these would be equivalent, but defining custom methods for \code{"[<-"} has produced strange results. In using the \code{x[v,i,j] <- value} syntax, the assignment will occur at the wrong level and you will destroy your model object. Use the "[<-"(x,v,i,j,value) syntax for desired results.
         If both \code{i} and \code{j} are missing, a replacement of the variable in the \code{organism} slot is done. If the class of the new object is different from that of the object originally in the variable, then an error is thrown.
+        MORE NOTES: The standard indexing x[i,j,whatever] now works. I have not updated the documentation for it.
     }
 }
 }

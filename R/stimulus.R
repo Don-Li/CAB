@@ -1,6 +1,6 @@
 #### Stimulus function ####
 
-#' @include e_show.R analysis_helpers.R elemental.R
+#' @include e_show.R elemental.R
 NULL
 
 #' Stimulus Function class
@@ -99,7 +99,7 @@ FR_fx = function( FR_length, resps ) FR_length + get.resps( resps )
 
 stimulus.show = setMethod( "show", signature( object = "stimulus" ), function( object ) e_show( object ) )
 
-#' @rdname class.stimulus
-#' @export remove.stimulus.show
-
-remove.stimulus.show = function() removeMethod( "show", signature( object = "stimulus" ) )
+# #' @rdname class.stimulus
+# #' @export remove.stimulus.show
+#
+# remove.stimulus.show = function() removeMethod( "show", signature( object = "stimulus" ) )

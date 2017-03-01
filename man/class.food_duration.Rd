@@ -6,13 +6,10 @@
 \alias{event}
 \alias{food_duration-class}
 \alias{food_duration.show}
-\alias{remove.food_duration.show}
 \title{Food Duration Function class}
 \format{The \code{show} method prints the function that is contained in the \code{food_duration} object as well as the type of object (i.e. "elemental") and the class (i.e. "food_duration" ).}
 \usage{
 food_duration.show
-
-remove.food_duration.show()
 }
 \description{
 Food Duration functions are general functions for representing the duration of reinforcement.

@@ -2,12 +2,9 @@
 % Please edit documentation in R/e_show.R
 \name{e_show}
 \alias{e_show}
-\alias{remove.show.custom_elemental}
 \title{Show an elementary object}
 \usage{
 e_show(object)
-
-remove.show.custom_elemental(class_name)
 }
 \description{
 This is a \code{show} function for elementary objects. This is just to print the elementary objects in a nice way.

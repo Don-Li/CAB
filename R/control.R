@@ -1,6 +1,6 @@
 #### Make a control object from elemental objects ####
 
-#' @include custom_elemental.R elemental_get_helpers.R analysis_helpers.R
+#' @include elemental_get_helpers.R
 NULL
 
 #' Control objects
@@ -104,12 +104,12 @@ food_duration_control = setClass( "food_duration_control", slots = list( fx = "l
 #' @export show.termination_control
 #' @export show.food_duration_control
 #' @export show.food_duration_control
-#' @export remove.show.DOR_control
-#' @export remove.show.dep_control
-#' @export remove.show.emission_control
-#' @export remove.show.initial_reserve_control
-#' @export remove.show.termination_control
-#' @export remove.show.food_duration_control
+# ' @export remove.show.DOR_control
+# ' @export remove.show.dep_control
+# ' @export remove.show.emission_control
+# ' @export remove.show.initial_reserve_control
+# ' @export remove.show.termination_control
+# ' @export remove.show.food_duration_control
 
 helper.show.control = function( fx, params ){
     for ( i in names( fx ) ){
@@ -156,20 +156,20 @@ show.food_duration_control = setMethod( "show", signature( object = "food_durati
     fx = object@fx; params = object@params
     helper.show.control( fx, params )
 } )
-
-remove.show.DOR_control = function() removeMethod( "show", signature( object = "DOR_control" ) )
-
-remove.show.dep_control = function() removeMethod( "show", signature( object = "dep_control" ) )
-
-remove.show.emission_control = function() removeMethod( "show", signature( object = "emission_control" ) )
-
-remove.show.stimulus_control = function() removeMethod( "show", signature( object = "stimulus_control" ) )
-
-remove.show.initial_reserve_control = function() removeMethod( "show", signature( object = "initial_reserve_control" ) )
-
-remove.show.termination_control = function() removeMethod( "show", signature( object = "termination_control" ) )
-
-remove.show.food_duration_control = function() removeMethod( "show", signature( object = "food_duration_control" ) )
+#
+# remove.show.DOR_control = function() removeMethod( "show", signature( object = "DOR_control" ) )
+#
+# remove.show.dep_control = function() removeMethod( "show", signature( object = "dep_control" ) )
+#
+# remove.show.emission_control = function() removeMethod( "show", signature( object = "emission_control" ) )
+#
+# remove.show.stimulus_control = function() removeMethod( "show", signature( object = "stimulus_control" ) )
+#
+# remove.show.initial_reserve_control = function() removeMethod( "show", signature( object = "initial_reserve_control" ) )
+#
+# remove.show.termination_control = function() removeMethod( "show", signature( object = "termination_control" ) )
+#
+# remove.show.food_duration_control = function() removeMethod( "show", signature( object = "food_duration_control" ) )
 
 
 #### Make a control object ####
@@ -274,62 +274,62 @@ replace_null_names = function( parameter_list ){
     x
 }
 
-#### Set a custom control class ####
+# #### Set a custom control class ####
+#
+# #' @rdname class.control
+# #'
+# #' @section Set a custom \code{control} object:{
+# #' To set a custom \code{control} object:
+# #' \subsection{Usage}{
+# #'     \code{set.custom_control( elemental_class_name, make.print_method )}
+# #' }
+# #' \subsection{Arguments}{
+# #'     \describe{
+# #'         \item{\code{elemental_class_name}}{A character string giving the name of an elemental class. See \code{\link{class.custom_elemental}} for setting and making custom elemental classes/objects.}
+# #'         \item{\code{make.print_method}}{A logical specifying whether or not to make a \code{show} method for printing the \code{control} object. Defaults to \code{T}.
+# #'         }
+# #'     }
+# #' }
+# #' \subsection{Value}{
+# #' Sets a \code{control} class If there were no errors, a message will be printed stating that the \code{control} class has been set. Note that the \code{control} object that is set will have the name "X_control", where "X" is the name of the elemental object.
+# #' }
+# #' }
+# #'
+# #' @export set.custom_control
+#
+# set.custom_control = function( elemental_class_name, make.print_method = T ){
+#     if ( !is.character( elemental_class_name ) ) stop( "Enter the elemental class name as 'character'")
+#     name = paste( elemental_class_name, "_control", sep = "" )
+#     slot_list = list( "list", "list", "character" )
+#     names( slot_list ) = c( "fx", "params", "type" )
+#     setClass( name, slots = slot_list )
+#
+#     if ( make.print_method ){
+#         names( name ) = "object"
+#         setMethod( "show", name, function( object ){
+#             fx = object@fx
+#             params = object@params
+#             helper.show.control( fx, params )
+#         } )
+#     }
+#
+#     cat( "Custom control object", "'", name, "'", "has been set." )
+# }
+#
+# make.custom_control = function( elemental_class_name, elemental_objs, parameter_lists ){
+#     control_name = paste( elemental_class_name, "_control", sep = "" )
+#     slot_list = list( control_name, elemental_objs, parameter_lists, "control" )
+#     names( slot_list ) = c( "Class", "fx" ,"params", "type" )
+#     do.call( "new", slot_list )
+# }
 
-#' @rdname class.control
-#'
-#' @section Set a custom \code{control} object:{
-#' To set a custom \code{control} object:
-#' \subsection{Usage}{
-#'     \code{set.custom_control( elemental_class_name, make.print_method )}
-#' }
-#' \subsection{Arguments}{
-#'     \describe{
-#'         \item{\code{elemental_class_name}}{A character string giving the name of an elemental class. See \code{\link{class.custom_elemental}} for setting and making custom elemental classes/objects.}
-#'         \item{\code{make.print_method}}{A logical specifying whether or not to make a \code{show} method for printing the \code{control} object. Defaults to \code{T}.
-#'         }
-#'     }
-#' }
-#' \subsection{Value}{
-#' Sets a \code{control} class If there were no errors, a message will be printed stating that the \code{control} class has been set. Note that the \code{control} object that is set will have the name "X_control", where "X" is the name of the elemental object.
-#' }
-#' }
-#'
-#' @export set.custom_control
-
-set.custom_control = function( elemental_class_name, make.print_method = T ){
-    if ( !is.character( elemental_class_name ) ) stop( "Enter the elemental class name as 'character'")
-    name = paste( elemental_class_name, "_control", sep = "" )
-    slot_list = list( "list", "list", "character" )
-    names( slot_list ) = c( "fx", "params", "type" )
-    setClass( name, slots = slot_list )
-
-    if ( make.print_method ){
-        names( name ) = "object"
-        setMethod( "show", name, function( object ){
-            fx = object@fx
-            params = object@params
-            helper.show.control( fx, params )
-        } )
-    }
-
-    cat( "Custom control object", "'", name, "'", "has been set." )
-}
-
-make.custom_control = function( elemental_class_name, elemental_objs, parameter_lists ){
-    control_name = paste( elemental_class_name, "_control", sep = "" )
-    slot_list = list( control_name, elemental_objs, parameter_lists, "control" )
-    names( slot_list ) = c( "Class", "fx" ,"params", "type" )
-    do.call( "new", slot_list )
-}
-
-#' @rdname class.control
-#'
-#' @section \code{show} methods for custom control objects:{
-#' Whenever a custom control object is set up, the default is that an associated \code{show} method is also defined. This \code{show} method can be removed by using the function \code{remove.show.custom_control( object_name )}.
-#' }
-#' @export remove.show.custom_control
-
-remove.show.custom_control = function( object_name ){
-    removeMethod( "show", signature( object = object_name ) )
-}
+# #' @rdname class.control
+# #'
+# #' @section \code{show} methods for custom control objects:{
+# #' Whenever a custom control object is set up, the default is that an associated \code{show} method is also defined. This \code{show} method can be removed by using the function \code{remove.show.custom_control( object_name )}.
+# #' }
+# #' @export remove.show.custom_control
+#
+# remove.show.custom_control = function( object_name ){
+#     removeMethod( "show", signature( object = object_name ) )
+# }

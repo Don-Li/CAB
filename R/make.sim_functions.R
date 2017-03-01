@@ -101,7 +101,7 @@ show.closure.helper = function( closure ){
     cat( "\n" )
 }
 
-#' @rdname make.sim_functions
-#' @export remove.show.element_fx_closure
-
-remove.show.element_fx_closure = function() removeMethod( "show", signature( object = "element_fx_closure" ) )
+# #' @rdname make.sim_functions
+# #' @export remove.show.element_fx_closure
+#
+# remove.show.element_fx_closure = function() removeMethod( "show", signature( object = "element_fx_closure" ) )
