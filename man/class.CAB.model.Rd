@@ -21,7 +21,8 @@ For constructing a model:
     The \code{CAB.model} is the parent class for specific model objects.
     \subsection{Slots}{
         \describe{
-            \item{\code{organism}}{An environment that contains all the parameters needed for the model.}
+            \item{\code{organism}}{An \code{environment} that contains all the parameters needed for the model.}
+            \item{\code{derived_params}}{An \code{expression} for calculating parameters that require values from the \code{organism} slot.}
             }
     }
 }
@@ -40,7 +41,7 @@ For constructing a model:
         }
     }
     \subsection{Value}{
-        The \code{model_constructor} returns a function with the arguments \code{organism_params} and \code{...}. \code{organism_params} takes a list with the names of each element specifying the model parameters. \code{...} takes named arguments with the names of the arguments being \code{slot_names} in the constructor function and the argument values being functions for the associated model sub-function.
+        The \code{model_constructor} returns a function with the arguments \code{organism_params}, \code{...}, and \code{derived_params}. \code{organism_params} takes a list with the names of each element specifying the model parameters. \code{...} takes named arguments with the names of the arguments being \code{slot_names} in the constructor function and the argument values being functions for the associated model sub-function. \code{derived_params} takes an expression that is used to calculate values using variables in \code{organism_params}, defaults to \code{NULL} if no derived parameters are needed. See example for notes on writing the \code{expression} for \code{derived_params}
     }
 
 }
@@ -60,9 +61,14 @@ plus_happy_fx = function( happiness_level, plus ){
 minus_happy_fx = function( happiness_level, minus ){
     happiness_level - minus
 }
+# Add a derived parameter:
+# The expression must have either curly bracers or the formal <- assignment operator:
+indifference = expression({ indifference = plus - minus })
+# or
+indifference = expression( indifference <- plus - minus )
 
 # Make a "good_times" model:
-good_times_model = make_good_times( organism_parameters, plus_happy = plus_happy_fx, minus_happy = minus_happy_fx )
+good_times_model = make_good_times( organism_params = organism_parameters, plus_happy = plus_happy_fx, minus_happy = minus_happy_fx, derived_params = indifference )
 good_times_model
 
 }

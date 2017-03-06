@@ -55,7 +55,8 @@ NULL
 #' @rdname o_set
 #' @aliases CAB.repalcement
 #' @seealso
-#' \code{link{model_do}} for an example of usage.
+#' \code{\link{model_do}} for an example of usage.
+#' \code{\link{set_param}} for setting all parameters.
 #'
 #' @exportMethod o_set
 

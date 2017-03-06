@@ -14,7 +14,8 @@
 #'     The \code{CAB.model} is the parent class for specific model objects.
 #'     \subsection{Slots}{
 #'         \describe{
-#'             \item{\code{organism}}{An environment that contains all the parameters needed for the model.}
+#'             \item{\code{organism}}{An \code{environment} that contains all the parameters needed for the model.}
+#'             \item{\code{derived_params}}{An \code{expression} for calculating parameters that require values from the \code{organism} slot.}
 #'             }
 #'     }
 #' }
@@ -31,7 +32,7 @@
 #'         }
 #'     }
 #'     \subsection{Value}{
-#'         The \code{model_constructor} returns a function with the arguments \code{organism_params} and \code{...}. \code{organism_params} takes a list with the names of each element specifying the model parameters. \code{...} takes named arguments with the names of the arguments being \code{slot_names} in the constructor function and the argument values being functions for the associated model sub-function.
+#'         The \code{model_constructor} returns a function with the arguments \code{organism_params}, \code{...}, and \code{derived_params}. \code{organism_params} takes a list with the names of each element specifying the model parameters. \code{...} takes named arguments with the names of the arguments being \code{slot_names} in the constructor function and the argument values being functions for the associated model sub-function. \code{derived_params} takes an expression that is used to calculate values using variables in \code{organism_params}, defaults to \code{NULL} if no derived parameters are needed. See example for notes on writing the \code{expression} for \code{derived_params}
 #'     }
 #'
 #'}
@@ -54,22 +55,27 @@
 #' minus_happy_fx = function( happiness_level, minus ){
 #'     happiness_level - minus
 #' }
+#' # Add a derived parameter:
+#' # The expression must have either curly bracers or the formal <- assignment operator:
+#' indifference = expression({ indifference = plus - minus })
+#' # or
+#' indifference = expression( indifference <- plus - minus )
 #'
 #' # Make a "good_times" model:
-#' good_times_model = make_good_times( organism_parameters, plus_happy = plus_happy_fx, minus_happy = minus_happy_fx )
+#' good_times_model = make_good_times( organism_params = organism_parameters, plus_happy = plus_happy_fx, minus_happy = minus_happy_fx, derived_params = indifference )
 #' good_times_model
 #'
 #' @export model_constructor
 #' @exportMethod show
 
-class.CAB.model = setClass( "CAB.model", slots = list( organism = "environment" ) )
+class.CAB.model = setClass( "CAB.model", slots = list( organism = "environment", derived_params = "expression") )
 
 model_constructor = function( model_name, slot_names ){
     slots = rep( "function", length( slot_names ) )
     names( slots ) = slot_names
     setClass( model_name, slots = slots, contains = "CAB.model", where = globalenv() )
 
-    function( organism_params, ... ){
+    function( organism_params , ..., derived_params = NULL ){
         dot_args = list( ... )
         if ( !all( slot_names %in% names( dot_args ) ) ){
             stop( paste( "A slot in", model_name, "has not been specified" ) )
@@ -77,7 +83,9 @@ model_constructor = function( model_name, slot_names ){
         if ( !is.list( organism_params ) ){
             stop( "organism_params must be a list" )
         }
-        dot_args$organism = list2env( organism_params, parent = emptyenv() )
+        dot_args$organism = list2env( organism_params )
+        dot_args$derived_params = derived_params
+        eval( derived_params, envir = dot_args$organism )
         dot_args$Class = model_name
 
         do.call( new, dot_args )
@@ -95,4 +103,13 @@ setMethod( "show", signature( object = "CAB.model" ), function( object ){
         })
     print( ls.str( object@organism ) )
 } )
+
+setGeneric( "set_derived", function( model, derived_params ) standardGeneric( "set_derived" ) )
+
+setMethod( "set_derived", signature( model = "CAB.model" ), function( model, derived_params ){
+    eval( derived_params, envir = model@organism )
+} )
+
+
+
 

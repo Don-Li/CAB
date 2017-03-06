@@ -8,16 +8,20 @@ NULL
 #' Do this later
 #'
 #' @exportMethod reset_model
+#'
+#' @rdname set_param
+#'
+#' @exportMethod set_param
 
-setGeneric( "reset_model", function( model, organism_params ) standardGeneric( "reset_model" ) )
+setGeneric( "set_param", function( model, organism_params ) standardGeneric( "set_param" ) )
 
-setMethod( "reset_model", signature( model = "CAB.model", organism_params = "list" ),
+setMethod( "set_param", signature( model = "CAB.model", organism_params = "list" ),
     function( model, organism_params ){
         reset_model_helper( model, organism_params )
     }
 )
 
 reset_model_helper = function( model, organism_params ){
-    list2env( x = organism_params, envir = EBD_model@organism )
+    list2env( x = organism_params, envir = model@organism )
+    eval( model@derived_params, model@organism )
 }
-

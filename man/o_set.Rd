@@ -63,6 +63,7 @@ In the \code{CAB} package, models are implemented in \code{CAB.model} child clas
 }
 }
 \seealso{
-\code{link{model_do}} for an example of usage.
+\code{\link{model_do}} for an example of usage.
+\code{\link{set_param}} for setting all parameters.
 }
 
