@@ -1,5 +1,7 @@
 #### Parental sampling ####
 
+#' @include RcppExports.R
+
 #' For parental sampling
 #'
 #' Stuff
@@ -13,3 +15,5 @@ bitwise_reproduction = function( pop_size, parents ){
     dim(x) = c( nrow(parents), pop_size )
     x
 }
+
+

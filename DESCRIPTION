@@ -13,6 +13,7 @@ RoxygenNote: 5.0.1
 Collate:
     'model.CAB.R'
     'CAB.extract.R'
+    'RcppExports.R'
     'EBD.reproduction.R'
     'elemental_get_helpers.R'
     'e_show.R'
@@ -49,6 +50,7 @@ Collate:
     'event_record.R'
     'food_duration.R'
     'format.time_event.R'
+    'help_file.R'
     'import_medpc_to_UOA.R'
     'initial_reserve.R'
     'input___DEPRECATED.R'
@@ -65,3 +67,6 @@ Collate:
     'store_data.R'
     'tidy.simulation___DEPRECATED.R'
     'trim.input_monitor.R'
+LinkingTo: Rcpp
+Imports:
+    Rcpp

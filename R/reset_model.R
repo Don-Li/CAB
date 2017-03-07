@@ -6,9 +6,7 @@ NULL
 #' Do this later
 #'
 #' Do this later
-#'
-#' @exportMethod reset_model
-#'
+#'#'
 #' @rdname set_param
 #'
 #' @exportMethod set_param
