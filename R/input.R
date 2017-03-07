@@ -138,10 +138,10 @@ input.show_helper = function( x, object ){
     cat( "\n" )
 }
 
-#' @rdname class.input
-#' @export remove.input.show
-
-remove.input.show = function() removeMethod( "show", signature( object = "input" ) )
+# #' @rdname class.input
+# #' @export remove.input.show
+#
+# remove.input.show = function() removeMethod( "show", signature( object = "input" ) )
 
 #' @rdname class.input
 #' @aliases setup.input

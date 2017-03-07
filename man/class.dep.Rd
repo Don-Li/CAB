@@ -6,13 +6,10 @@
 \alias{dep}
 \alias{dep-class}
 \alias{dep.show}
-\alias{remove.dep.show}
 \title{Reserve Depletion Function class}
 \format{The \code{show} method prints the function that is contained in the \code{dep} object as well as the type of object (i.e. "elemental") and the class (i.e. "dep" ).}
 \usage{
 dep.show
-
-remove.dep.show()
 }
 \description{
 Reserve Depletion functions are impelmented specially for Catania's Operant Reserve (Catania, 2005). Catania (2005) and Berg & McDowell (2011) used constants for the reserve depletion. However, we have generalised this to a function. The \code{dep} class is used to set up the dep function, that is, the parameters are not set here. Instead, the \code{dep} will go into a \code{dep_control} object that contains both the \code{dep} as well as its associated parameters.

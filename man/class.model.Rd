@@ -5,11 +5,8 @@
 \alias{class.model}
 \alias{make.custom_model}
 \alias{model-class}
-\alias{set.custom_model}
 \title{Construction of \code{model} objects}
 \usage{
-set.custom_model(control_objs, model_class_name)
-
 make.custom_model(..., input, model_class)
 }
 \description{

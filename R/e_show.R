@@ -34,10 +34,3 @@ e_show = function( object ){
     cat( "Object type: Elemental", "\n" )
     cat( "Class:", class(object) )
 }
-
-#' @rdname e_show
-#' @export remove.show.custom_elemental
-
-remove.show.custom_elemental = function( object_name ){
-    removeMethod( "show", signature( object = object_name ) )
-}

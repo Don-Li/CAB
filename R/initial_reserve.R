@@ -1,6 +1,6 @@
 #### Initial Reserve function ####
 
-#' @include e_show.R analysis_helpers.R elemental.R
+#' @include e_show.R elemental.R
 NULL
 
 #' Initial Reserve Function class
@@ -90,7 +90,7 @@ constant_initial_fx = function( initial ){
 
 initial_reserve.show = setMethod( "show", signature( object = "initial_reserve" ), function( object ) e_show( object ) )
 
-#' @rdname class.initial_reserve
-#' @export remove.initial_reserve.show
-
-remove.initial_reserve.show = function() removeMethod( "show", signature( object = "initial_reserve" ) )
+# #' @rdname class.initial_reserve
+# #' @export remove.initial_reserve.show
+#
+# remove.initial_reserve.show = function() removeMethod( "show", signature( object = "initial_reserve" ) )

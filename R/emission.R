@@ -1,6 +1,6 @@
 #### Emission function ####
 
-#' @include e_show.R analysis_helpers.R elemental.R
+#' @include e_show.R elemental.R
 NULL
 
 #' Emission Function class
@@ -93,7 +93,7 @@ G_E_emission_fx = function( reserve_value, time, min_IRT ){
 
 emission.show = setMethod( "show", signature( object = "emission" ), function( object ) e_show( object ) )
 
-#' @rdname class.emission
-#' @export remove.emission.show
-
-remove.emission.show = function() removeMethod( "show", signature( object = "emission" ) )
+# #' @rdname class.emission
+# #' @export remove.emission.show
+#
+# remove.emission.show = function() removeMethod( "show", signature( object = "emission" ) )

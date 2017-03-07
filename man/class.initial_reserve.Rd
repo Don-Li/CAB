@@ -6,13 +6,10 @@
 \alias{initial_reserve}
 \alias{initial_reserve-class}
 \alias{initial_reserve.show}
-\alias{remove.initial_reserve.show}
 \title{Initial Reserve Function class}
 \format{The \code{show} method prints the function that is contained in the \code{initial_reserve} object as well as the type of object (i.e. "elemental") and the class (i.e. "initial_reserve" ).}
 \usage{
 initial_reserve.show
-
-remove.initial_reserve.show()
 }
 \description{
 Initial Reserve functions are implemented specially for Catania's Operant Reserve (Catania, 2005). Catania (2005) and Berg & McDowell (2011) used constants for the reserve depletion. However, we have generalised this to a function. The \code{initial_reserve} class is used to set up the Initial Reserve function, that is, the parameters are not set here. Instead, the \code{initial_reserve} will go into a \code{initial_reserve_control} object that contains both the \code{initial_reserve} as well as its associated parameters.

@@ -1,6 +1,6 @@
 #### Reserve depletion function ####
 
-#' @include e_show.R elemental_get_helpers.R elemental.R
+#' @include e_show.R elemental.R
 NULL
 
 #' Reserve Depletion Function class
@@ -94,7 +94,7 @@ constant_dep_fx = function( deplete, reserve_value ){
 
 dep.show = setMethod( "show", signature( object = "dep" ), function( object ) e_show( object ) )
 
-#' @rdname class.dep
-#' @export remove.dep.show
-
-remove.dep.show = function() removeMethod( "show", signature( object = "dep" ) )
+# #' @rdname class.dep
+# #' @export remove.dep.show
+#
+# remove.dep.show = function() removeMethod( "show", signature( object = "dep" ) )

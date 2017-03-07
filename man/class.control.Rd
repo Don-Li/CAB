@@ -6,17 +6,11 @@
 \alias{DOR_control-class}
 \alias{helper.show.control}
 \alias{make.control}
-\alias{remove.show.custom_control}
-\alias{set.custom_control}
 \title{Control objects}
 \usage{
 helper.show.control(fx, params)
 
 make.control(elemental_objs, parameter_lists)
-
-set.custom_control(elemental_class_name, make.print_method = T)
-
-remove.show.custom_control(object_name)
 }
 \description{
 Objects from the \code{control} class contain objects of a particular type of 'elemental' class as well as their associated parameters. For example, we may have a \code{control} class for \code{DOR} objects. This control class would contain all the \code{DOR} objects that we wish to use in our simulation as well as all of the parameters that we wish to use. The \code{control} class objects are associated with their elemental objects. For example, the \code{control} object for the \code{DOR} class would be a \code{DOR_control} object. Hence, this document details the generic properties of \code{control} classes.
@@ -79,31 +73,6 @@ To create a \code{control} object from a list of 'elemental' objects:
 \subsection{Value}{
 Returns a \code{control} object.
 }
-}
-}
-
-\section{Set a custom \code{control} object}{
-{
-To set a custom \code{control} object:
-\subsection{Usage}{
-    \code{set.custom_control( elemental_class_name, make.print_method )}
-}
-\subsection{Arguments}{
-    \describe{
-        \item{\code{elemental_class_name}}{A character string giving the name of an elemental class. See \code{\link{class.custom_elemental}} for setting and making custom elemental classes/objects.}
-        \item{\code{make.print_method}}{A logical specifying whether or not to make a \code{show} method for printing the \code{control} object. Defaults to \code{T}.
-        }
-    }
-}
-\subsection{Value}{
-Sets a \code{control} class If there were no errors, a message will be printed stating that the \code{control} class has been set. Note that the \code{control} object that is set will have the name "X_control", where "X" is the name of the elemental object.
-}
-}
-}
-
-\section{\code{show} methods for custom control objects}{
-{
-Whenever a custom control object is set up, the default is that an associated \code{show} method is also defined. This \code{show} method can be removed by using the function \code{remove.show.custom_control( object_name )}.
 }
 }
 \examples{

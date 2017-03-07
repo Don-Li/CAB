@@ -3,7 +3,6 @@
 \docType{class}
 \name{stimulus-class}
 \alias{class.stimulus}
-\alias{remove.stimulus.show}
 \alias{stimulus}
 \alias{stimulus-class}
 \alias{stimulus.show}
@@ -11,8 +10,6 @@
 \format{The \code{show} method prints the function that is contained in the \code{stimulus} object as well as the type of object (i.e. "elemental") and the class (i.e. "stimulus" ).}
 \usage{
 stimulus.show
-
-remove.stimulus.show()
 }
 \description{
 Stimulus functions are general functions for representing environmental stimuli.

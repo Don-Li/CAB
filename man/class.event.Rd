@@ -6,13 +6,10 @@
 \alias{event}
 \alias{event-class}
 \alias{event.show}
-\alias{remove.event.show}
 \title{Event Function class}
 \format{The \code{show} method prints the function that is contained in the \code{event} object as well as the type of object (i.e. "elemental") and the class (i.e. "event" ).}
 \usage{
 event.show
-
-remove.event.show()
 }
 \description{
 Event functions are general functions for representing environmental events. That is, their primary use is for reinforcement schedules.

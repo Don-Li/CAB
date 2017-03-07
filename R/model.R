@@ -2,7 +2,7 @@
 
 #' @importFrom data.table rbindlist
 #'
-#' @include elemental_get_helpers.R custom_elemental.R control.R
+#' @include elemental_get_helpers.R control.R
 NULL
 #' Construction of \code{model} objects
 #'
@@ -76,19 +76,19 @@ NULL
 class.model = setClass( "model", slots = list( control_list = "environment", enumerated_conditions = "list", iterator = "data.frame", input = "input") )
 
 
-#' @rdname class.model
-#' @export set.custom_model
-
-set.custom_model = function( control_objs, model_class_name ){
-    if ( !is.character( control_objs ) ){
-        stop( "The 'control_objs' should be a character vector" )
-    }
-    ctrls = rep( list( "list"), length( control_objs ) )
-    names( ctrls ) = control_objs
-
-    setClass( model_class_name, slots = ctrls, contains = "model" )
-    cat( "Custom model object", "'", model_obj_name, "'", "has been set." )
-}
+# #' @rdname class.model
+# #' @export set.custom_model
+#
+# set.custom_model = function( control_objs, model_class_name ){
+#     if ( !is.character( control_objs ) ){
+#         stop( "The 'control_objs' should be a character vector" )
+#     }
+#     ctrls = rep( list( "list"), length( control_objs ) )
+#     names( ctrls ) = control_objs
+#
+#     setClass( model_class_name, slots = ctrls, contains = "model" )
+#     cat( "Custom model object", "'", model_obj_name, "'", "has been set." )
+# }
 
 #' @rdname class.model
 #'

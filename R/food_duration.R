@@ -1,6 +1,6 @@
 #### Food duration function ####
 
-#' @include e_show.R analysis_helpers.R elemental.R
+#' @include e_show.R elemental.R
 NULL
 
 #' Food Duration Function class
@@ -85,7 +85,7 @@ constant_food_duration_fx = function( food_dur, time ){
 
 food_duration.show = setMethod( "show", signature( object = "food_duration" ), function( object ) e_show( object ) )
 
-#' @rdname class.food_duration
-#' @export remove.food_duration.show
-
-remove.food_duration.show = function() removeMethod( "show", signature( object = "termination" ) )
+# #' @rdname class.food_duration
+# #' @export remove.food_duration.show
+#
+# remove.food_duration.show = function() removeMethod( "show", signature( object = "termination" ) )

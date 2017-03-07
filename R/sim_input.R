@@ -71,9 +71,9 @@ sim_input.show = setMethod( "show", signature( object = "sim_input" ), function(
     print( object@input )
 } )
 
-#' @rdname class.sim_input
-#' @export remove.sim_input.show
-remove.sim_input.show = function() removeMethod( "show", signature( object = "sim_input" ) )
-
+# #' @rdname class.sim_input
+# #' @export remove.sim_input.show
+# remove.sim_input.show = function() removeMethod( "show", signature( object = "sim_input" ) )
+#
 
 

@@ -66,18 +66,18 @@ get.IRI_resp_times = function( iri_resp_times ){
     if ( is.list( iri_resp_times ) ) iri_resp_times$data[ iri_resp_times$counts ] - iri_resp_times$data[ 1: iri_resp_times$counts ]
     else iri_resp_times
 }
-
-#' @rdname accessor_helpers
-#' @aliases bin2int
-#' @export bin2int
-bin2int = function( binaries ){
-    drop( crossprod( binaries, 2^(0:(nrow(binaries)-1)) ) )
-}
-
-#' @rdname accessor_helpers
-#' @aliases int2bin
-#' @export int2bin
-int2bin = function( integers, digits ){
-    vapply( integers, function(x) as.integer( intToBits(x)[1:digits] ), FUN.VALUE = 1:digits)
-}
+#
+# #' @rdname accessor_helpers
+# #' @aliases bin2int
+# #' @export bin2int
+# bin2int = function( binaries ){
+#     drop( crossprod( binaries, 2^(0:(nrow(binaries)-1)) ) )
+# }
+#
+# #' @rdname accessor_helpers
+# #' @aliases int2bin
+# #' @export int2bin
+# int2bin = function( integers, digits ){
+#     vapply( integers, function(x) as.integer( intToBits(x)[1:digits] ), FUN.VALUE = 1:digits)
+# }
 

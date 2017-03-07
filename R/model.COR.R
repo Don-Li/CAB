@@ -2,7 +2,7 @@
 
 #' @importFrom data.table rbindlist
 #'
-#' @include elemental_get_helpers.R custom_elemental.R control.R model.R dor.R dep.R emission.R initial_reserve.R stimulus.R termination.R food_duration.R input.R input.R
+#' @include elemental_get_helpers.R control.R model.R dor.R dep.R emission.R initial_reserve.R stimulus.R termination.R food_duration.R input.R
 NULL
 #' Construction of Catania's Operant Reserve
 #'

@@ -6,13 +6,10 @@
 \alias{DOR-class}
 \alias{DOR.show}
 \alias{class.DOR}
-\alias{remove.DOR.show}
 \title{Delay of Reinforcement Gradient (DOR) class}
 \format{The \code{show} method prints the function that is contained in the \code{DOR} object as well as the type of object (i.e. "elemental") and the class (i.e. "DOR" ).}
 \usage{
 DOR.show
-
-remove.DOR.show()
 }
 \description{
 Delay of Reinforcement Gradients are represented as elements in the \code{DOR} class. The use of DORs can be found in Catania (2005) and Berg & McDowell (2011). The \code{DOR} class is used to set up the DOR function, that is, its parameters are not set here. Instead, the \code{DOR} will go into a \code{DOR_control} object that contains both the \code{DOR} as well as its associted parameters.

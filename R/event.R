@@ -1,6 +1,6 @@
 #### Event function ####
 
-#' @include e_show.R analysis_helpers.R
+#' @include e_show.R
 NULL
 
 #' Event Function class
@@ -98,7 +98,7 @@ FR_fx = function( FR_length, resps ) FR_length + get.resps( resps )
 
 event.show = setMethod( "show", signature( object = "event" ), function( object ) e_show( object ) )
 
-#' @rdname class.event
-#' @export remove.event.show
-
-remove.event.show = function() removeMethod( "show", signature( object = "event" ) )
+# #' @rdname class.event
+# #' @export remove.event.show
+#
+# remove.event.show = function() removeMethod( "show", signature( object = "event" ) )
