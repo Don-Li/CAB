@@ -13,6 +13,7 @@ RoxygenNote: 5.0.1
 Collate:
     'model.CAB.R'
     'CAB.extract.R'
+    'EBD.reproduction.R'
     'elemental_get_helpers.R'
     'e_show.R'
     'elemental.R'

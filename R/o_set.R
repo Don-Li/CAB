@@ -68,7 +68,7 @@ setMethod( "o_set", signature( model = "CAB.model", variable = "character", valu
     }
 )
 
-setMethod( "o_set", signature( model = "CAB.model", variable = "character", value = "ANY", i = "missing", j = "missing" ),
+setMethod( "o_set", signature( model = "CAB.model", variable = "character", value = "ANY", i = "numeric", j = "missing" ),
     function( model, variable, value, i ){
         o_set.helper( model, variable, value, i )
     }
@@ -119,6 +119,13 @@ setMethod( "[<-", signature( x = "CAB.model", i = "numeric", j = "missing", valu
 setMethod( "[<-", signature( x = "CAB.model", i = "missing", j = "numeric", value = "ANY" ),
     function( x, v, i, j, value ){
         x@organism[[v]][,j] <- value
+        x
+    }
+)
+
+setMethod( "[<-", signature( x = "CAB.model", i = "missing", j = "missing", value = "ANY" ),
+    function( x, v, value ){
+        x@organism[[v]] <- value
         x
     }
 )
