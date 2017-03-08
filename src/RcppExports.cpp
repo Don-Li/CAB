@@ -5,15 +5,16 @@
 
 using namespace Rcpp;
 
-// CAB_cpp_bitwise_sampler
-NumericVector CAB_cpp_bitwise_sampler(int pop_size, NumericMatrix parents);
-RcppExport SEXP CAB_CAB_cpp_bitwise_sampler(SEXP pop_sizeSEXP, SEXP parentsSEXP) {
+// CAB_cpp_bitwise
+NumericVector CAB_cpp_bitwise(int pop_size, NumericMatrix parents, double bias);
+RcppExport SEXP CAB_CAB_cpp_bitwise(SEXP pop_sizeSEXP, SEXP parentsSEXP, SEXP biasSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< int >::type pop_size(pop_sizeSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type parents(parentsSEXP);
-    __result = Rcpp::wrap(CAB_cpp_bitwise_sampler(pop_size, parents));
+    Rcpp::traits::input_parameter< double >::type bias(biasSEXP);
+    __result = Rcpp::wrap(CAB_cpp_bitwise(pop_size, parents, bias));
     return __result;
 END_RCPP
 }

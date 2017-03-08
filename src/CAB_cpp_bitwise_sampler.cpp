@@ -12,10 +12,12 @@ using namespace Rcpp;
 //
 
 // [[Rcpp::export]]
-NumericVector CAB_cpp_bitwise_sampler( int pop_size, NumericMatrix parents ){
+NumericVector CAB_cpp_bitwise( int pop_size, NumericMatrix parents, double bias ){
     int get_n = pop_size*parents.nrow();
-    NumericVector selection = rbinom( get_n, 1, 0.5 );
-    IntegerVector x = seq( 1, get_n );
-    NumericVector index = (get_n)*(1-selection)+as<NumericVector>(x);
-    return wrap(index);
+    NumericVector selection = rbinom( get_n, 1, bias );
+    NumericMatrix father = parents( _, Range(0,pop_size-1) );
+    NumericMatrix mother = parents( _, Range(pop_size, pop_size*2-1) );
+    NumericVector z = father*selection + mother*(1-selection);
+    z.attr("dim") = Dimension( parents.nrow(), pop_size );
+    return wrap( z );
 }

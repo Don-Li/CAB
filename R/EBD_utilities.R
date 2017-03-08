@@ -106,7 +106,7 @@ EBD.insert_genotype = function( EBD_model, genotypes, index ){
 EBD.replace_phenotype = function( EBD_model, phenotypes ){
     if ( length(phenotypes) != EBD_model@organism$pop_size ) stop( "New population is not the right size" )
     EBD_model@organism$phenotypes = phenotypes
-    EBD@organism$genotypes = int2bin( phenotypes, ceiling( log( max( EBD_model@organism$domain ), 2 ) ) )
+    EBD_model@organism$genotypes = int2bin( phenotypes, ceiling( log( max( EBD_model@organism$domain ), 2 ) ) )
 }
 
 EBD.replace_genotype = function( EBD_model, genotypes ){
@@ -132,5 +132,5 @@ setMethod( "EBD_set", signature( EBD_model = "EBD", phenotypes = "missing", inde
 } )
 
 setMethod( "EBD_set", signature( EBD_model = "EBD",  phenotypes = "integer", index = "missing", genotypes = "missing" ), function( EBD_model, phenotypes, index ){
-    EBD.insert_phenotype( EBD_model, phenotypes )
+    EBD.replace_phenotype( EBD_model, phenotypes )
 } )
