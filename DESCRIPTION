@@ -70,4 +70,5 @@ Collate:
     'trim.input_monitor.R'
 LinkingTo: Rcpp
 Imports:
-    Rcpp
+    Rcpp,
+    data.table

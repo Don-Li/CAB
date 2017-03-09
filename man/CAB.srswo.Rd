@@ -3,15 +3,19 @@
 \name{CAB.srswo}
 \alias{CAB.srswo}
 \alias{CAB.srswo_2}
+\title{Grouped simple random sampling without replacement}
 \usage{
 CAB.srswo(size, group_size, n)
 
 CAB.srswo_2(size, n)
 }
+\description{
+These functions are for repeated sampling wtihout replacement. For example, \code{CAB.srswo( size = 50, group_size = 2, n = 100 )} will produce a matrix where each column is a simple random sample without replacement of size 2 from [1,100], with 50 columns for 50 repeated samples. This is equivalent to calling \code{sample( x = 1:100, size = 2, replace = FALSE ) }, but many orders of magnitude faster. See example.
+}
 \section{\code{CAB.srswo}}{
 {
     For simple random sampling without replacement.
-    \subsection{Usage}:{
+    \subsection{Usage}{
         \code{CAB.srswo( size, group_size, n )}
     }
     \subsection{Arguments}{
@@ -30,7 +34,7 @@ CAB.srswo_2(size, n)
 \section{\code{CAB.srswo_2}}{
 {
     For simplem random sampling wtihout replacement with a fixed group size of 2.
-    \subsection{Usage}:{
+    \subsection{Usage}{
         \code{CAB.srswo_2( size, n )}
     }
     \subsection{Arguments}{

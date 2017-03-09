@@ -1,6 +1,7 @@
 #### simple sampling without replacement ####
 
 #' @include RcppExports.R
+NULL
 
 #' Grouped simple random sampling without replacement
 #'
@@ -8,7 +9,7 @@
 #'
 #' @section \code{CAB.srswo}:{
 #'     For simple random sampling without replacement.
-#'     \subsection{Usage}:{
+#'     \subsection{Usage}{
 #'         \code{CAB.srswo( size, group_size, n )}
 #'     }
 #'     \subsection{Arguments}{
@@ -25,7 +26,7 @@
 #'
 #' @section \code{CAB.srswo_2}:{
 #'     For simplem random sampling wtihout replacement with a fixed group size of 2.
-#'     \subsection{Usage}:{
+#'     \subsection{Usage}{
 #'         \code{CAB.srswo_2( size, n )}
 #'     }
 #'     \subsection{Arguments}{
