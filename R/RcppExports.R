@@ -5,6 +5,14 @@ CAB_cpp_bitwise <- function(pop_size, parents, bias) {
     .Call('CAB_CAB_cpp_bitwise', PACKAGE = 'CAB', pop_size, parents, bias)
 }
 
+CAB_cpp_srswo <- function(size, group_size, n) {
+    .Call('CAB_CAB_cpp_srswo', PACKAGE = 'CAB', size, group_size, n)
+}
+
+CAB_cpp_srswo2 <- function(size, n) {
+    .Call('CAB_CAB_cpp_srswo2', PACKAGE = 'CAB', size, n)
+}
+
 timesTwo <- function(x) {
     .Call('CAB_timesTwo', PACKAGE = 'CAB', x)
 }

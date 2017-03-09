@@ -14,6 +14,7 @@ Collate:
     'model.CAB.R'
     'CAB.extract.R'
     'RcppExports.R'
+    'CAB.srswo.R'
     'EBD.reproduction.R'
     'elemental_get_helpers.R'
     'e_show.R'

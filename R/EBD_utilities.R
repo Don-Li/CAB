@@ -31,7 +31,7 @@ bin2int = function( binaries ){
         x = crossprod( binaries, 2^(0:(nrow(binaries)-1)) )
     }
     else x =  crossprod( binaries, 2^(0:(length(binaries)-1) ) )
-    as.integer( drop( x ) )
+    drop( x )
 }
 
 #' @rdname EBD_utilities

@@ -18,6 +18,31 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// CAB_cpp_srswo
+NumericMatrix CAB_cpp_srswo(int size, int group_size, int n);
+RcppExport SEXP CAB_CAB_cpp_srswo(SEXP sizeSEXP, SEXP group_sizeSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type size(sizeSEXP);
+    Rcpp::traits::input_parameter< int >::type group_size(group_sizeSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    __result = Rcpp::wrap(CAB_cpp_srswo(size, group_size, n));
+    return __result;
+END_RCPP
+}
+// CAB_cpp_srswo2
+NumericMatrix CAB_cpp_srswo2(int size, int n);
+RcppExport SEXP CAB_CAB_cpp_srswo2(SEXP sizeSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type size(sizeSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    __result = Rcpp::wrap(CAB_cpp_srswo2(size, n));
+    return __result;
+END_RCPP
+}
 // timesTwo
 NumericVector timesTwo(NumericVector x);
 RcppExport SEXP CAB_timesTwo(SEXP xSEXP) {
