@@ -123,7 +123,7 @@
 #' @export make.event_record
 #' @exportMethod show
 #' @exportMethod assign_event
-#' @exportMethod reset_event_helper
+#' @exportMethod reset_event
 #' @exportMethod get_event
 #' @exportMethod trim_event_record
 

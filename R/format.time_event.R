@@ -20,14 +20,14 @@ setGeneric( "format.time_event", function( data, dims ) standardGeneric( "format
 #' @seealso
 #' \code{\link{tidy.simulation}} which uses \code{format.time_event}.
 #'
-#' @exportMethod format.time_event
-
-setMethod( "format.time_event", signature( data = "input" ),
-    function( data, dims = NULL ){
-        if ( is.null( dims ) ) dims = names( data@names )
-        format.time_event_helper( data, dims )
-    }
-)
+# #' @exportMethod format.time_event
+#
+# setMethod( "format.time_event", signature( data = "input" ),
+#     function( data, dims = NULL ){
+#         if ( is.null( dims ) ) dims = names( data@names )
+#         format.time_event_helper( data, dims )
+#     }
+# )
 
 format.time_event_helper = function( input_object, dims ){
     temp_data = list( time = NaN, event = NaN )

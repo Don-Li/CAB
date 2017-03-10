@@ -26,10 +26,9 @@ For constructing a model:
     \subsection{Slots}{
         \describe{
             \item{\code{organism}}{An \code{environment} that contains all the parameters needed for the model.}
-            \item{\code{derived_params}}{An \code{expression} for calculating parameters that require values from the \code{organism} slot.
+            \item{\code{derived_params}}{An \code{expression} for calculating parameters that require values from the \code{organism} slot.}
             \item{\code{event_record}}{A \code{event_record} for storing data.}
-            }
-        }
+         }
     }
 }
 }

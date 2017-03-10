@@ -1,5 +1,8 @@
 #### CAB models ####
 
+#' @include event_record.R
+NULL
+
 #' Construction of models in CAB
 #'
 #' The Computational Analysis of Behaviour (CAB) software package is a general purpose software package for implementing computational models of behaviour. A model is implemented in the \code{CAB.model} class. The \code{CAB.model} is a parent class that contains a slot \code{organism} that contains all the parameters that are necessary for the functions that are required to operate the model. In order to create a model, create a parent class that inherits from \code{CAB.model} with slots for each of the functions that are associated with that model.
@@ -15,10 +18,9 @@
 #'     \subsection{Slots}{
 #'         \describe{
 #'             \item{\code{organism}}{An \code{environment} that contains all the parameters needed for the model.}
-#'             \item{\code{derived_params}}{An \code{expression} for calculating parameters that require values from the \code{organism} slot.
+#'             \item{\code{derived_params}}{An \code{expression} for calculating parameters that require values from the \code{organism} slot.}
 #'             \item{\code{event_record}}{A \code{event_record} for storing data.}
-#'             }
-#'         }
+#'          }
 #'     }
 #' }
 #'

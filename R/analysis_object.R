@@ -1,8 +1,5 @@
 #### Data analysis object ####
 
-#' @include sim_input.R
-NULL
-
 #' \code{CAB} Analysis Objects
 #'
 #' \code{analysis_object} are objects for data analysis.
