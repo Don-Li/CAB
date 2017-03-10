@@ -91,13 +91,6 @@
 #' }
 #'
 #'
-#' @rdname class.event_record
-#' @aliases event_record
-#'
-#' @export make.event_record
-#' @exportMethod show
-#' @exportMethod assign_event
-#'
 #'
 #'
 #' @examples
@@ -123,16 +116,27 @@
 #'
 #' # Reset "my_record"
 #' reset_event( my_record )
+#'
+#' @rdname class.event_record
+#' @aliases event_record
+#'
+#' @export make.event_record
+#' @exportMethod show
+#' @exportMethod assign_event
+#' @exportMethod reset_event_helper
+#' @exportMethod get_event
+#' @exportMethod trim_event_record
 
-
-class.event_record = setClass( "event_record", slots = list( events = "environment", variables = "character" ) )
+class.event_record = setClass( "event_record", slots = list( events = "environment", variables = "character", lengths = "numeric" ) )
 
 make.event_record = function( variables, len ){
     if ( length(len) > length(variables ) ) stop( "the length of 'len' is longer than the number of variables" )
     dummy_list = mapply( function(x,y) rep(NaN, x), y = variables, x = len, SIMPLIFY = F )
     dummy_list$counts = as.list( rep(0, length(variables) ) )
     names( dummy_list$counts ) = variables
-    new( "event_record", events = list2env( dummy_list, parent = emptyenv() ), variables = variables )
+    length_vector = len
+    names( length_vector ) = variables
+    new( "event_record", events = list2env( dummy_list, parent = emptyenv() ), variables = variables, lengths = length_vector )
 }
 
 setMethod( "show", signature( object = "event_record" ),
@@ -150,24 +154,35 @@ event_record_show_helper = function(x, object ){
 
 setGeneric( "assign_event", function( event_record, variable, index = NULL, values = NULL, counts = NULL ) standardGeneric( "assign_event" ) )
 
-setMethod( "assign_event", signature( event_record = "event_record" , variable = "character" ),
+setMethod( "assign_event", signature( event_record = "event_record" , variable = "character", index = "numeric", values = "numeric" ,counts = "numeric" ),
     function( event_record, variable, index, values, counts ){
         if ( length( variable ) > 1 ) stop( "Only change one variable at a time" )
         assign_event_helper( event_record, variable, index, values, counts )
     } )
 
 
-assign_event_helper = function( event_record, variable, index, values = NULL,counts = NULL ){
-    if ( !is.null( values ) ){
-        event_record@events[[ variable ]][index] <- values
+setMethod( "assign_event", signature( event_record = "event_record", variable = "character", index = "missing", values = "missing", counts = "numeric" ),
+    function( event_record, variable, counts ){
+        assign_event_helper_value_missing( event_record, variable, counts )
     }
-    if ( !is.null( counts ) ){
-        event_record@events$counts[[variable]] <- counts
-    }
+)
+
+assign_event_helper_value_missing = function( event_record, variable, counts ){
+    event_record@events$counts[[variable]] <- counts
 }
 
-setMethod( "assign_event", signature( event_record = "event_record", variable = "character", index = "character" ),
-    function( event_record, variable, index, values, counts ){
+setMethod( "assign_event", signature( event_record = "event_record", variable = "character", index = "numeric", values = "numeric" ),
+    function( event_record, variable, index, values ){
+        assign_event_helper_counts_missing( event_record, variable, index, counts )
+    }
+)
+
+assign_event_helper_counts_missing = function( event_record, variable, index, counts ){
+    event_record@events[[variable]][index] <- values
+}
+
+setMethod( "assign_event", signature( event_record = "event_record", variable = "character", index = "character", values = "numeric" ),
+    function( event_record, variable, index, values ){
         if ( index != "next" ) stop( "if 'index' is character, it must be 'next'" )
         next_event_helper( event_record, variable, values )
     } )
@@ -190,9 +205,9 @@ setMethod( "reset_event", signature( event_record = "event_record" ),
 
 reset_event_helper = function( event_record ){
     variables = event_record@variables
-    dims = length( event_record@events[[ variables[1] ]] )
+    dims = event_record@lengths
     lapply( variables, function(x){
-        event_record@events[[x]] = rep( NaN, dims )
+        event_record@events[[x]] = rep( NaN, dims[x] )
         event_record@events$counts[x] = 0
     } )
 }
@@ -214,6 +229,20 @@ get_event_helper = function( event_record, variable, index, counts ){
     }
 }
 
+setGeneric( "trim_event_record", function( event_record ) standardGeneric( "trim_event_record" ) )
 
+setMethod( "trim_event_record", signature( event_record = "event_record" ),
+    function( event_record ){
+        trim_event_record_helper( event_record )
+    }
+)
+
+trim_event_record_helper = function( event_record ){
+    variable_counts = event_record@events$counts
+    variables = event_record@variables
+    for ( i in variables ){
+        event_record@events[[ i ]] <- event_record@events[[ i ]][1:variable_counts[[i]]]
+    }
+}
 
 

@@ -5,7 +5,11 @@
 \alias{CAB.model-class}
 \alias{class.CAB.model}
 \alias{model_constructor}
+\alias{set_derived}
 \title{Construction of models in CAB}
+\usage{
+set_derived(model, derived_params)
+}
 \description{
 The Computational Analysis of Behaviour (CAB) software package is a general purpose software package for implementing computational models of behaviour. A model is implemented in the \code{CAB.model} class. The \code{CAB.model} is a parent class that contains a slot \code{organism} that contains all the parameters that are necessary for the functions that are required to operate the model. In order to create a model, create a parent class that inherits from \code{CAB.model} with slots for each of the functions that are associated with that model.
 }
@@ -22,8 +26,10 @@ For constructing a model:
     \subsection{Slots}{
         \describe{
             \item{\code{organism}}{An \code{environment} that contains all the parameters needed for the model.}
-            \item{\code{derived_params}}{An \code{expression} for calculating parameters that require values from the \code{organism} slot.}
+            \item{\code{derived_params}}{An \code{expression} for calculating parameters that require values from the \code{organism} slot.
+            \item{\code{event_record}}{A \code{event_record} for storing data.}
             }
+        }
     }
 }
 }
@@ -41,9 +47,8 @@ For constructing a model:
         }
     }
     \subsection{Value}{
-        The \code{model_constructor} returns a function with the arguments \code{organism_params}, \code{...}, and \code{derived_params}. \code{organism_params} takes a list with the names of each element specifying the model parameters. \code{...} takes named arguments with the names of the arguments being \code{slot_names} in the constructor function and the argument values being functions for the associated model sub-function. \code{derived_params} takes an expression that is used to calculate values using variables in \code{organism_params}, defaults to \code{NULL} if no derived parameters are needed. See example for notes on writing the \code{expression} for \code{derived_params}
+        The \code{model_constructor} returns a function with the arguments \code{organism_params}, \code{...}, \code{derived_params}, and \code{event_record}. \code{organism_params} takes a list with the names of each element specifying the model parameters. \code{...} takes named arguments with the names of the arguments being \code{slot_names} in the constructor function and the argument values being functions for the associated model sub-function. \code{derived_params} takes an expression that is used to calculate values using variables in \code{organism_params}, defaults to \code{NULL} if no derived parameters are needed. See example for notes on writing the \code{expression} for \code{derived_params}. \code{event_record} takes an object of class \code{event_record}.
     }
-
 }
 }
 \examples{
@@ -71,5 +76,8 @@ indifference = expression( indifference <- plus - minus )
 good_times_model = make_good_times( organism_params = organism_parameters, plus_happy = plus_happy_fx, minus_happy = minus_happy_fx, derived_params = indifference )
 good_times_model
 
+}
+\seealso{
+\code{\link{event_record}}.
 }
 

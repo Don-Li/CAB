@@ -127,5 +127,6 @@ get_event( event_record = my_record, variable = "resp_time", counts = T )
 
 # Reset "my_record"
 reset_event( my_record )
+
 }
 
