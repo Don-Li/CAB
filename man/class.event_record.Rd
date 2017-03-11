@@ -2,27 +2,53 @@
 % Please edit documentation in R/event_record.R
 \docType{class}
 \name{event_record-class}
+\alias{assign_event}
 \alias{class.event_record}
 \alias{event_record}
 \alias{event_record-class}
+\alias{get_event}
+\alias{make.formal_event_record}
+\alias{reset_event}
+\alias{show,formal_event_record-method}
+\alias{show,ragged_event_record-method}
+\alias{trim_event_record}
 \title{\code{event_record} class}
+\usage{
+make.formal_event_record(variables, len)
+
+\S4method{show}{ragged_event_record}(object)
+
+\S4method{show}{formal_event_record}(object)
+
+assign_event(event_record, variable, index = NULL, values = NULL,
+  counts = NULL)
+
+reset_event(event_record)
+
+get_event(event_record, variable, index = NULL, counts = F)
+
+trim_event_record(event_record)
+}
 \description{
-When a simulation is run in the \code{CAB} package, events, such as the time of a response, can be stored in a \code{event_record} object.
+When a simulation is run in the \code{CAB} package, events, such as the time of a response, can be stored in an \code{event_record} object. The \code{event_record} is a virtual class with two children classes: the \code{ragged_event_record} class and the \code{formal_event_record} class.
 }
 \details{
+The \code{ragged_event_record} class holds the data in a list where each element in the list is a vector of response times for a given type of event. This is called "ragged" because it is a ragged matrix. In contrast, the \code{formal_event_record} is an \eqn{ n x 2 } matrix, where the first column is a vector of times and the second column is a vector of events at the corresponding times.
+
 The construction of an \code{event_record} object requires the specification of the names of the events to be recorded. An \code{event_record} object has two slots.
 
 The first slot, called \code{events} is an environment that contains two lists. The first list is a list of vectors, where each vector contains the times of the associated events. For example, if we wished to record the response times and the reinforcement times, this could be a list containing a vector named "response_times" and a vector named "reinforcement_times". The second list is a list of counts for how many of each type of recorded event has occurred. It follows then instead of the typical time-event format for data, we have the times of each event with different vectors for each event.
 
 The second slot, \code{variables} is a vector that contains the names of the variables to be recorded. This is just for easy access.
 }
-\section{The \code{event_record} class}{
+\section{The \code{ragged_event_record} class}{
 {
-    The \code{event_record} can be used for recording events that occur during a simulation.
+    The \code{ragged_event_record} can be used for recording events that occur during a simulation. This is preferred because it is typically faster to calculate descriptive statistics with the \code{ragged_event_record} than with a \code{formal_event_record}.
     \subsection{Slots}{
         \describe{
-            \item{\code{events}}{An environment that contains two lists. One is a nested list and contains vectors to record the times of each specified type of event, and the other records the counts for these events.}
+            \item{\code{events}}{An environment that contains \eqn{n+1} elements, where \eqn{n} is the number of variables that are to be recorded. One element in the \code{environment} will be \code{counts}, which is a list where each element contains the number of events of each type. The other elements are vectors that store the time at which the events associated with a specific variable occurred.}
             \item{\code{variables}}{A character vector containing the types of events to be recorded.}
+            \item{\code{lengths}}{A named vector containing the base lengths of the vectors for containing the events associated with each variable.}
         }
     }
 }
@@ -39,9 +65,9 @@ The second slot, \code{variables} is a vector that contains the names of the var
             \item{\code{variables}}{A character vector containing the types of events to be recorded.}
             \item{\code{len}}{A numeric vector containing the length of the vectors for storing each variable type. \code{len} is recycled if the length of \code{len} is smaller than the number of variables specified.}
         }
+    }
     \subsection{Value}{
         Returns a \code{event_record} object.
-    }
     }
 }
 }
@@ -60,9 +86,9 @@ The second slot, \code{variables} is a vector that contains the names of the var
             \item{\code{values}}{Values of the new events. Defaults to \code{NULL} and no values are changed.}
             \item{\code{counts}}{New counts for the variable events being changed.}
         }
+    }
     \subsection{Value}{
         Modifies the \code{event_record} object in place.
-    }
     }
 }
 }
@@ -98,16 +124,16 @@ The second slot, \code{variables} is a vector that contains the names of the var
         \describe{
             \item{\code{event_record}}{A object of class \code{event_record}.}
         }
+     }
     \subsection{Value}{
         Modifies the \code{event_record} object in place. All values for each variable are reset to \code{NaN}.
-    }
     }
 }
 }
 \examples{
 # Create an "event_record" for storing the variables: "resp_time" and "rft_time"
 # Record a maximum of 100 of each type of event
-my_record = make.event_record( variables = c( "resp_time", "rft_time" ), len = 100 )
+my_record = make.ragged_event_record( variables = c( "resp_time", "rft_time" ), len = 100 )
 my_record
 
 # Imagine an organism that emits responses every 1 time unit. Suppose that the experiment ran for 90 seconds
@@ -128,5 +154,8 @@ get_event( event_record = my_record, variable = "resp_time", counts = T )
 # Reset "my_record"
 reset_event( my_record )
 
+}
+\seealso{
+\code{\link{convert_event_record}}
 }
 

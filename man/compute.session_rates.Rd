@@ -3,31 +3,63 @@
 \docType{methods}
 \name{compute.session_rates}
 \alias{compute.session_rates}
-\alias{compute.session_rates,analysis_object,list-method}
-\alias{compute.session_rates,dataset,list-method}
-\alias{compute.session_rates,simulation_analysis_object,list-method}
+\alias{compute.session_rates,dataset,list,ANY,ANY-method}
+\alias{compute.session_rates,formal_event_record,list,character,missing-method}
+\alias{compute.session_rates,formal_event_record,list,character,numeric-method}
+\alias{compute.session_rates,formal_event_record,list,missing,missing-method}
+\alias{compute.session_rates,formal_event_record,list,missing,numeric-method}
+\alias{compute.session_rates,ragged_event_record,list,character,missing-method}
+\alias{compute.session_rates,ragged_event_record,list,character,numeric-method}
+\alias{compute.session_rates,ragged_event_record,list,missing,missing-method}
+\alias{compute.session_rates,ragged_event_record,list,missing,numeric-method}
 \title{Compute session rates}
 \usage{
-compute.session_rates(data, rft_duration, dims = NULL,
+compute.session_rates(data, event_offsets, dims = NULL,
   session_duration = NULL)
 
-\S4method{compute.session_rates}{analysis_object,list}(data, rft_duration,
-  dims = NULL, session_duration = NULL)
 
-\S4method{compute.session_rates}{simulation_analysis_object,list}(data,
-  rft_duration, dims = NULL, session_duration = NULL)
+  \S4method{compute.session_rates}{formal_event_record,list,character,numeric}(data,
+  event_offsets, dims = NULL, session_duration = NULL)
 
-\S4method{compute.session_rates}{dataset,list}(data, rft_duration,
+
+  \S4method{compute.session_rates}{formal_event_record,list,missing,numeric}(data,
+  event_offsets, session_duration)
+
+
+  \S4method{compute.session_rates}{formal_event_record,list,missing,missing}(data,
+  event_offsets)
+
+
+  \S4method{compute.session_rates}{formal_event_record,list,character,missing}(data,
+  event_offsets, dims = NULL, session_duration = NULL)
+
+
+  \S4method{compute.session_rates}{ragged_event_record,list,character,numeric}(data,
+  event_offsets, dims = NULL, session_duration = NULL)
+
+
+  \S4method{compute.session_rates}{ragged_event_record,list,missing,numeric}(data,
+  event_offsets, session_duration)
+
+
+  \S4method{compute.session_rates}{ragged_event_record,list,character,missing}(data,
+  event_offsets, dims)
+
+
+  \S4method{compute.session_rates}{ragged_event_record,list,missing,missing}(data,
+  event_offsets)
+
+\S4method{compute.session_rates}{dataset,list,ANY,ANY}(data, event_offsets,
   dims = NULL, session_duration = NULL)
 }
 \arguments{
 \item{data}{Either an object of class \code{simulation_analysis_object}, \code{analysis_object}, or \code{dataset}.}
 
-\item{rft_duration}{A list with each element being a numeric specifying the reinforcemnt duration and the name of each element corresponding to the reinforcement event.}
-
 \item{dims}{A character vector of variable names to calculate the rates of. Defaults to \code{NULL}. If \code{NULL}, the rates of all the events in the \code{data} argument are computed.}
 
 \item{session_duration}{A numeric value specifying the duration of the session over which the rates are calculated. Defaults to \code{NULL}. If \code{NULL}, the latest time associated with an event is taken as the session duration. See details.}
+
+\item{rft_duration}{A list with each element being a numeric specifying the reinforcemnt duration and the name of each element corresponding to the reinforcement event.}
 }
 \description{
 \code{compute.session_rates} is a method for calculating the within-session rate of some variable. Currently, methods are defined for the classes \code{analysis_object} and its child class \code{simulation_analysis_object}.

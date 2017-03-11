@@ -6,8 +6,11 @@
 \alias{class.CAB.model}
 \alias{model_constructor}
 \alias{set_derived}
+\alias{show,CAB.model-method}
 \title{Construction of models in CAB}
 \usage{
+\S4method{show}{CAB.model}(object)
+
 set_derived(model, derived_params)
 }
 \description{

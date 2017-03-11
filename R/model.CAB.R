@@ -71,7 +71,6 @@ NULL
 #' @seealso \code{\link{event_record}}.
 #'
 #' @export model_constructor
-#' @exportMethod show
 
 class.CAB.model = setClass( "CAB.model", slots = list( organism = "environment", derived_params = "expression", event_record = "event_record") )
 
@@ -97,6 +96,9 @@ model_constructor = function( model_name, slot_names ){
         do.call( new, dot_args )
     }
 }
+
+#' @rdname class.CAB.model
+#' @exportMethod show
 
 setMethod( "show", signature( object = "CAB.model" ), function( object ){
     generic_show = getMethod( show, signature = "ANY" )

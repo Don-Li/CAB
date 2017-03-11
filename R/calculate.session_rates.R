@@ -1,6 +1,6 @@
 #### Compute session rates ####
 
-#' @include analysis_object.R dataset.R
+#' @include analysis_object.R dataset.R event_record.R
 NULL
 
 #' Compute session rates
@@ -37,69 +37,132 @@ NULL
 #' @rdname compute.session_rates
 #' @exportMethod compute.session_rates
 
-setGeneric( "compute.session_rates", function( data, rft_duration, dims = NULL, session_duration = NULL ) standardGeneric( "compute.session_rates" ) )
+setGeneric( "compute.session_rates", function( data, event_offsets, dims = NULL, session_duration = NULL ) standardGeneric( "compute.session_rates" ) )
 
-event_time_compute.session_rate = function( event_time_data, rft_duration, session_duration = NULL, dims = NULL){
-    counts = table( event_time_data$event )
-    nrows = nrow( event_time_data )
-    rft_time = drop( ( sum( counts[ names(rft_duration) ] ) ) %*% unlist( rft_duration, use.names = F ) )
-    if ( event_time_data[nrows,]$event == names( rft_duration ) ){
-        rft_time = rft_time - unlist( rft_duration, use.names = F )
-    }
-    if ( is.null(session_duration) ){
-        session_duration = event_time_data[nrows,]$time
-    }
-    session_time = session_duration - rft_time
-
-    if ( is.null( dims ) ) dims = names( counts )
-    x = as.numeric( (counts / session_time)[dims] )
-    names( x ) = dims
-    x
+ragged_event_record.session_rate_helper = function( ragged_event_record, event_offset, session_duration, dims ){
+    offset_times = vapply( names( event_offset ), function(x){
+        length( ragged_event_record@events[[ x ]] < session_duration ) * event_offset[[ x ]]
+    }, FUN.VALUE = 1 )
+    session_duration_post_offsets = session_duration + sum(offset_times)
+    vapply( dims, function( x ) {
+        length( ragged_event_record@events[[x]] ) / session_duration_post_offsets
+    }, FUN.VALUE = 1 )
 }
 
-analysis_object_compute.session_rate = function( simulation_analysis_object, rft_duration, session_duration = NULL, dims = NULL ){
-    if ( is.null( dims ) ) dims = names( simulation_analysis_object )
-    if ( is.null(session_duration) ){
-        search_dims = unique( c( names( rft_duration ), dims ) )
-        session_duration = max( vapply( simulation_analysis_object[ search_dims ] , max, 1 ) )
-    }
-    rfts = vapply( simulation_analysis_object[ names(rft_duration) ], function( x ) length(x < session_duration ), 1 )
-    rft_time = drop( rfts %*% unlist( rft_duration, use.names = F ) )
-    session_duration = session_duration - rft_time
-    lengths( simulation_analysis_object[ dims ] ) / session_duration
+formal_event_record.session_rate_helper = function( formal_event_record, event_offset, session_duration, dims ){
+    counts = formal_event_record@events[ event %in% dims, length(time), by = event ]
+    event_offset_time = counts[ event %in% names( event_offset ), V1 ]*event_offset[[ names( event_offset ) ]]
+    x = counts[ , V1 / ( session_duration + event_offset_time ), by = event ]
+    y = x[,V1]
+    names(y) = x[,event]
+    dim_order = match( dims, names(y) )
+    y[dim_order]
 }
+
+
+
+
+
+
 
 #' @rdname compute.session_rates
 #' @exportMethod compute.session_rates
 
-setMethod( "compute.session_rates", signature( data = "analysis_object", rft_duration = "list" ),
-    function( data, rft_duration, dims, session_duration){
-        if ( !is.null(session_duration) && !is.numeric(session_duration) ) stop( "'session_duration' must be numeric" )
-        if ( !is.null(dims) && !is.character(dims ) ) stop("'dimension' must be a character vector")
-        event_time_compute.session_rate( data@analysis_object, rft_duration, session_duration, dims )
+setMethod( "compute.session_rates", signature( data = "formal_event_record", event_offsets = "list", dims = "character", session_duration = "numeric" ),
+    function( data, event_offsets, dims, session_duration ){
+        formal_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
     }
 )
 
 #' @rdname compute.session_rates
 #' @exportMethod compute.session_rates
 
-setMethod( "compute.session_rates", signature( data = "simulation_analysis_object", rft_duration = "list" ),
-    function( data, rft_duration, dims, session_duration){
-        if ( !is.null(session_duration) && !is.numeric(session_duration) ) stop( "'session_duration' must be numeric" )
-        if ( !is.null(dims) && !is.character(dims ) ) stop("'dimension' must be a character vector")
-        analysis_object_compute.session_rate( data@input_list, rft_duration, session_duration, dims )
+setMethod( "compute.session_rates", signature( data = "formal_event_record", event_offsets = "list", dims = "missing", session_duration = "numeric" ),
+    function( data, event_offsets, session_duration ){
+        print(1)
+        dims = data@variables
+        formal_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
     }
 )
 
 #' @rdname compute.session_rates
 #' @exportMethod compute.session_rates
 
-setMethod( "compute.session_rates", signature( data = "dataset", rft_duration = "list" ),
-    function( data, rft_duration, dims, session_duration ){
+setMethod( "compute.session_rates", signature( data = "formal_event_record", event_offsets = "list", dims = "missing", session_duration = "missing" ),
+    function( data, event_offsets ){
+        dims = data@variables
+        session_duration = data@events[, max(time)]
+        formal_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
+
+    }
+)
+
+#' @rdname compute.session_rates
+#' @exportMethod compute.session_rates
+
+setMethod( "compute.session_rates", signature( data = "formal_event_record", event_offsets = "list", dims = "character", session_duration = "missing" ),
+    function( data, event_offsets, dims, session_duration ){
+        session_duration = data@events[, max(time)]
+        formal_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
+    }
+)
+
+#' @rdname compute.session_rates
+#' @exportMethod compute.session_rates
+
+setMethod( "compute.session_rates", signature( data = "ragged_event_record", event_offsets = "list", dims = "character", session_duration = "numeric" ),
+    function( data, event_offsets, dims, session_duration ){
+        ragged_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
+    }
+)
+
+#' @rdname compute.session_rates
+#' @exportMethod compute.session_rates
+
+setMethod( "compute.session_rates", signature( data = "ragged_event_record", event_offsets = "list", dims = "missing", session_duration = "numeric" ),
+    function( data, event_offsets, session_duration ){
+        dims = data@variables
+        ragged_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
+    }
+)
+
+#' @rdname compute.session_rates
+#' @exportMethod compute.session_rates
+
+setMethod( "compute.session_rates", signature( data = "ragged_event_record", event_offsets = "list", dims = "character", session_duration = "missing" ),
+    function( data, event_offsets, dims ){
+        session_duration = max( vapply( data@variables,
+            function( x ){
+                tail( data@events[[x]], 1 )
+            }, FUN.VALUE = 1 ) )
+        ragged_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
+    }
+)
+
+#' @rdname compute.session_rates
+#' @exportMethod compute.session_rates
+
+setMethod( "compute.session_rates", signature( data = "ragged_event_record", event_offsets = "list", dims = "missing", session_duration = "missing" ),
+    function( data, event_offsets ){
+        session_duration = max( vapply( data@variables,
+            function( x ){
+                tail( data@events[[x]], 1 )
+            }, FUN.VALUE = 1 ) )
+        dims = data@variables
+        ragged_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
+    }
+)
+
+
+#' @rdname compute.session_rates
+#' @exportMethod compute.session_rates
+
+setMethod( "compute.session_rates", signature( data = "dataset", event_offsets = "list" ),
+    function( data, event_offsets, dims, session_duration ){
         if ( !is.null(session_duration) && !is.numeric(session_duration) ) stop( "'session_duration' must be numeric" )
         if ( !is.null(dims) && !is.character(dims ) ) stop("'dimension' must be a character vector")
         expt_data = data@analysis_objects
-        rates = lapply( expt_data, compute.session_rates, rft_duration = rft_duration, dims = dims, session_duration = session_duration )
+        rates = lapply( expt_data, compute.session_rates, event_offsets = event_offsets, dims = dims, session_duration = session_duration )
         dim_names = names( rates[[1]] )
         rates = data.table::transpose( rates )
         attr( rates, "class" ) = "data.frame"
