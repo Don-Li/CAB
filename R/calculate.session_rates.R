@@ -43,6 +43,7 @@ ragged_event_record.session_rate_helper = function( ragged_event_record, event_o
     offset_times = vapply( names( event_offset ), function(x){
         length( ragged_event_record@events[[ x ]] < session_duration ) * event_offset[[ x ]]
     }, FUN.VALUE = 1 )
+
     session_duration_post_offsets = session_duration + sum(offset_times)
     vapply( dims, function( x ) {
         length( ragged_event_record@events[[x]] ) / session_duration_post_offsets
@@ -50,20 +51,22 @@ ragged_event_record.session_rate_helper = function( ragged_event_record, event_o
 }
 
 formal_event_record.session_rate_helper = function( formal_event_record, event_offset, session_duration, dims ){
-    counts = formal_event_record@events[ event %in% dims, length(time), by = event ]
-    event_offset_time = counts[ event %in% names( event_offset ), V1 ]*event_offset[[ names( event_offset ) ]]
-    x = counts[ , V1 / ( session_duration + event_offset_time ), by = event ]
-    y = x[,V1]
-    names(y) = x[,event]
-    dim_order = match( dims, names(y) )
-    y[dim_order]
+    event = formal_event_record@events$event
+    time = formal_event_record@events$time
+
+    counts = vapply( unique( c(dims, names(event_offset) ) ), function(x) sum(event==x) ,FUN.VALUE = 1 )
+
+    offset_at_end = names( event_offset )[which( names( event_offset ) %in% tail( event, 1 ) )]
+    offset_counts = counts[ names(counts) %in% names( event_offset ) ]
+
+    if ( length( offset_at_end ) == 1 ){
+        offset_counts[ offset_counts$event == offset_at_end, "n" ] = offset_counts[ offset_counts$event == offset_at_end, "n" ] - 1
+    }
+
+    offset_time = session_duration + sum( empty_counts$n * unlist( event_offset[ empty_counts$event ], use.names = F ) )
+
+    counts[dims] / offset_time
 }
-
-
-
-
-
-
 
 #' @rdname compute.session_rates
 #' @exportMethod compute.session_rates

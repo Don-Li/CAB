@@ -1,6 +1,6 @@
 #### Calulating the time elapsed between events
 
-#' @include analysis_object.R dataset.R
+#' @include analysis_object.R dataset.R event_record.R RcppExports.R
 NULL
 
 #' Calulating the time elapsed between events in a simulation
@@ -43,22 +43,40 @@ NULL
 #' @exportMethod compute.IxyI
 
 #Skips over specified intervening events
-compute.I_xx_I.analysis_object = function( data, x_event, break_event, x_offset = 0 ){
-    data$time[ data$event %in% break_event ] = NaN
+compute.I_xx_I.formal_event_record = function( data, x_event, break_event, x_offset = 0 ){
+    times = data@events$time
+    events = data@events$event
+    times[ events %in% break_event ] = NaN
 
-    e = c( x_event, break_event )
-    x = diff( data$time[ data$event %in% e ] )
+    x = CAB_cpp_diff( times[ events %in% c(break_event, x_event) ] )
+    x = x[ !is.nan(x) ]
+
+    if ( length(x) <= 1 ) return(Inf)
+
+    if ( x_offset != 0 ) x + x_offset
+    else x
+}
+
+#Skips over all intervening events
+compute.I_xx_I.all_break.formal_event_record = function( data, x_event, x_offset = 0 ){
+    times = data@events$time
+    events = data@events$event
+    times[ events != x_event ] = NaN
+
+    x = CAB_cpp_diff( times )
+    x = x[ !is.nan(x) ]
+
     if ( length(x) == 0 ) return(Inf)
 
-    if ( NaN %in% x ) x = x[ !is.nan(x) ]
     if ( x_offset != 0 ) x + x_offset
     else x
 }
 
 #Does not skip over intervening events
-compute.I_xx_I.all_break.analysis_object = function( data, x_event, x_offset = 0 ){
-    non_event = which( ! data$event %in% x_event )
-    x = diff( data$time )[ -c(non_event, non_event-1 )]
+compute.I_xx_I.no_break.formal_event_record2 = function( data, x_event, x_offset = 0 ){
+    times = data@events$time[ data@events$event == x_event ]
+    x = CAB_cpp_diff( times )
+
     if ( length(x) == 0 ) return(Inf)
 
     if ( x_offset != 0 ) x + x_offset
@@ -66,31 +84,24 @@ compute.I_xx_I.all_break.analysis_object = function( data, x_event, x_offset = 0
 }
 
 #Skips over all intervening events
-compute.I_xx_I.no_break.analysis_object = function( data, x_event, x_offset = 0 ){
-    x = diff( data$time[ data$event == x_event ] )
-    if ( length(x) == 0 ) return(Inf)
-
-    if ( x_offset != 0 ) x + x_offset
-    else x
-}
-
-#Skips over all intervening events
-compute.I_xy_I.all_break.analysis_object = function( data, x_event, y_event, x_offset = 0 ){
-    x_event_indices = which( data$event %in% x_event )
-    y_event_indices = which( data$event %in% y_event )
+compute.I_xy_I.all_break.formal_event_record = function( data, x_event, y_event, x_offset = 0 ){
+    x_event_indices = which( data@events$event %in% x_event )
+    y_event_indices = which( data@events$event %in% y_event )
     y_post = y_event_indices[ ( y_event_indices %in% (x_event_indices + 1) ) ]
     new_x_indices = x_event_indices[ (x_event_indices + 1) %in% y_event_indices ]
-    x = data$time[ y_post ] - data$time[ new_x_indices ]
+    x = data@events$time[ y_post ] - data@events$time[ new_x_indices ]
+
     if ( length(x) == 0 ) return(Inf)
 
     if ( x_offset != 0 ) x + x_offset
     else x
 }
+
 
 #Does not skip over intervening events
 compute.I_xy_I.no_break.analysis_object = function( data, x_event, y_event, x_offset = 0 ){
-    x_event_times = data$time[data$event %in% x_event]
-    y_event_times = data$time[ data$event %in% y_event ]
+    x_event_times = data@events$time[ data@events$event %in% x_event]
+    y_event_times = data@events$time[ data@events$event %in% y_event ]
     interval_vector = findInterval( x_event_times, y_event_times )
     next_y = y_event_times[ interval_vector + 1 ]
     x = next_y - x_event_times
@@ -102,52 +113,37 @@ compute.I_xy_I.no_break.analysis_object = function( data, x_event, y_event, x_of
 }
 
 #Skips over selected intervening events
-compute.I_xy_I.analysis_object = function( data, x_event, y_event, break_event, x_offset = 0 ){
-    break_event_times = data$time[ which(data$event %in% break_event) ]
+#Use CAB_cpp_compute__I_xy_I__formal_event_record( data, x_event, y_event, break_event )
 
-    x_event_times = data$time[data$event %in% x_event]
-    y_event_times = data$time[ data$event %in% y_event ]
-    interval_vector = findInterval( x_event_times, y_event_times )
-    j = findInterval( break_event_times, y_event_times )
+setGeneric( "compute.IxyI", function( data, x_event, x_offset = 0 , y_event, break_event ) standardGeneric( "compute.IxyI" ) )
 
-    y_event_times[j+1] = NaN
+setMethod( "compute.IxyI", signature( data = "formal_event_record", y_event = "missing", break_event = "character" ),
+    function( data, x_event, x_offset, break_event ){
+        if ( break_event == "ALL" ) compute.I_xx_I.all_break.formal_event_record( data, x_event, x_offset )
+        else compute.I_xx_I.formal_event_record( data, x_event, break_event, x_offset )
+    }
+)
 
-    next_y = y_event_times[ interval_vector + 1 ]
-    x = next_y - x_event_times
-    if ( length(x) == 0 ) return(Inf)
+setMethod( "compute.IxyI", signature( data = "formal_event_record", y_event = "missing", break_event = "missing" ),
+    function( data, x_event, x_offset ){
+        compute.I_xx_I.no_break.formal_event_record( data, x_event, x_offset )
+    }
+)
 
-    if ( NA %in% x ) x = x[ !is.na(x) ]
-    if ( x_offset != 0 ) x + x_offset
-    else x
-}
-
-setGeneric( "compute.IxyI", function( data, x_event, x_offset = 0 , y_event = "NONE", break_event = "ALL" ) standardGeneric( "compute.IxyI" ) )
-
-setMethod( "compute.IxyI", signature( data = "analysis_object" ),
-    function( data, x_event, x_offset , y_event, break_event ){
-        x = data@analysis_object
-        if ( y_event == "NONE" ){
-            if ( break_event == "NONE" ){
-                return( compute.I_xx_I.no_break.analysis_object( x, x_event, x_offset ) )
-            }
-            if ( break_event == "ALL" ){
-                return( compute.I_xx_I.all_break.analysis_object( x, x_event, x_offset ) )
-            }
-            else {
-                return( compute.I_xx_I.analysis_object( x, x_event, break_event, x_offset ) )
-            }
+setMethod( "compute.IxyI", signature( data = "formal_event_record", y_event = "character", break_event = "character" ),
+    function( data, x_event, x_offset, y_event, break_event ){
+        if ( break_event == "ALL" ) compute.I_xy_I.all_break.formal_event_record( data, x_event, y_event, x_offset )
+        else {
+            IxyI = CAB_cpp_compute__I_xy_I__formal_event_record( data@events, x_event, y_event, break_event )
+            if ( length( IxyI ) == 0 ) return( Inf )
+            if ( x_offset != 0 ) IxyI + x_offset
         }
-        if ( y_event != "NONE" ){
-            if ( break_event == "NONE" ){
-                return( compute.I_xy_I.no_break.analysis_object( x, x_event, y_event, x_offset ) )
-            }
-            if ( break_event == "ALL" ){
-                return( compute.I_xy_I.all_break.analysis_object( x, x_event, y_event, x_offset ) )
-            }
-            else{
-                return( compute.I_xy_I.analysis_object( x, x_event, y_event, break_event , x_offset ) )
-            }
-        }
+    }
+)
+
+setMethod( "compute.IxyI", signature( data = "formal_event_record", y_event = "character", break_event = "missing" ),
+    function( data, x_event, x_offset, y_event ){
+    compute.I_xy_I.no_break.formal_event_record( data, x_event, y_event, x_offset )
     }
 )
 
@@ -155,14 +151,19 @@ setMethod( "compute.IxyI", signature( data = "analysis_object" ),
 #' @exportMethod compute.IxyI
 
 #Skips over specified intervening events
-compute.I_xx_I.sim_analysis_object = function( data, x_event, break_event, x_offset = 0 ){
-    break_event_times = unlist( data[ break_event ], use.names = F )
-    x_event_times = data[[ x_event ]]
-    if ( length( x_event_times ) == 1 ) return( Inf )
-    if ( any( is.nan( break_event_times ) ) ) break_on_x = x_event_times
-    else break_on_x = findInterval( break_event_times, x_event_times )
+compute.I_xx_I.ragged_event_record = function( data, x_event, break_event, x_offset = 0 ){
+    break_event_times = unlist( mget( break_event, mode = "numeric" ,envir = data@events ), use.names = F )
+    x_event_times = data@events[[x_event]]
 
-    x = diff( x_event_times )[ -(break_on_x) ]
+    if ( length( x_event_times ) <= 1 ) return( Inf )
+
+    if ( is.nan( break_event_times ) && length( break_event_times ) == 1 ){
+        x = CAB_cpp_diff( x_event_times )
+    } else{
+        break_on_x = findInterval( break_event_times, x_event_times )
+        x = CAB_cpp_diff( x_event_times )[ - break_on_x ]
+    }
+
     if ( length(x) == 0 ) return( Inf )
 
     if ( x_offset != 0 ) x + x_offset
@@ -170,21 +171,23 @@ compute.I_xx_I.sim_analysis_object = function( data, x_event, break_event, x_off
 }
 
 #Does not skip over intervening events
-compute.I_xx_I.no_break.sim_analysis_object = function( data, x_event, x_offset = 0 ){
-    x = diff( data[[x_event]] )
+compute.I_xx_I.no_break.ragged_event_record = function( data, x_event, x_offset = 0 ){
+    x = CAB_cpp_diff( data@events[[x_event]] )
     if ( length( x ) == 0 ) return( Inf )
     if ( x_offset != 0 ) x + x_offset
     else x
 }
 
 #Skips over all intervening events
-compute.I_xx_I.all_break.sim_analysis_object = function( data, x_event, x_offset = 0){
-    x_event_times = data[[x_event]]
-    if ( length( x_event_times ) == 1 ) return( Inf )
-    non_event = unlist( data[ which( ! names( data ) %in% x_event ) ], use.names = F )
-    non_event_on_x = findInterval( non_event, x_event_times )
+compute.I_xx_I.all_break.ragged_event_record = function( data, x_event, x_offset = 0){
+    x_event_times = data@events[[x_event]]
+    if ( length( x_event_times ) <= 1 ) return( Inf )
+    var_names = data@variables
+    non_x_event_names = var_names[ ! var_names %in% x_event ]
+    non_x_events = unlist( mget( non_x_event_names, mode = "numeric", data@events ), use.names = F )
+    non_event_on_x = findInterval( non_x_events, x_event_times )
 
-    x = diff( x_event_times )[ -non_event_on_x ]
+    x = CAB_cpp_diff( x_event_times )[ -non_event_on_x ]
     if ( length( x ) == 0 ) return( Inf )
 
     if ( x_offset != 0 ) x + x_offset
@@ -192,7 +195,9 @@ compute.I_xx_I.all_break.sim_analysis_object = function( data, x_event, x_offset
 }
 
 #Skips over all intervening events
-compute.I_xy_I.all_break.sim_analysis_object = function( data, x_event, y_event, x_offset = 0 ){
+compute.I_xy_I.all_break.ragged_event_record = function( data, x_event, y_event, x_offset = 0 ){
+    data = mget( data@variables, envir = data@events, mode = "numeric" )
+
     at_x_find_next_y = unique( findInterval( data[[ y_event ]], data[[ x_event ]] ) )
     at_x_find_next_y = at_x_find_next_y[ at_x_find_next_y > 0 ]
     if ( length( at_x_find_next_y ) <= 1 ) return(Inf)
@@ -224,7 +229,9 @@ compute.I_xy_I.all_break.sim_analysis_object = function( data, x_event, y_event,
 }
 
 #Does not skip over intervening events
-compute.I_xy_I.no_break.sim_analysis_object = function( data, x_event, y_event, x_offset = 0 ){
+compute.I_xy_I.no_break.ragged_event_record = function( data, x_event, y_event, x_offset = 0 ){
+    data = mget( data@variables, envir = data@events, mode = "numeric" )
+
     for_x_next_y = unique( findInterval( data[[ y_event ]], data[[ x_event ]] ) )
     for_x_next_y = for_x_next_y[ for_x_next_y > 0 ]
     if ( length( for_x_next_y ) <= 1 ) return( Inf )
@@ -240,7 +247,9 @@ compute.I_xy_I.no_break.sim_analysis_object = function( data, x_event, y_event, 
 }
 
 #Skips over selected intervening events
-compute.I_xy_I.sim_analysis_object = function( data, x_event, y_event, break_event, x_offset = 0 ){
+compute.I_xy_I.ragged_event_record = function( data, x_event, y_event, break_event, x_offset = 0 ){
+    data = mget( data@variables, envir = data@events, mode = "numeric" )
+
     at_x_find_next_y = unique( findInterval( data[[ y_event ]], data[[ x_event ]] ) )
     at_x_find_next_y  = at_x_find_next_y[ at_x_find_next_y > 0 ]
     if ( length( at_x_find_next_y ) <= 1 ) return( Inf )
@@ -265,31 +274,29 @@ compute.I_xy_I.sim_analysis_object = function( data, x_event, y_event, break_eve
     else x[!is.na(x)]
 }
 
-setMethod( "compute.IxyI", signature( data = "simulation_analysis_object" ),
+setMethod( "compute.IxyI", signature( data = "ragged_event_record", y_event = "missing", break_event = "character" ),
+    function( data, x_event, x_offset, break_event ){
+        if ( break_event == "ALL" ) compute.I_xx_I.all_break.ragged_event_record( data, x_event, x_offset )
+        else compute.I_xx_I.ragged_event_record( data, x_event, break_event, x_offset )
+    }
+)
+
+setMethod( "compute.IxyI", signature( data = "ragged_event_record", y_event = "missing", break_event = "missing" ),
+    function( data, x_event, x_offset ){
+        compute.I_xx_I.no_break.ragged_event_record( data, x_event, x_offset )
+    }
+)
+
+setMethod( "compute.IxyI", signature( data = "ragged_event_record", y_event = "character", break_event = "character" ),
     function( data, x_event, x_offset, y_event, break_event ){
-        x = data@input_list
-        if ( y_event == "NONE" ){
-            if ( break_event == "NONE" ){
-                return( compute.I_xx_I.no_break.sim_analysis_object( x, x_event, x_offset ) )
-            }
-            if ( break_event == "ALL" ){
-                return( compute.I_xx_I.all_break.sim_analysis_object( x, x_event, x_offset ) )
-            }
-            else {
-                return( compute.I_xx_I.sim_analysis_object( x, x_event, break_event, x_offset ) )
-            }
-        }
-        if ( y_event != "NONE" ){
-            if ( break_event == "NONE" ){
-                return( compute.I_xy_I.no_break.sim_analysis_object( x, x_event, y_event, x_offset ) )
-            }
-            if ( break_event == "ALL" ){
-                return( compute.I_xy_I.all_break.sim_analysis_object( x, x_event, y_event, x_offset ) )
-            }
-            else{
-                return( compute.I_xy_I.sim_analysis_object( x, x_event, y_event, break_event , x_offset ) )
-            }
-        }
+        if ( break_event == "ALL" ) compute.I_xy_I.all_break.ragged_event_record( data, x_event, y_event, x_offset )
+        else compute.I_xy_I.ragged_event_record( data, x_event, y_event, break_event, x_offset )
+    }
+)
+
+setMethod( "compute.IxyI", signature( data = "ragged_event_record", y_event = "character", break_event = "missing" ),
+    function( data, x_event, x_offset, y_event ){
+    compute.I_xy_I.no_break.ragged_event_record( data, x_event, y_event, x_offset )
     }
 )
 

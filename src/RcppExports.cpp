@@ -18,6 +18,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// CAB_cpp_diff
+NumericVector CAB_cpp_diff(NumericVector x);
+RcppExport SEXP CAB_CAB_cpp_diff(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    __result = Rcpp::wrap(CAB_cpp_diff(x));
+    return __result;
+END_RCPP
+}
 // CAB_cpp_srswo
 NumericMatrix CAB_cpp_srswo(int size, int group_size, int n);
 RcppExport SEXP CAB_CAB_cpp_srswo(SEXP sizeSEXP, SEXP group_sizeSEXP, SEXP nSEXP) {

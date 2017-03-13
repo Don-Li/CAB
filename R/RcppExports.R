@@ -5,6 +5,10 @@ CAB_cpp_bitwise <- function(pop_size, parents, bias) {
     .Call('CAB_CAB_cpp_bitwise', PACKAGE = 'CAB', pop_size, parents, bias)
 }
 
+CAB_cpp_diff <- function(x) {
+    .Call('CAB_CAB_cpp_diff', PACKAGE = 'CAB', x)
+}
+
 CAB_cpp_srswo <- function(size, group_size, n) {
     .Call('CAB_CAB_cpp_srswo', PACKAGE = 'CAB', size, group_size, n)
 }
