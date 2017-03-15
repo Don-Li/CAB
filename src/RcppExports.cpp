@@ -18,6 +18,20 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// CAB_cpp_compute__I_xy_I__formal_event_record
+NumericVector CAB_cpp_compute__I_xy_I__formal_event_record(DataFrame data, CharacterVector x_event, CharacterVector y_event, CharacterVector break_event);
+RcppExport SEXP CAB_CAB_cpp_compute__I_xy_I__formal_event_record(SEXP dataSEXP, SEXP x_eventSEXP, SEXP y_eventSEXP, SEXP break_eventSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type x_event(x_eventSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type y_event(y_eventSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type break_event(break_eventSEXP);
+    __result = Rcpp::wrap(CAB_cpp_compute__I_xy_I__formal_event_record(data, x_event, y_event, break_event));
+    return __result;
+END_RCPP
+}
 // CAB_cpp_diff
 NumericVector CAB_cpp_diff(NumericVector x);
 RcppExport SEXP CAB_CAB_cpp_diff(SEXP xSEXP) {

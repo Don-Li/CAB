@@ -48,7 +48,10 @@ compute.I_xx_I.formal_event_record = function( data, x_event, break_event, x_off
     events = data@events$event
     times[ events %in% break_event ] = NaN
 
-    x = CAB_cpp_diff( times[ events %in% c(break_event, x_event) ] )
+    x1 = times[ events %in% c(break_event, x_event) ]
+    if ( length( x1 ) == 0 ) return(Inf)
+
+    x = CAB_cpp_diff( x1 )
     x = x[ !is.nan(x) ]
 
     if ( length(x) <= 1 ) return(Inf)
@@ -63,6 +66,8 @@ compute.I_xx_I.all_break.formal_event_record = function( data, x_event, x_offset
     events = data@events$event
     times[ events != x_event ] = NaN
 
+    if ( length( times ) == 0 ) return(Inf)
+
     x = CAB_cpp_diff( times )
     x = x[ !is.nan(x) ]
 
@@ -73,8 +78,11 @@ compute.I_xx_I.all_break.formal_event_record = function( data, x_event, x_offset
 }
 
 #Does not skip over intervening events
-compute.I_xx_I.no_break.formal_event_record2 = function( data, x_event, x_offset = 0 ){
+compute.I_xx_I.no_break.formal_event_record = function( data, x_event, x_offset = 0 ){
     times = data@events$time[ data@events$event == x_event ]
+
+    if (length( times ) == 0 ) return(Inf)
+
     x = CAB_cpp_diff( times )
 
     if ( length(x) == 0 ) return(Inf)
@@ -99,7 +107,7 @@ compute.I_xy_I.all_break.formal_event_record = function( data, x_event, y_event,
 
 
 #Does not skip over intervening events
-compute.I_xy_I.no_break.analysis_object = function( data, x_event, y_event, x_offset = 0 ){
+compute.I_xy_I.no_break.formal_event_record = function( data, x_event, y_event, x_offset = 0 ){
     x_event_times = data@events$time[ data@events$event %in% x_event]
     y_event_times = data@events$time[ data@events$event %in% y_event ]
     interval_vector = findInterval( x_event_times, y_event_times )
@@ -143,7 +151,7 @@ setMethod( "compute.IxyI", signature( data = "formal_event_record", y_event = "c
 
 setMethod( "compute.IxyI", signature( data = "formal_event_record", y_event = "character", break_event = "missing" ),
     function( data, x_event, x_offset, y_event ){
-    compute.I_xy_I.no_break.formal_event_record( data, x_event, y_event, x_offset )
+        compute.I_xy_I.no_break.formal_event_record( data, x_event, y_event, x_offset )
     }
 )
 

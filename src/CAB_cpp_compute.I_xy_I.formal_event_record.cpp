@@ -1,7 +1,9 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-// [[Rcpp:export]]
+// Stuff
+
+// [[Rcpp::export]]
 NumericVector CAB_cpp_compute__I_xy_I__formal_event_record( DataFrame data, CharacterVector x_event, CharacterVector y_event, CharacterVector break_event ){
 
     NumericVector times = data["time"];

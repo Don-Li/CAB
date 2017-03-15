@@ -160,7 +160,7 @@ setMethod( "compute.session_rates", signature( data = "ragged_event_record", eve
 #' @rdname compute.session_rates
 #' @exportMethod compute.session_rates
 
-setMethod( "compute.session_rates", signature( data = "dataset", event_offsets = "list" ),
+setMethod( "compute.session_rates", signature( data = "data.table", event_offsets = "list" ),
     function( data, event_offsets, dims, session_duration ){
         if ( !is.null(session_duration) && !is.numeric(session_duration) ) stop( "'session_duration' must be numeric" )
         if ( !is.null(dims) && !is.character(dims ) ) stop("'dimension' must be a character vector")

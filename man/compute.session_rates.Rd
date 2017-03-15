@@ -3,7 +3,7 @@
 \docType{methods}
 \name{compute.session_rates}
 \alias{compute.session_rates}
-\alias{compute.session_rates,dataset,list,ANY,ANY-method}
+\alias{compute.session_rates,data.table,list,ANY,ANY-method}
 \alias{compute.session_rates,formal_event_record,list,character,missing-method}
 \alias{compute.session_rates,formal_event_record,list,character,numeric-method}
 \alias{compute.session_rates,formal_event_record,list,missing,missing-method}
@@ -49,7 +49,7 @@ compute.session_rates(data, event_offsets, dims = NULL,
   \S4method{compute.session_rates}{ragged_event_record,list,missing,missing}(data,
   event_offsets)
 
-\S4method{compute.session_rates}{dataset,list,ANY,ANY}(data, event_offsets,
+\S4method{compute.session_rates}{data.table,list,ANY,ANY}(data, event_offsets,
   dims = NULL, session_duration = NULL)
 }
 \arguments{
