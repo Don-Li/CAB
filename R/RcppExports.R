@@ -13,6 +13,22 @@ CAB_cpp_diff <- function(x) {
     .Call('CAB_CAB_cpp_diff', PACKAGE = 'CAB', x)
 }
 
+CAB_cpp_local_count_helper_formal_event_record <- function(data, event, marker, event_offset, marker_offset, n_markers) {
+    .Call('CAB_CAB_cpp_local_count_helper_formal_event_record', PACKAGE = 'CAB', data, event, marker, event_offset, marker_offset, n_markers)
+}
+
+CAB_cpp_local_count_helper_ragged_event_record <- function(event_times, marker_times, event_offset, marker_offset) {
+    .Call('CAB_CAB_cpp_local_count_helper_ragged_event_record', PACKAGE = 'CAB', event_times, marker_times, event_offset, marker_offset)
+}
+
+CAB_cpp_local_rate_helper_ragged_event_record <- function(event_times, marker_times, event_offset, marker_offset) {
+    .Call('CAB_CAB_cpp_local_rate_helper_ragged_event_record', PACKAGE = 'CAB', event_times, marker_times, event_offset, marker_offset)
+}
+
+CAB_cpp_local_rate_helper_formal_event_record <- function(data, event, marker, event_offset, marker_offset, n_markers) {
+    .Call('CAB_CAB_cpp_local_rate_helper_formal_event_record', PACKAGE = 'CAB', data, event, marker, event_offset, marker_offset, n_markers)
+}
+
 CAB_cpp_srswo <- function(size, group_size, n) {
     .Call('CAB_CAB_cpp_srswo', PACKAGE = 'CAB', size, group_size, n)
 }

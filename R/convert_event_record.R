@@ -21,14 +21,9 @@ NULL
 
 setGeneric( "convert_event_record", function( event_record, dims = NULL ) standardGeneric( "convert_event_record" ) )
 
-setMethod( "convert_event_record", signature( event_record = "ragged_event_record" ),
+setMethod( "convert_event_record", signature( event_record = "ragged_event_record", dims = "character" ),
     function( event_record, dims ){
-        times = unlist( lapply( dims, function( x ) event_record@events[[x]] ), use.names = F )
-        row_n = unlist( event_record@events$counts[ dims ], use.names = F  )
-        events = rep( dims, times = row_n )
-        x = data.table::data.table( time = times, event = events )
-        data.table::setorder( x, time )
-        new( "formal_event_record", events = x, variables = dims, lengths = sum(row_n) )
+        convert_event_record_ragged_to_formal( event_record, dims )
     }
 )
 
@@ -42,3 +37,12 @@ setMethod( "convert_event_record", signature( event_record = "formal_event_recor
         new( "ragged_event_record", events = list2env( z, parent = emptyenv() ), variables = dims, lengths = lens )
     }
 )
+
+convert_event_record_ragged_to_formal = function( event_record, dims ){
+    times = unlist( lapply( dims, function( x ) event_record@events[[x]] ), use.names = F )
+    row_n = unlist( event_record@events$counts[ dims ], use.names = F  )
+    events = rep( dims, times = row_n )
+    x = data.table::data.table( time = times, event = events )
+    data.table::setorder( x, time )
+    new( "formal_event_record", events = x, variables = dims, lengths = sum(row_n) )
+}

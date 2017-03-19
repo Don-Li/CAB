@@ -1,6 +1,6 @@
 #### Calculate local rates ####
 
-#' @include analysis_object.R dataset.R
+#' @include analysis_object.R dataset.R event_record.R RcppExports.R
 NULL
 
 #' Compute local rates
@@ -34,66 +34,96 @@ NULL
 #' \code{\link{class.analysis_object}} For constructing arguments for \code{data} parameter.
 #' @rdname compute.local_rates
 #' @aliases local_rates
-#' @exportMethod compute.local_rates
+#' @aliases local_counts
+#' @exportMethod compute.local_counts
 
+setGeneric( "compute.local_counts", function( data, event_name, marker, event_offset = 0, marker_offset = 0 ) standardGeneric( "compute.local_counts" ) )
 
-setGeneric( "compute.local_rates", function( data, x_event, marker, x_offset = 0, marker_offset = 0 ) standardGeneric( "compute.local_rates" ) )
-
-setMethod( "compute.local_rates", signature( data = "analysis_object" ),
-    function( data, x_event, marker, x_offset, marker_offset ){
-        local_rate_helper( data@analysis_object$time[ data$event %in% marker ], data@analysis_object$time[ data$event %in% x_event ], x_offset, marker_offset )
+setMethod( "compute.local_counts", signature( data = "ragged_event_record", event_name = "character", marker = "character" ),
+    function( data, event_name, marker, event_offset, marker_offset ){
+        event_times = data@events[[event_name]]
+        marker_times = data@events[[marker]]
+        if ( length( marker_times ) <= 2 ) return( Inf )
+        if ( length( event_times ) <= 1 ) return( Inf )
+        CAB_cpp_local_count_helper_ragged_event_record( event_times, marker_times, event_offset, marker_offset )
     }
 )
+
+setMethod( "compute.local_counts", signature( data = "formal_event_record", event_name = "character", marker = "character" ),
+    function( data, event_name, marker, event_offset, marker_offset ){
+        if ( nrow( data@events ) <= 2 ) return( Inf )
+        n_markers = sum( data@events$event == marker )
+        if ( n_markers <= 1 ) return( Inf )
+        CAB_cpp_local_count_helper_formal_event_record( data = data@events, event = event_name, marker = marker, event_offset, marker_offset, n_markers = n_markers )
+    }
+)
+
 
 #' @rdname compute.local_rates
-#' @aliases local_rates
 #' @exportMethod compute.local_rates
 
-setMethod( "compute.local_rates", signature( data = "simulation_analysis_object" ),
-    function( data, x_event, marker, x_offset, marker_offset ){
-        local_rate_helper( data@input_list[[ marker ]], data@input_list[[ x_event ]], x_offset, marker_offset )
-    }
-)
+setGeneric( "compute.local_rates", function( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size ) standardGeneric( "compute.local_rates" ) )
 
-local_rate_helper = function( marker_times, event_times, x_offset, marker_offset ){
-    event_between_marker = findInterval( event_times, marker_times, left.open = T )
-    marker_ends = !event_between_marker %in% c(0, length(marker_times))
-    event_times = event_times[ marker_ends ]
-    event_between_marker = event_between_marker[ marker_ends ]
+local_rates_helper.formal_event_record = function( data, event, marker, event_offset, marker_offset, n_bins, bin_size, n_markers ){
 
-    iri_assignment = rle( event_between_marker )
-    start_times = rep( marker_times[ -length(marker_times)], times = iri_assignment$lengths )
+    inter_marker_event_times = CAB_cpp_local_rate_helper_formal_event_record( data@events, event, marker , event_offset, marker_offset, n_markers )
 
-    reset_event_times = event_times - start_times
-    if ( length(reset_event_times) == 0 ) return( Inf )
-    if ( ! marker_offset %in% 0 ) reset_event_times = reset_event_times + marker_offset
-    if ( ! x_offset %in% 0 ){
-        x_durations = duplicated( event_between_marker ) * x_offset
-        reset_event_times = reset_event_times + x_durations
-    }
-    reset_event_times
+    int_div_local_times = inter_marker_event_times$local_times %/% bin_size
+    marker_indices = inter_marker_event_times$interior_markers - inter_marker_event_times$interior_markers[1]
+
+    bins = vapply( 1:(length(marker_indices)-1), function(x){
+        index = ( marker_indices[x]+1 ):( marker_indices[x+1] )
+        tabulate( int_div_local_times[ index ], n_bins )
+        }, FUN.VALUE = 1:n_bins )
+
+    visits = apply( bins, 2, function(x) max(which( x > 0 )) )
+    visits_per_bin = vapply( 1:n_bins, function(x) sum( visits >= x ), FUN.VALUE = 1 )
+    local_rates = rowSums(bins) / visits_per_bin
+    local_rates[ is.nan(local_rates) ] = 0
+    local_rates
 }
 
-#' @rdname compute.local_rates
-#' @aliases local_rates
-#' @exportMethod compute.local_rates
+local_rates_helper.ragged_event_record = function( event_times, marker_times, event_offset, marker_offset, n_bins, bin_size ){
 
-setMethod( "compute.local_rates", signature( data = "analysis_object" ),
-    function( data, x_event, marker, x_offset, marker_offset ){
-        data = data@analysis_object
-        event_times = data[ data[,"event"] %in% x_event, "time" ]
-        marker_times = data[ data[,"event"] %in% marker, "time" ]
-        local_rate_helper( marker_times = marker_times, event_times = event_times, x_offset = x_offset, marker_offset = marker_offset )
-    } )
+    if ( length( marker_times ) <= 2 ) return( Inf )
+    if ( length( event_times ) <= 1 ) return( Inf )
 
-#' @rdname compute.local_rates
-#' @aliases local_rates
-#' @exportMethod compute.local_rates
+    inter_marker_event_times = CAB_cpp_local_rate_helper_ragged_event_record( event_times, marker_times, event_offset, marker_offset )
 
-setMethod( "compute.local_rates", signature( data = "dataset" ),
-    function( data, x_event, marker, x_offset, marker_offset ){
-        expt_data = data@analysis_objects
-        lapply( expt_data, compute.local_rates, x_event = x_event, marker = marker, x_offset = x_offset, marker_offset = marker_offset )
+    int_div_local_times = inter_marker_event_times$local_times %/% bin_size
+    marker_indices = inter_marker_event_times$interior_markers
+
+    bins = vapply( 1:(length(marker_indices)-1), function(x){
+        index = ( marker_indices[x]+1 ):marker_indices[x+1]
+        tabulate( int_div_local_times[ index ], n_bins )
+        }, FUN.VALUE = 1:n_bins )
+
+    visits = apply( bins, 2, function(x) max(which( x > 0 )) )
+    visits_per_bin = vapply( 1:n_bins, function(x) sum( visits >= x ), FUN.VALUE = 1 )
+    local_rates = rowSums(bins) / visits_per_bin
+    local_rates[ is.nan(local_rates) ] = 0
+    local_rates
+}
+
+setMethod( "compute.local_rates", signature( data = "formal_event_record", event_name = "character", marker = "character", n_bins = "numeric", bin_size = "numeric" ),
+    function( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size ){
+
+        if ( nrow( data@events ) <= 2 ) return( Inf )
+        n_markers = sum( data@events$event == marker )
+        if ( n_markers <= 1 ) return( Inf )
+        local_rates_helper.formal_event_record( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size, n_markers )
     }
 )
 
+setMethod( "compute.local_rates", signature( data = "ragged_event_record", event_name = "character", marker = "character", n_bins = "numeric", bin_size = "numeric" ),
+    function( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size ){
+
+        event_times = data@events[[event_name]]
+        marker_times = data@events[[marker]]
+
+        if ( length( marker_times ) <= 2 ) return( Inf )
+        if ( length( event_times ) <= 1 ) return( Inf )
+
+        local_rates_helper.ragged_event_record( event_times, marker_times, event_offset, marker_offset, n_bins, bin_size )
+    }
+)
