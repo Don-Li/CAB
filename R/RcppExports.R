@@ -5,6 +5,10 @@ CAB_cpp_bitwise <- function(pop_size, parents, bias) {
     .Call('CAB_CAB_cpp_bitwise', PACKAGE = 'CAB', pop_size, parents, bias)
 }
 
+CAB_cpp_clean_short_ixyi <- function(data, x_name, y_name, gap) {
+    .Call('CAB_CAB_cpp_clean_short_ixyi', PACKAGE = 'CAB', data, x_name, y_name, gap)
+}
+
 CAB_cpp_compute__I_xy_I__formal_event_record <- function(data, x_event, y_event, break_event) {
     .Call('CAB_CAB_cpp_compute__I_xy_I__formal_event_record', PACKAGE = 'CAB', data, x_event, y_event, break_event)
 }

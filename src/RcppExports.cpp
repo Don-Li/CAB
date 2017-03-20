@@ -18,6 +18,20 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// CAB_cpp_clean_short_ixyi
+LogicalVector CAB_cpp_clean_short_ixyi(DataFrame data, String x_name, String y_name, double gap);
+RcppExport SEXP CAB_CAB_cpp_clean_short_ixyi(SEXP dataSEXP, SEXP x_nameSEXP, SEXP y_nameSEXP, SEXP gapSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< String >::type x_name(x_nameSEXP);
+    Rcpp::traits::input_parameter< String >::type y_name(y_nameSEXP);
+    Rcpp::traits::input_parameter< double >::type gap(gapSEXP);
+    __result = Rcpp::wrap(CAB_cpp_clean_short_ixyi(data, x_name, y_name, gap));
+    return __result;
+END_RCPP
+}
 // CAB_cpp_compute__I_xy_I__formal_event_record
 NumericVector CAB_cpp_compute__I_xy_I__formal_event_record(DataFrame data, CharacterVector x_event, CharacterVector y_event, CharacterVector break_event);
 RcppExport SEXP CAB_CAB_cpp_compute__I_xy_I__formal_event_record(SEXP dataSEXP, SEXP x_eventSEXP, SEXP y_eventSEXP, SEXP break_eventSEXP) {
