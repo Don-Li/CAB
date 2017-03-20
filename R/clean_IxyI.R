@@ -12,6 +12,8 @@ NULL
 #' @param y_event A character string specifying the second eevnt type.
 #' @param gap A numeric giving the gap between \code{x_event} and \code{y_event}
 #'
+#'
+#'@exportMethod clean_short_IxyI
 
 setGeneric( "clean_short_IxyI", function( data, x_event, y_event, gap ) standardGeneric( "clean_short_IxyI" ) )
 

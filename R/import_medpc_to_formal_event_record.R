@@ -40,7 +40,7 @@ mpc_backup_reader = function( datatable, file_match, variable_arrays, event_arra
     meta_data = data.table::tstrsplit( data[ 1:9 ], ": " )
     meta_data_contents = as.list( trimws( meta_data[[2]] ) )
     names( meta_data_contents ) = meta_data[[1]]
-    datatable[ row , names( meta_data_contents ) := meta_data_contents ]
+    set( datatable, i = row, j = names( meta_data_contents ), value = meta_data_contents )
 
     expt_data = data.table::tstrsplit( data[ -(1:9) ], ":" )
     array_header_indices = match( names(processing_arrays), expt_data[[1]] )
@@ -67,7 +67,7 @@ mpc_backup_reader = function( datatable, file_match, variable_arrays, event_arra
         event_array = data_arrays[[ names( event_arrays ) ]]
     }
 
-    datatable[ row , "event_record" := list( list( mpc_process_event_array( event_array, event_arrays, rounding ) ) ) ]
+    set( datatable, i = row, j = "event_record", value = list( list( mpc_process_event_array( event_array, event_arrays, rounding ) ) ) )
 }
 
 decompose_variable_array = function(variable_arrays, datatable, row, data_arrays, rounding){
@@ -94,7 +94,8 @@ set_general_array = function( general_arrays, datatable, row, data_arrays, round
                 z = data.table( round( data_arrays[[ names( general_arrays )[x] ]], rounding ) )
             }
             setnames( z, "V1", general_arrays[[x]] )
-            datatable[ i = row, general_arrays[[x]] := list( list( z ) ) ]
+            set( datatable, i = row, j = general_arrays[[x]], value = list( list( z ) ) )
+#            datatable[ i = row, general_arrays[[x]] := list( list( z ) ) ]
         }
     )
 }
@@ -131,6 +132,7 @@ import_medpc_to_formal_event_record = function( partial_file_name, variable_arra
 
     lapply( 1:length( wd_files ),
         function(x){
+            cat( "Reading file:", x, "\n" )
             mpc_backup_reader( datatable, partial_file_matches[x], variable_arrays, event_arrays, general_arrays, rounding = rounding, row = x )
             NULL
         }
