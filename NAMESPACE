@@ -2,6 +2,12 @@
 
 export(CAB.srswo)
 export(CAB.srswo_2)
+export(COR.G_E_emission)
+export(COR.constant_depletion)
+export(COR.exponential_vi)
+export(COR.initial_reserve)
+export(COR.linear_DOR)
+export(COR.rft_duration)
 export(bin2int)
 export(bitwise_reproduction)
 export(class.dataset)

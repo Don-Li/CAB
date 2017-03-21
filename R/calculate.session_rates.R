@@ -157,23 +157,3 @@ setMethod( "compute.session_rates", signature( data = "ragged_event_record", eve
         ragged_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
     }
 )
-
-
-# #' @rdname compute.session_rates
-# #' @exportMethod compute.session_rates
-#
-# setMethod( "compute.session_rates", signature( data = "data.table", event_offsets = "list" ),
-#     function( data, event_offsets, dims, session_duration ){
-#         if ( !is.null(session_duration) && !is.numeric(session_duration) ) stop( "'session_duration' must be numeric" )
-#         if ( !is.null(dims) && !is.character(dims ) ) stop("'dimension' must be a character vector")
-#         expt_data = data@analysis_objects
-#         rates = lapply( expt_data, compute.session_rates, event_offsets = event_offsets, dims = dims, session_duration = session_duration )
-#         dim_names = names( rates[[1]] )
-#         rates = data.table::transpose( rates )
-#         attr( rates, "class" ) = "data.frame"
-#         attr( rates, "row.names" ) = 1:length(rates[[1]])
-#         attr( rates, "names" ) = dim_names
-#         rates
-#     }
-# )
-
