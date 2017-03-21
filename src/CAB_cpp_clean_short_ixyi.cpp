@@ -24,7 +24,7 @@ LogicalVector CAB_cpp_clean_short_ixyi( DataFrame data, String x_name, String y_
 
     for ( int i = 0; i < times.length(); i ++ ){
 
-        if ( events[i] == x_name ){
+        if ( events[i] == x_name && ! got_x ){
             last_x_time = times[i];
             got_x = true;
         }
@@ -33,6 +33,36 @@ LogicalVector CAB_cpp_clean_short_ixyi( DataFrame data, String x_name, String y_
                 keep[i] = false;
             }
             else got_x = false;
+        }
+    }
+
+    return( keep );
+}
+
+// [[Rcpp::export]]
+LogicalVector CAB_cpp_clean_short_ixxi( DataFrame data, String x_name, double gap ){
+
+    NumericVector times = data["time"];
+    CharacterVector events = data["event"];
+
+    LogicalVector keep = rep( true, times.length() );
+
+    double last_x_time(0);
+    bool got_x = false;
+
+    for ( int i = 0; i < times.length(); i ++ ){
+
+        if ( events[i] == x_name && ! got_x ){
+            last_x_time = times[i];
+            got_x = true;
+        }
+        else if ( events[i] == x_name ){
+            if ( times[i] - last_x_time < gap ){
+                keep[i] = false;
+            }
+            else{
+                last_x_time = times[i];
+            }
         }
     }
 

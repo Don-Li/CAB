@@ -11,7 +11,7 @@ clean_short_IxyI(data, x_event, y_event, gap)
 
 \item{x_event}{A character string specifying the first event type.}
 
-\item{y_event}{A character string specifying the second eevnt type.}
+\item{y_event}{A character string specifying the second eevnt type. Can be missing.}
 
 \item{gap}{A numeric giving the gap between \code{x_event} and \code{y_event}}
 }
