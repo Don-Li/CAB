@@ -20,7 +20,6 @@
 #' @rdname COR_helpers
 #' @seealso \link{CAB.COR}
 
-COR_function_names = list(1)
 
 #' @rdname COR_helpers
 #' @aliases DOR

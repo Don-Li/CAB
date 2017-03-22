@@ -53,6 +53,7 @@ Collate:
     'help_file.R'
     'import_medpc_to_UOA__DEPRECATED.R'
     'import_medpc_to_formal_event_record.R'
+    'indicator_matrix.R'
     'initial_reserve__DEPRECATED.R'
     'input_DEPRECATED.R'
     'input___DEPRECATED.R'

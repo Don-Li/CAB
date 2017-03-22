@@ -155,6 +155,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// CAB_cpp_unique
+NumericVector CAB_cpp_unique(NumericVector x);
+RcppExport SEXP CAB_CAB_cpp_unique(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    __result = Rcpp::wrap(CAB_cpp_unique(x));
+    return __result;
+END_RCPP
+}
 // timesTwo
 NumericVector timesTwo(NumericVector x);
 RcppExport SEXP CAB_timesTwo(SEXP xSEXP) {

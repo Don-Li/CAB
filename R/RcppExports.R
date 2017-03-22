@@ -45,6 +45,10 @@ CAB_cpp_srswo2 <- function(size, n) {
     .Call('CAB_CAB_cpp_srswo2', PACKAGE = 'CAB', size, n)
 }
 
+CAB_cpp_unique <- function(x) {
+    .Call('CAB_CAB_cpp_unique', PACKAGE = 'CAB', x)
+}
+
 timesTwo <- function(x) {
     .Call('CAB_timesTwo', PACKAGE = 'CAB', x)
 }
