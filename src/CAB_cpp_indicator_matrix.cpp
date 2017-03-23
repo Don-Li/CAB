@@ -14,7 +14,7 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 NumericMatrix CAB_cpp_indicator_matrix( NumericVector x ){
 
-    NumericVector unique_x =- sort_unique(x);
+    NumericVector unique_x = sort_unique(x);
     int unique_length = unique_x.length();
     int x_length = x.length();
 
