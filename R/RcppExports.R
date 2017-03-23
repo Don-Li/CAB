@@ -21,6 +21,10 @@ CAB_cpp_diff <- function(x) {
     .Call('CAB_CAB_cpp_diff', PACKAGE = 'CAB', x)
 }
 
+CAB_cpp_indicator_matrix <- function(x) {
+    .Call('CAB_CAB_cpp_indicator_matrix', PACKAGE = 'CAB', x)
+}
+
 CAB_cpp_local_count_helper_formal_event_record <- function(data, event, marker, event_offset, marker_offset, n_markers) {
     .Call('CAB_CAB_cpp_local_count_helper_formal_event_record', PACKAGE = 'CAB', data, event, marker, event_offset, marker_offset, n_markers)
 }

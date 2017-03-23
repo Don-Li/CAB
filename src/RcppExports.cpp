@@ -70,6 +70,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// CAB_cpp_indicator_matrix
+NumericMatrix CAB_cpp_indicator_matrix(NumericVector x);
+RcppExport SEXP CAB_CAB_cpp_indicator_matrix(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    __result = Rcpp::wrap(CAB_cpp_indicator_matrix(x));
+    return __result;
+END_RCPP
+}
 // CAB_cpp_local_count_helper_formal_event_record
 NumericVector CAB_cpp_local_count_helper_formal_event_record(DataFrame data, String event, String marker, double event_offset, double marker_offset, int n_markers);
 RcppExport SEXP CAB_CAB_cpp_local_count_helper_formal_event_record(SEXP dataSEXP, SEXP eventSEXP, SEXP markerSEXP, SEXP event_offsetSEXP, SEXP marker_offsetSEXP, SEXP n_markersSEXP) {
