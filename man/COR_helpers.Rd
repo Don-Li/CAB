@@ -122,6 +122,22 @@ Stuff
     \subsection{Value}{
         Samples a new inter-reinforcement interval and adds that to the current \code{time}. Therefore, returns the time when the next reinforcement will be primed.
     }
+    \subsection{\code{COR.shifted_exponential_vi}}{
+        A variable-interval schedule where the inter-reinforcement intervals are arranged by sampling from a shifted Exponential(1/rate) distribution.
+    }
+    \subsection{Usage}{
+        \code{COR.exponential_vi( inter_rft_interval, time )}
+    }
+    \subsection{Arguments}{
+        \describe{
+            \item{\code{inter_rft_interval}}{A numeric giving the average inter-reinforcement interval.}
+            \item{\code{time}}{A numeric giving the time.}
+            \item{\code{shift}}{Numeric. Shift time.}
+        }
+    }
+    \subsection{Value}{
+        Samples a new inter-reinforcement interval and adds that to the current \code{time}. Therefore, returns the time when the next reinforcement will be primed.
+    }
 }
 }
 

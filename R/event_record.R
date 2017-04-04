@@ -186,41 +186,45 @@ setGeneric( "assign_event", function( event_record, variable, index = NULL, valu
 setMethod( "assign_event", signature( event_record = "ragged_event_record" , variable = "character", index = "numeric", values = "numeric" ,counts = "numeric" ),
     function( event_record, variable, index, values, counts ){
         if ( length( variable ) > 1 ) stop( "Only change one variable at a time" )
-        assign_event_helper( event_record, variable, index, values, counts )
+        assign_event_helper( event_record@events, variable, index, values, counts )
     } )
 
+assign_event_helper = function( env, variable, index, values, counts ){
+    env[[variable]][ index ] = values
+    env[["counts"]][[variable]] = counts
+}
 
 setMethod( "assign_event", signature( event_record = "ragged_event_record", variable = "character", index = "missing", values = "missing", counts = "numeric" ),
     function( event_record, variable, counts ){
-        assign_event_helper_value_missing( event_record, variable, counts )
+        assign_event_helper_value_missing( event_record@events, variable, counts )
     }
 )
 
-assign_event_helper_value_missing = function( event_record, variable, counts ){
-    event_record@events$counts[[variable]] <- counts
+assign_event_helper_value_missing = function( env, variable, counts ){
+    env$counts[[variable]] <- counts
 }
 
 setMethod( "assign_event", signature( event_record = "ragged_event_record", variable = "character", index = "numeric", values = "numeric" ),
     function( event_record, variable, index, values ){
-        assign_event_helper_counts_missing( event_record, variable, index, counts )
+        assign_event_helper_counts_missing( event_record@events, variable, index, counts )
     }
 )
 
-assign_event_helper_counts_missing = function( event_record, variable, index, counts ){
-    event_record@events[[variable]][index] <- values
+assign_event_helper_counts_missing = function( env, variable, index, counts ){
+    env[[variable]][index] <- values
 }
 
 setMethod( "assign_event", signature( event_record = "ragged_event_record", variable = "character", index = "character", values = "numeric" ),
     function( event_record, variable, index, values ){
         if ( index != "next" ) stop( "if 'index' is character, it must be 'next'" )
-        next_event_helper( event_record, variable, values )
+        next_event_helper( event_record@events, variable, values )
     } )
 
-next_event_helper = function( event_record, variable, values ){
+next_event_helper = function( env, variable, values ){
     len_values = length(values)
-    count = event_record@events$counts[[ variable ]]
-    event_record@events[[ variable ]][(count+1):(count+len_values)] <- values
-    event_record@events$counts[[ variable ]] <- count + len_values
+    count = env$counts[[ variable ]]
+    env[[ variable ]][(count+1):(count+len_values)] <- values
+    env$counts[[ variable ]] <- count + len_values
 }
 
 #' @rdname class.event_record
@@ -236,11 +240,12 @@ setMethod( "reset_event", signature( event_record = "ragged_event_record" ),
 )
 
 reset_event_helper = function( event_record ){
+    env = event_record@events
     variables = event_record@variables
     dims = event_record@lengths
     lapply( variables, function(x){
-        event_record@events[[x]] = rep( NaN, dims[x] )
-        event_record@events$counts[x] = 0
+        env[[x]] = rep( NaN, dims[x] )
+        env$counts[[x]] = 0
     } )
 }
 
@@ -276,10 +281,11 @@ setMethod( "trim_event_record", signature( event_record = "ragged_event_record" 
 )
 
 trim_event_record_helper = function( event_record ){
+    env = event_record@events
     variable_counts = event_record@events$counts
     variables = event_record@variables
     for ( i in variables ){
-        event_record@events[[ i ]] <- event_record@events[[ i ]][1:variable_counts[[i]]]
+        env[[ i ]] <- env[[ i ]][1:variable_counts[[i]]]
     }
 }
 

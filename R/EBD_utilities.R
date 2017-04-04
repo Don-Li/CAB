@@ -1,5 +1,8 @@
 #### Evolutionary Behaviour Dynamics utilities ####
 
+#' @include RcppExports.R
+NULL
+
 #' Evolutionary Behaviour Dynamics Utilities
 #'
 #' This is the documentation for the EBD utility functions.
@@ -26,11 +29,11 @@
 #' }
 #' @export bin2int
 
-bin2int = function( binaries ){
+bin2int = function( binaries, digits ){
     if ( is.matrix(binaries) ){
-        x = crossprod( binaries, 2^(0:(nrow(binaries)-1)) )
+        x = crossprod( binaries, 2^(0:(digits-1)) )
     }
-    else x =  crossprod( binaries, 2^(0:(length(binaries)-1) ) )
+    else x =  crossprod( binaries, 2^(0:(digits-1) ) )
     drop( x )
 }
 
@@ -58,7 +61,7 @@ bin2int = function( binaries ){
 #' @rdname EBD_utilities
 
 int2bin = function( integers, digits ){
-    vapply( integers, function(x) as.integer( intToBits(x)[1:digits] ), FUN.VALUE = 1:digits)
+    CAB_cpp_int2bin( digits, integers )
 }
 
 #' @rdname EBD_utilities
@@ -93,26 +96,26 @@ int2bin = function( integers, digits ){
 
 setGeneric( "EBD_set", function( EBD_model, phenotypes, index, genotypes ) standardGeneric( "EBD_set" ) )
 
-EBD.insert_phenotype = function( EBD_model, phenotypes, index ){
-    EBD_model@organism$phenotypes[ index ] = phenotypes
-    EBD_model@organism$genotypes[, index ] = int2bin( phenotypes, ceiling( log( max( EBD_model@organism$domain ), 2 ) ) )
+EBD.insert_phenotype = function( env, phenotypes, index ){
+    env$phenotypes[ index ] = phenotypes
+    env$genotypes[, index ] = int2bin( phenotypes, env$n_bits )
 }
 
-EBD.insert_genotype = function( EBD_model, genotypes, index ){
-    EBD_model@organism$genotypes[, index ] = genotypes
-    EBD_model@organism$phenotypes[ index ] = bin2int( genotypes )
+EBD.insert_genotype = function( env, genotypes, index ){
+    env$genotypes[, index ] = genotypes
+    env$phenotypes[ index ] = bin2int( genotypes, env$n_bits )
 }
 
-EBD.replace_phenotype = function( EBD_model, phenotypes ){
-    if ( length(phenotypes) != EBD_model@organism$pop_size ) stop( "New population is not the right size" )
-    EBD_model@organism$phenotypes = phenotypes
-    EBD_model@organism$genotypes = int2bin( phenotypes, ceiling( log( max( EBD_model@organism$domain ), 2 ) ) )
+EBD.replace_phenotype = function( env, phenotypes ){
+    if ( length(phenotypes) != env$pop_size ) stop( "New population is not the right size" )
+    env$phenotypes = phenotypes
+    env$genotypes = int2bin( phenotypes, env$n_bits )
 }
 
-EBD.replace_genotype = function( EBD_model, genotypes ){
-    if ( ncol( genotypes ) != EBD_model@organism$pop_size ) stop( "New population is not the right size" )
-    EBD_model@organism$genotypes = genotypes
-    EBD_model@organism$phenotypes = bin2int( genotypes )
+EBD.replace_genotype = function( env, genotypes ){
+    if ( ncol( genotypes ) != env$pop_size ) stop( "New population is not the right size" )
+    env$genotypes = genotypes
+    env$phenotypes = bin2int( genotypes, env$n_bits )
 }
 
 #' @rdname EBD_utilities
@@ -120,17 +123,17 @@ EBD.replace_genotype = function( EBD_model, genotypes ){
 #' @exportMethod EBD_set
 
 setMethod( "EBD_set", signature( EBD_model = "EBD",  phenotypes = "integer", index = "integer", genotypes = "missing" ), function( EBD_model, phenotypes, index ){
-    EBD.insert_phenotype( EBD_model, phenotypes, index )
+    EBD.insert_phenotype( EBD_model@organism, phenotypes, index )
 } )
 
 setMethod( "EBD_set", signature( EBD_model = "EBD", phenotypes = "missing", index = "integer", genotypes = "matrix" ), function( EBD_model, index, genotypes ){
-    EBD.insert_genotype( EBD_model, genotypes, index )
+    EBD.insert_genotype( EBD_model@organism, genotypes, index )
 } )
 
 setMethod( "EBD_set", signature( EBD_model = "EBD", phenotypes = "missing", index = "missing", genotypes = "matrix" ), function( EBD_model, index, genotypes ){
-    EBD.replace_genotype( EBD_model, genotypes )
+    EBD.replace_genotype( EBD_model@organism, genotypes )
 } )
 
 setMethod( "EBD_set", signature( EBD_model = "EBD",  phenotypes = "integer", index = "missing", genotypes = "missing" ), function( EBD_model, phenotypes, index ){
-    EBD.replace_phenotype( EBD_model, phenotypes )
+    EBD.replace_phenotype( EBD_model@organism, phenotypes )
 } )

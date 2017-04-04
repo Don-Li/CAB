@@ -1,6 +1,6 @@
 #### Calculate local rates ####
 
-#' @include analysis_object.R dataset.R event_record.R RcppExports.R
+#' @include event_record.R RcppExports.R
 NULL
 
 #' Compute local rates

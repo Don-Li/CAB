@@ -10,12 +10,14 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
 Collate:
-    'CAB.COR_helpers.R'
-    'event_record.R'
     'CAB.COR.R'
+    'CAB.COR_helpers.R'
+    'CAB.EBD.R'
+    'RcppExports.R'
+    'CAB.EBD_helpers.R'
+    'event_record.R'
     'model.CAB.R'
     'CAB.extract.R'
-    'RcppExports.R'
     'CAB.srswo.R'
     'EBD.reproduction.R'
     'EBD_fitness_def__DEPRECATED.R'
@@ -39,6 +41,7 @@ Collate:
     'compute.local_rates___DEPRECATED.R'
     'control__DEPRECATED.R'
     'convert_event_record.R'
+    'copy_event_record.R'
     'dep__DEPRECATED.R'
     'do.sim_fx__DEPRECATED.R'
     'dor__DEPRECATED.R'
@@ -64,6 +67,7 @@ Collate:
     'model__DEPRECATED.R'
     'model_do.R'
     'new__DEPRECATED.R'
+    'not_duplicated.R'
     'o_set.R'
     'remove.excesss__DEPRECATED.R'
     'reset_model.R'

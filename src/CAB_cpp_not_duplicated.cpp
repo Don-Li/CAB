@@ -12,11 +12,6 @@ using namespace Rcpp;
 //
 
 // [[Rcpp::export]]
-NumericVector CAB_cpp_bitwise( int pop_size, NumericMatrix fathers, NumericMatrix mothers, double bias ){
-    int get_n = pop_size * fathers.nrow();
-    NumericVector selection = rbinom( get_n, 1, bias );
-
-    NumericVector z = fathers*selection + mothers*(1-selection);
-    z.attr( "dim" ) = Dimension( fathers.nrow(), pop_size );
-    return( z );
+LogicalVector CAB_cpp_not_duplicated( NumericVector x ){
+    return( !duplicated(x) );
 }

@@ -6,15 +6,16 @@
 using namespace Rcpp;
 
 // CAB_cpp_bitwise
-NumericVector CAB_cpp_bitwise(int pop_size, NumericMatrix parents, double bias);
-RcppExport SEXP CAB_CAB_cpp_bitwise(SEXP pop_sizeSEXP, SEXP parentsSEXP, SEXP biasSEXP) {
+NumericVector CAB_cpp_bitwise(int pop_size, NumericMatrix fathers, NumericMatrix mothers, double bias);
+RcppExport SEXP CAB_CAB_cpp_bitwise(SEXP pop_sizeSEXP, SEXP fathersSEXP, SEXP mothersSEXP, SEXP biasSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< int >::type pop_size(pop_sizeSEXP);
-    Rcpp::traits::input_parameter< NumericMatrix >::type parents(parentsSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type fathers(fathersSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type mothers(mothersSEXP);
     Rcpp::traits::input_parameter< double >::type bias(biasSEXP);
-    __result = Rcpp::wrap(CAB_cpp_bitwise(pop_size, parents, bias));
+    __result = Rcpp::wrap(CAB_cpp_bitwise(pop_size, fathers, mothers, bias));
     return __result;
 END_RCPP
 }
@@ -70,6 +71,19 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// CAB_cpp_geometric_fitness_selection
+List CAB_cpp_geometric_fitness_selection(NumericVector fitness, int pop_size, double p);
+RcppExport SEXP CAB_CAB_cpp_geometric_fitness_selection(SEXP fitnessSEXP, SEXP pop_sizeSEXP, SEXP pSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type fitness(fitnessSEXP);
+    Rcpp::traits::input_parameter< int >::type pop_size(pop_sizeSEXP);
+    Rcpp::traits::input_parameter< double >::type p(pSEXP);
+    __result = Rcpp::wrap(CAB_cpp_geometric_fitness_selection(fitness, pop_size, p));
+    return __result;
+END_RCPP
+}
 // CAB_cpp_indicator_matrix
 NumericMatrix CAB_cpp_indicator_matrix(NumericVector x);
 RcppExport SEXP CAB_CAB_cpp_indicator_matrix(SEXP xSEXP) {
@@ -78,6 +92,18 @@ BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
     __result = Rcpp::wrap(CAB_cpp_indicator_matrix(x));
+    return __result;
+END_RCPP
+}
+// CAB_cpp_int2bin
+IntegerVector CAB_cpp_int2bin(int bits, IntegerVector n);
+RcppExport SEXP CAB_CAB_cpp_int2bin(SEXP bitsSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< int >::type bits(bitsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type n(nSEXP);
+    __result = Rcpp::wrap(CAB_cpp_int2bin(bits, n));
     return __result;
 END_RCPP
 }
@@ -138,6 +164,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type marker_offset(marker_offsetSEXP);
     Rcpp::traits::input_parameter< int >::type n_markers(n_markersSEXP);
     __result = Rcpp::wrap(CAB_cpp_local_rate_helper_formal_event_record(data, event, marker, event_offset, marker_offset, n_markers));
+    return __result;
+END_RCPP
+}
+// CAB_cpp_not_duplicated
+LogicalVector CAB_cpp_not_duplicated(NumericVector x);
+RcppExport SEXP CAB_CAB_cpp_not_duplicated(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
+    __result = Rcpp::wrap(CAB_cpp_not_duplicated(x));
     return __result;
 END_RCPP
 }

@@ -14,8 +14,8 @@ NULL
 #' @export bitwise_reproduction
 #' @rdname bitwise_reproduction
 
-bitwise_reproduction = function( pop_size, parents, parent_sampling_bias = 0.5 ){
-    CAB_cpp_bitwise( pop_size, parents, parent_sampling_bias )
+bitwise_reproduction = function( pop_size, fathers, mothers, parent_sampling_bias = 0.5 ){
+    CAB_cpp_bitwise( pop_size, fathers, mothers, parent_sampling_bias )
 }
 
 

@@ -64,34 +64,36 @@ setGeneric( "o_set", function( model, variable, value, i, j ) standardGeneric( "
 
 setMethod( "o_set", signature( model = "CAB.model", variable = "character", value = "ANY", i = "numeric", j = "numeric" ),
     function( model, variable, value, i, j ){
-        o_set.helper2( model, variable, value, i, j )
+        o_set.helper2( model@organism, variable, value, i, j )
     }
 )
 
 setMethod( "o_set", signature( model = "CAB.model", variable = "character", value = "ANY", i = "numeric", j = "missing" ),
     function( model, variable, value, i ){
-        o_set.helper( model, variable, value, i )
+        o_set.helper( model@organism, variable, value, i )
     }
 )
 
 setMethod( "o_set", signature( model = "CAB.model", variable = "character", value = "ANY", i = "missing", j = "missing" ),
     function( model, variable, value ){
-        o_set.helper3( model, variable, value )
+        o_set.helper3( model@organism, variable, value )
     }
 )
 
-o_set.helper = function( model, variable, value, i ){
-    model@organism[[variable]][i] <- value
+o_set.helper = function( env, variable, value, i ){
+    env[[variable]][i] = value
 }
 
-o_set.helper2 = function( model, variable, value, i, j ){
-    model@organism[[variable]][i, j] <- value
+
+o_set.helper2 = function( env, variable, value, i, j ){
+    env[[variable]][i, j] <- value
 }
 
-o_set.helper3 = function( model, variable, value ){
-    if( class( model@organism[[ variable ]] ) != class( value ) ) stop( "Replacement value is of wrong class" )
-    model@organism[[variable]] <- value
+o_set.helper3 = function( env, variable, value ){
+    if( class( env[[ variable ]] ) != class( value ) ) stop( "Replacement value is of wrong class" )
+    env[[variable]] = value
 }
+
 
 #' @rdname o_set
 #' @exportMethod "[<-"

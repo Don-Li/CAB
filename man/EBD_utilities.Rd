@@ -8,7 +8,7 @@
 \alias{int2bin}
 \title{Evolutionary Behaviour Dynamics Utilities}
 \usage{
-bin2int(binaries)
+bin2int(binaries, digits)
 
 int2bin(integers, digits)
 
