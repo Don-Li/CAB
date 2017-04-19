@@ -37,7 +37,26 @@ NULL
 #' @aliases local_counts
 #' @exportMethod compute.local_counts
 
-setGeneric( "compute.local_counts", function( data, event_name, marker, event_offset = 0, marker_offset = 0 ) standardGeneric( "compute.local_counts" ) )
+setGeneric( "compute.local_counts", function( data, event_name, marker, event_offset = 0, marker_offset ) standardGeneric( "compute.local_counts" ) )
+
+# setMethod( "compute.local_counts", signature( data = "ragged_event_record", event_name = "character", marker = "character" ),
+#     function( data, event_name, marker, event_offset, marker_offset ){
+#         event_times = data@events[[event_name]]
+#         marker_times = data@events[[marker]]
+#         if ( length( marker_times ) <= 2 ) return( Inf )
+#         if ( length( event_times ) <= 1 ) return( Inf )
+#         CAB_cpp_local_count_helper_ragged_event_record( event_times, marker_times, event_offset, marker_offset )
+#     }
+# )
+#
+# setMethod( "compute.local_counts", signature( data = "formal_event_record", event_name = "character", marker = "character" ),
+#     function( data, event_name, marker, event_offset, marker_offset ){
+#         if ( nrow( data@events ) <= 2 ) return( Inf )
+#         n_markers = sum( data@events$event == marker )
+#         if ( n_markers <= 1 ) return( Inf )
+#         CAB_cpp_local_count_helper_formal_event_record( data = data@events, event = event_name, marker = marker, event_offset, marker_offset, n_markers = n_markers )
+#     }
+# )
 
 setMethod( "compute.local_counts", signature( data = "ragged_event_record", event_name = "character", marker = "character" ),
     function( data, event_name, marker, event_offset, marker_offset ){
@@ -45,85 +64,108 @@ setMethod( "compute.local_counts", signature( data = "ragged_event_record", even
         marker_times = data@events[[marker]]
         if ( length( marker_times ) <= 2 ) return( Inf )
         if ( length( event_times ) <= 1 ) return( Inf )
-        CAB_cpp_local_count_helper_ragged_event_record( event_times, marker_times, event_offset, marker_offset )
+        local_data = CAB_cpp_local_times_ragged_event_record( event_times, marker_times, event_offset )
+        if ( !is.missing(marker_offset) ){
+            local_data$local_times  = local_data$local_times - marker_offset
+            local_data$visit_lengths = local_data$visit_lengths - marker_offset
+        }
+        local_data
     }
 )
 
 setMethod( "compute.local_counts", signature( data = "formal_event_record", event_name = "character", marker = "character" ),
     function( data, event_name, marker, event_offset, marker_offset ){
-        if ( nrow( data@events ) <= 2 ) return( Inf )
+        if ( nrow( data@events ) <= 2 ) return( list( local_times = NaN, visit_bins = NaN ) )
         n_markers = sum( data@events$event == marker )
-        if ( n_markers <= 1 ) return( Inf )
-        CAB_cpp_local_count_helper_formal_event_record( data = data@events, event = event_name, marker = marker, event_offset, marker_offset, n_markers = n_markers )
+        if ( n_markers <= 1 ) return( list( local_times = NaN, visit_bins = NaN ) )
+        local_data = CAB_cpp_local_times_formal_event_record( data = data@events, event = event_name, marker = marker, event_offset, n_markers = n_markers )
+        if ( !is.missing(marker_offset) ){
+            local_data$local_times = local_data$local_times - marker_offset
+            local_data$visit_lengths = local_data$visit_lengths - marker_offset
+        }
+        local_data
     }
 )
-
 
 #' @rdname compute.local_rates
 #' @exportMethod compute.local_rates
 
-setGeneric( "compute.local_rates", function( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size ) standardGeneric( "compute.local_rates" ) )
+setGeneric( "compute.local_rates", function( data, n_bins, bin_size ) standardGeneric( "compute.local_rates" ) )
 
-local_rates_helper.formal_event_record = function( data, event, marker, event_offset, marker_offset, n_bins, bin_size, n_markers ){
-
-    inter_marker_event_times = CAB_cpp_local_rate_helper_formal_event_record( data@events, event, marker , event_offset, marker_offset, n_markers )
-
-    int_div_local_times = inter_marker_event_times$local_times %/% bin_size
-    marker_indices = inter_marker_event_times$interior_markers - inter_marker_event_times$interior_markers[1]
-
-    bins = vapply( 1:(length(marker_indices)-1), function(x){
-        index = ( marker_indices[x]+1 ):( marker_indices[x+1] )
-        tabulate( int_div_local_times[ index ], n_bins )
-        }, FUN.VALUE = 1:n_bins )
-
-    visits = apply( bins, 2, function(x) max(which( x > 0 )) )
-    visits_per_bin = vapply( 1:n_bins, function(x) sum( visits >= x ), FUN.VALUE = 1 )
-    local_rates = rowSums(bins) / visits_per_bin
-    local_rates[ is.nan(local_rates) ] = 0
-    local_rates
+#####
+# local_rates_helper.formal_event_record = function( data, event, marker, event_offset, marker_offset, n_bins, bin_size, n_markers ){
+#     inter_marker_event_times = CAB_cpp_local_rate_helper_formal_event_record( data@events, event, marker , event_offset, marker_offset, n_markers )
+#
+#     int_div_local_times = inter_marker_event_times$local_times %/% bin_size
+#     marker_indices = inter_marker_event_times$interior_markers - inter_marker_event_times$interior_markers[1]
+#
+#     bins = vapply( 1:(length(marker_indices)-1), function(x){
+#         index = ( marker_indices[x]+1 ):( marker_indices[x+1] )
+#         tabulate( int_div_local_times[ index ], n_bins )
+#         }, FUN.VALUE = 1:n_bins )
+#
+#     visits = apply( bins, 2, function(x) max(which( x > 0 )) )
+#     visits_per_bin = vapply( 1:n_bins, function(x) sum( visits >= x ), FUN.VALUE = 1 )
+#     local_rates = rowSums(bins) / visits_per_bin
+#     local_rates[ is.nan(local_rates) ] = 0
+#     local_rates
+# }
+#
+# local_rates_helper.ragged_event_record = function( event_times, marker_times, event_offset, marker_offset, n_bins, bin_size ){
+#
+#     if ( length( marker_times ) <= 2 ) return( Inf )
+#     if ( length( event_times ) <= 1 ) return( Inf )
+#
+#     inter_marker_event_times = CAB_cpp_local_rate_helper_ragged_event_record( event_times, marker_times, event_offset, marker_offset )
+#     int_div_local_times = inter_marker_event_times$local_times %/% bin_size
+#     marker_indices = inter_marker_event_times$interior_markers
+#
+#     bins = vapply( 1:(length(marker_indices)-1), function(x){
+#         index = ( marker_indices[x]+1 ):marker_indices[x+1]
+#         tabulate( int_div_local_times[ index ], n_bins )
+#         }, FUN.VALUE = 1:n_bins )
+#
+#     visits = apply( bins, 2, function(x) max(which( x > 0 )) )
+#     visits_per_bin = vapply( 1:n_bins, function(x) sum( visits >= x ), FUN.VALUE = 1 )
+#     local_rates = rowSums(bins) / visits_per_bin
+#     local_rates[ is.nan(local_rates) ] = 0
+#     local_rates
+# }
+#####
+local_rate_bin_helper = function( local_data, max_bins, bin_resolution ){
+    local_bins = CAB_cpp_local_binning( local_data$local_times, local_data$visit_lengths, max_bins, bin_resolution )
+    local_bins$local_rate = local_bins$local_times / local_bins$visit_lengths
+    local_bins$local_rate[ is.nan(local_bins$local_rate) ] = 0
+    local_bins$bin_names = seq( 0, max_bins ) * bin_resolution
+    local_bins
 }
 
-local_rates_helper.ragged_event_record = function( event_times, marker_times, event_offset, marker_offset, n_bins, bin_size ){
-
-    if ( length( marker_times ) <= 2 ) return( Inf )
-    if ( length( event_times ) <= 1 ) return( Inf )
-
-    inter_marker_event_times = CAB_cpp_local_rate_helper_ragged_event_record( event_times, marker_times, event_offset, marker_offset )
-
-    int_div_local_times = inter_marker_event_times$local_times %/% bin_size
-    marker_indices = inter_marker_event_times$interior_markers
-
-    bins = vapply( 1:(length(marker_indices)-1), function(x){
-        index = ( marker_indices[x]+1 ):marker_indices[x+1]
-        tabulate( int_div_local_times[ index ], n_bins )
-        }, FUN.VALUE = 1:n_bins )
-
-    visits = apply( bins, 2, function(x) max(which( x > 0 )) )
-    visits_per_bin = vapply( 1:n_bins, function(x) sum( visits >= x ), FUN.VALUE = 1 )
-    local_rates = rowSums(bins) / visits_per_bin
-    local_rates[ is.nan(local_rates) ] = 0
-    local_rates
-}
-
-setMethod( "compute.local_rates", signature( data = "formal_event_record", event_name = "character", marker = "character", n_bins = "numeric", bin_size = "numeric" ),
-    function( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size ){
-
-        if ( nrow( data@events ) <= 2 ) return( Inf )
-        n_markers = sum( data@events$event == marker )
-        if ( n_markers <= 1 ) return( Inf )
-        local_rates_helper.formal_event_record( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size, n_markers )
+setMethod( "compute.local_rates", signature( data = "list", n_bins = "numeric", bin_size = "numeric" ),
+    function( data, n_bins, bin_size ){
+        if ( Inf %in% data$local_times ) return( list( visit_bins = Inf, response_bins = Inf, local_rate = rep( Inf, max_bins+1), bin_names = seq( 0, max_bins )*bin_size ) )
+        local_rate_bin_helper( data, max_bins, bin_size )
     }
 )
 
-setMethod( "compute.local_rates", signature( data = "ragged_event_record", event_name = "character", marker = "character", n_bins = "numeric", bin_size = "numeric" ),
-    function( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size ){
-
-        event_times = data@events[[event_name]]
-        marker_times = data@events[[marker]]
-
-        if ( length( marker_times ) <= 2 ) return( Inf )
-        if ( length( event_times ) <= 1 ) return( Inf )
-
-        local_rates_helper.ragged_event_record( event_times, marker_times, event_offset, marker_offset, n_bins, bin_size )
-    }
-)
+# setMethod( "compute.local_rates", signature( data = "formal_event_record", event_name = "character", marker = "character", n_bins = "numeric", bin_size = "numeric" ),
+#     function( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size ){
+#
+#         if ( nrow( data@events ) <= 2 ) return( Inf )
+#         n_markers = sum( data@events$event == marker )
+#         if ( n_markers <= 1 ) return( Inf )
+#         local_rates_helper.formal_event_record( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size, n_markers )
+#     }
+# )
+#
+# setMethod( "compute.local_rates", signature( data = "ragged_event_record", event_name = "character", marker = "character", n_bins = "numeric", bin_size = "numeric" ),
+#     function( data, event_name, marker, event_offset, marker_offset, n_bins, bin_size ){
+#
+#         event_times = data@events[[event_name]]
+#         marker_times = data@events[[marker]]
+#
+#         if ( length( marker_times ) <= 2 ) return( Inf )
+#         if ( length( event_times ) <= 1 ) return( Inf )
+#
+#         local_rates_helper.ragged_event_record( event_times, marker_times, event_offset, marker_offset, n_bins, bin_size )
+#     }
+# )

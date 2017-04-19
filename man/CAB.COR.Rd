@@ -18,6 +18,8 @@ See examples for an example.
 # An example of our COR implementation.
 # Make a model constructor
 COR_maker = model_constructor( "COR", c( "DOR", "depletion", "initial_reserve", "rft_schedule", "emission", "rft_duration" ) )
+# Make an event record
+my_events = make.ragged_event_record( c("resp_time", "rft_time"), c(5000,1000) )
 
 # Get the necessary functions. Use built-in functions:
 # DOR:
@@ -35,20 +37,20 @@ COR.rft_duration
 # Event record
 my_events
 
+# Define the necessary parameters. Parameter names are arguments in the model functions.
+COR_params = {list( DOR_max = 0.01, DOR_scale = 2000,
+    IRI_resp_times = rep( NaN, 1000 ), IRI_resps = 0, reserve_value = NaN,
+   depletion_constant = 0.001, initial_reserve_constant = 0.75, inter_rft_interval = 30,
+   time = 0, min_irt = 0.1, food_duration = 2,
+   session_duration = 100, rft_arranged = FALSE, rft_time = NaN
+  )}
+
 #Make the model:
 COR_model = { COR_maker( organism_params = COR_params, DOR = COR.linear_DOR,
    depletion = COR.constant_depletion, initial_reserve = COR.initial_reserve,
    rft_schedule = COR.exponential_vi, emission = COR.G_E_emission,
    rft_duration = COR.rft_duration, event_record = my_events
 ) }
-
-# Define the necessary parameters. Parameter names are arguments in the model functions.
-COR_params = {list( DOR_max = 0.01, DOR_scale = 2000,
-    IRI_resp_times = rep( NaN, 1000 ), IRI_resps = 0, reserve_value = NaN,
-   depletion_constant = 0.001, initial_reserve_constant = 0.75, inter_rft_interval = 30,
-   time = 0, min_irt = minimum_irt, food_duration = 2,
-   session_duration = 1800, rft_arranged = FALSE, rft_time = NaN
-  )}
 
 # Make a function to run the model
 COR.do = function( COR_params, COR_model ){

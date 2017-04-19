@@ -33,20 +33,16 @@ CAB_cpp_int2bin <- function(bits, n) {
     .Call('CAB_CAB_cpp_int2bin', PACKAGE = 'CAB', bits, n)
 }
 
-CAB_cpp_local_count_helper_formal_event_record <- function(data, event, marker, event_offset, marker_offset, n_markers) {
-    .Call('CAB_CAB_cpp_local_count_helper_formal_event_record', PACKAGE = 'CAB', data, event, marker, event_offset, marker_offset, n_markers)
+CAB_cpp_local_times_formal_event_record <- function(data, event, marker, event_offset, n_markers) {
+    .Call('CAB_CAB_cpp_local_times_formal_event_record', PACKAGE = 'CAB', data, event, marker, event_offset, n_markers)
 }
 
-CAB_cpp_local_count_helper_ragged_event_record <- function(event_times, marker_times, event_offset, marker_offset) {
-    .Call('CAB_CAB_cpp_local_count_helper_ragged_event_record', PACKAGE = 'CAB', event_times, marker_times, event_offset, marker_offset)
+CAB_cpp_local_binning <- function(local_times, visit_lengths, max_bin, bin_resolution) {
+    .Call('CAB_CAB_cpp_local_binning', PACKAGE = 'CAB', local_times, visit_lengths, max_bin, bin_resolution)
 }
 
-CAB_cpp_local_rate_helper_ragged_event_record <- function(event_times, marker_times, event_offset, marker_offset) {
-    .Call('CAB_CAB_cpp_local_rate_helper_ragged_event_record', PACKAGE = 'CAB', event_times, marker_times, event_offset, marker_offset)
-}
-
-CAB_cpp_local_rate_helper_formal_event_record <- function(data, event, marker, event_offset, marker_offset, n_markers) {
-    .Call('CAB_CAB_cpp_local_rate_helper_formal_event_record', PACKAGE = 'CAB', data, event, marker, event_offset, marker_offset, n_markers)
+CAB_cpp_local_times_ragged_event_record <- function(event_times, marker_times, event_offset) {
+    .Call('CAB_CAB_cpp_local_times_ragged_event_record', PACKAGE = 'CAB', event_times, marker_times, event_offset)
 }
 
 CAB_cpp_not_duplicated <- function(x) {

@@ -7,10 +7,9 @@
 \title{Compute local rates}
 \usage{
 compute.local_counts(data, event_name, marker, event_offset = 0,
-  marker_offset = 0)
+  marker_offset)
 
-compute.local_rates(data, event_name, marker, event_offset, marker_offset,
-  n_bins, bin_size)
+compute.local_rates(data, n_bins, bin_size)
 }
 \arguments{
 \item{data}{Either an object of class \code{simulation_analysis_object}, \code{analysis_object}, or \code{dataset}.}

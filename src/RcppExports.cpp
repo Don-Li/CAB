@@ -107,9 +107,9 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// CAB_cpp_local_count_helper_formal_event_record
-NumericVector CAB_cpp_local_count_helper_formal_event_record(DataFrame data, String event, String marker, double event_offset, double marker_offset, int n_markers);
-RcppExport SEXP CAB_CAB_cpp_local_count_helper_formal_event_record(SEXP dataSEXP, SEXP eventSEXP, SEXP markerSEXP, SEXP event_offsetSEXP, SEXP marker_offsetSEXP, SEXP n_markersSEXP) {
+// CAB_cpp_local_times_formal_event_record
+List CAB_cpp_local_times_formal_event_record(DataFrame data, String event, String marker, double event_offset, int n_markers);
+RcppExport SEXP CAB_CAB_cpp_local_times_formal_event_record(SEXP dataSEXP, SEXP eventSEXP, SEXP markerSEXP, SEXP event_offsetSEXP, SEXP n_markersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -117,53 +117,35 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< String >::type event(eventSEXP);
     Rcpp::traits::input_parameter< String >::type marker(markerSEXP);
     Rcpp::traits::input_parameter< double >::type event_offset(event_offsetSEXP);
-    Rcpp::traits::input_parameter< double >::type marker_offset(marker_offsetSEXP);
     Rcpp::traits::input_parameter< int >::type n_markers(n_markersSEXP);
-    __result = Rcpp::wrap(CAB_cpp_local_count_helper_formal_event_record(data, event, marker, event_offset, marker_offset, n_markers));
+    __result = Rcpp::wrap(CAB_cpp_local_times_formal_event_record(data, event, marker, event_offset, n_markers));
     return __result;
 END_RCPP
 }
-// CAB_cpp_local_count_helper_ragged_event_record
-NumericVector CAB_cpp_local_count_helper_ragged_event_record(NumericVector event_times, NumericVector marker_times, double event_offset, double marker_offset);
-RcppExport SEXP CAB_CAB_cpp_local_count_helper_ragged_event_record(SEXP event_timesSEXP, SEXP marker_timesSEXP, SEXP event_offsetSEXP, SEXP marker_offsetSEXP) {
+// CAB_cpp_local_binning
+List CAB_cpp_local_binning(NumericVector local_times, NumericVector visit_lengths, int max_bin, double bin_resolution);
+RcppExport SEXP CAB_CAB_cpp_local_binning(SEXP local_timesSEXP, SEXP visit_lengthsSEXP, SEXP max_binSEXP, SEXP bin_resolutionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericVector >::type local_times(local_timesSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type visit_lengths(visit_lengthsSEXP);
+    Rcpp::traits::input_parameter< int >::type max_bin(max_binSEXP);
+    Rcpp::traits::input_parameter< double >::type bin_resolution(bin_resolutionSEXP);
+    __result = Rcpp::wrap(CAB_cpp_local_binning(local_times, visit_lengths, max_bin, bin_resolution));
+    return __result;
+END_RCPP
+}
+// CAB_cpp_local_times_ragged_event_record
+List CAB_cpp_local_times_ragged_event_record(NumericVector event_times, NumericVector marker_times, double event_offset);
+RcppExport SEXP CAB_CAB_cpp_local_times_ragged_event_record(SEXP event_timesSEXP, SEXP marker_timesSEXP, SEXP event_offsetSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< NumericVector >::type event_times(event_timesSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type marker_times(marker_timesSEXP);
     Rcpp::traits::input_parameter< double >::type event_offset(event_offsetSEXP);
-    Rcpp::traits::input_parameter< double >::type marker_offset(marker_offsetSEXP);
-    __result = Rcpp::wrap(CAB_cpp_local_count_helper_ragged_event_record(event_times, marker_times, event_offset, marker_offset));
-    return __result;
-END_RCPP
-}
-// CAB_cpp_local_rate_helper_ragged_event_record
-List CAB_cpp_local_rate_helper_ragged_event_record(NumericVector event_times, NumericVector marker_times, double event_offset, double marker_offset);
-RcppExport SEXP CAB_CAB_cpp_local_rate_helper_ragged_event_record(SEXP event_timesSEXP, SEXP marker_timesSEXP, SEXP event_offsetSEXP, SEXP marker_offsetSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type event_times(event_timesSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type marker_times(marker_timesSEXP);
-    Rcpp::traits::input_parameter< double >::type event_offset(event_offsetSEXP);
-    Rcpp::traits::input_parameter< double >::type marker_offset(marker_offsetSEXP);
-    __result = Rcpp::wrap(CAB_cpp_local_rate_helper_ragged_event_record(event_times, marker_times, event_offset, marker_offset));
-    return __result;
-END_RCPP
-}
-// CAB_cpp_local_rate_helper_formal_event_record
-List CAB_cpp_local_rate_helper_formal_event_record(DataFrame data, String event, String marker, double event_offset, double marker_offset, int n_markers);
-RcppExport SEXP CAB_CAB_cpp_local_rate_helper_formal_event_record(SEXP dataSEXP, SEXP eventSEXP, SEXP markerSEXP, SEXP event_offsetSEXP, SEXP marker_offsetSEXP, SEXP n_markersSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< DataFrame >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< String >::type event(eventSEXP);
-    Rcpp::traits::input_parameter< String >::type marker(markerSEXP);
-    Rcpp::traits::input_parameter< double >::type event_offset(event_offsetSEXP);
-    Rcpp::traits::input_parameter< double >::type marker_offset(marker_offsetSEXP);
-    Rcpp::traits::input_parameter< int >::type n_markers(n_markersSEXP);
-    __result = Rcpp::wrap(CAB_cpp_local_rate_helper_formal_event_record(data, event, marker, event_offset, marker_offset, n_markers));
+    __result = Rcpp::wrap(CAB_cpp_local_times_ragged_event_record(event_times, marker_times, event_offset));
     return __result;
 END_RCPP
 }
