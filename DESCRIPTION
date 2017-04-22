@@ -18,6 +18,7 @@ Collate:
     'event_record.R'
     'model.CAB.R'
     'CAB.extract.R'
+    'CAB.ks.R'
     'CAB.srswo.R'
     'EBD.reproduction.R'
     'EBD_fitness_def__DEPRECATED.R'
