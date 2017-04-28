@@ -65,7 +65,7 @@ setMethod( "compute.local_counts", signature( data = "ragged_event_record", even
         if ( length( marker_times ) <= 2 ) return( Inf )
         if ( length( event_times ) <= 1 ) return( Inf )
         local_data = CAB_cpp_local_times_ragged_event_record( event_times, marker_times, event_offset )
-        if ( !is.missing(marker_offset) ){
+        if ( !missing(marker_offset) ){
             local_data$local_times  = local_data$local_times - marker_offset
             local_data$visit_lengths = local_data$visit_lengths - marker_offset
         }
@@ -79,7 +79,7 @@ setMethod( "compute.local_counts", signature( data = "formal_event_record", even
         n_markers = sum( data@events$event == marker )
         if ( n_markers <= 1 ) return( list( local_times = NaN, visit_bins = NaN ) )
         local_data = CAB_cpp_local_times_formal_event_record( data = data@events, event = event_name, marker = marker, event_offset, n_markers = n_markers )
-        if ( !is.missing(marker_offset) ){
+        if ( !missing(marker_offset) ){
             local_data$local_times = local_data$local_times - marker_offset
             local_data$visit_lengths = local_data$visit_lengths - marker_offset
         }
@@ -90,7 +90,7 @@ setMethod( "compute.local_counts", signature( data = "formal_event_record", even
 #' @rdname compute.local_rates
 #' @exportMethod compute.local_rates
 
-setGeneric( "compute.local_rates", function( data, n_bins, bin_size ) standardGeneric( "compute.local_rates" ) )
+setGeneric( "compute.local_rates", function( local_times, visit_lengths, n_bins, bin_size ) standardGeneric( "compute.local_rates" ) )
 
 #####
 # local_rates_helper.formal_event_record = function( data, event, marker, event_offset, marker_offset, n_bins, bin_size, n_markers ){
@@ -132,18 +132,18 @@ setGeneric( "compute.local_rates", function( data, n_bins, bin_size ) standardGe
 #     local_rates
 # }
 #####
-local_rate_bin_helper = function( local_data, max_bins, bin_resolution ){
-    local_bins = CAB_cpp_local_binning( local_data$local_times, local_data$visit_lengths, max_bins, bin_resolution )
+local_rate_bin_helper = function( local_times, visit_lengths, max_bins, bin_resolution ){
+    local_bins = CAB_cpp_local_binning( local_times, visit_lengths, max_bins, bin_resolution )
     local_bins$local_rate = local_bins$local_times / local_bins$visit_lengths
     local_bins$local_rate[ is.nan(local_bins$local_rate) ] = 0
     local_bins$bin_names = seq( 0, max_bins ) * bin_resolution
     local_bins
 }
 
-setMethod( "compute.local_rates", signature( data = "list", n_bins = "numeric", bin_size = "numeric" ),
-    function( data, n_bins, bin_size ){
-        if ( Inf %in% data$local_times ) return( list( visit_bins = Inf, response_bins = Inf, local_rate = rep( Inf, max_bins+1), bin_names = seq( 0, max_bins )*bin_size ) )
-        local_rate_bin_helper( data, max_bins, bin_size )
+setMethod( "compute.local_rates", signature( local_times = "numeric", visit_lengths = "numeric", n_bins = "numeric", bin_size = "numeric" ),
+    function( local_times, visit_lengths, n_bins, bin_size ){
+        if ( Inf %in% local_times ) return( list( visit_bins = Inf, response_bins = Inf, local_rate = rep( Inf, n_bins+1), bin_names = seq( 0, n_bins )*bin_size ) )
+        local_rate_bin_helper( local_times, visit_lengths, n_bins, bin_size )
     }
 )
 

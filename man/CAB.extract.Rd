@@ -36,4 +36,3 @@ good_times_model[ v = "happiness_level" ][2]
 \seealso{
 \code{\link{o_set}} for assignment
 }
-

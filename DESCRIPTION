@@ -8,7 +8,7 @@ Description: A package for data analysis and modelling in behaviour analysis.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 Collate:
     'CAB.COR.R'
     'CAB.COR_helpers.R'
@@ -78,9 +78,8 @@ Collate:
     'termination__DEPRECATED.R'
     'tidy.simulation___DEPRECATED.R'
     'trim.input_monitor__DEPRECATED.R'
-LinkingTo: Rcpp
-Depends:
-    data.table
+LinkingTo: Rcpp, RcppArmadillo
 Imports:
     Rcpp,
-    data.table
+    data.table,
+    RcppArmadillo

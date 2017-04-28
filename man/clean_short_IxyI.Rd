@@ -18,4 +18,3 @@ clean_short_IxyI(data, x_event, y_event, gap)
 \description{
 A method for cleaning short inter-x-y-intervals.
 }
-

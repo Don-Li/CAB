@@ -15,11 +15,5 @@
 #' @export CAB.ks
 
 CAB.ks = function( sample1, sample2 ){
-    len_sample_1 = length(sample1)
-    len_sample_2 = length(sample2)
-    ecdf_len = len_sample_1 * len_sample_2 / ( len_sample_1 + len_sample_2 )
-    all_samples = c( sample1, sample2 )
-    ordering = order( all_samples ) <= len_sample_1
-    differences = cumsum( ordering * 1/len_sample_1 + ( 1 - ordering ) * -1/len_sample_2 )
-    max(abs(differences))
+    CAB_ks( sample1, sample2 )
 }

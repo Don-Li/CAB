@@ -15,4 +15,3 @@ A matirx with the rows as the length of \code{x} and columns the number of uniqu
 \description{
 From a vector \code{x}, construct an indicator matrix
 }
-

@@ -25,7 +25,7 @@ List CAB_cpp_local_times_formal_event_record( DataFrame data, String event, Stri
     int j = 0;
     int n_visits = 0;
 
-    for ( i; i < rows; i ++ ){
+    for ( ; i < rows; i ++ ){
         if ( events[i] == marker ){
             current_marker = times[i];
             j = i+1;
@@ -33,7 +33,7 @@ List CAB_cpp_local_times_formal_event_record( DataFrame data, String event, Stri
         }
     }
 
-    for ( j; j < rows; j ++ ){
+    for ( ; j < rows; j ++ ){
         if ( events[j] == event ){
             if ( event_offset == 0 ){
                 local_times.push_back( times[j] - current_marker );
@@ -93,12 +93,12 @@ List CAB_cpp_local_times_ragged_event_record( NumericVector event_times, Numeric
     int n_visits = 0;
     std::vector<double> visit_lengths(0);
 
-    for ( event; event_times[ event ] <= marker_times[ 0 ]; event ++ ){
+    for ( ; event_times[ event ] <= marker_times[ 0 ]; event ++ ){
     }
 
     for ( int marker = 0; marker < n_markers-1; marker ++ ){
         n_visits = 0;
-        for ( event; event_times[ event ] > marker_times[marker] && event_times[ event ] <= marker_times[ marker + 1 ]; event ++ ){
+        for ( ; event_times[ event ] > marker_times[marker] && event_times[ event ] <= marker_times[ marker + 1 ]; event ++ ){
 
             if ( event_offset == 0 ){
                 local_times.push_back( event_times[ event ] - marker_times[ marker ] );

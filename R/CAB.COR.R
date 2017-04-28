@@ -11,6 +11,7 @@
 #' See examples for an example.
 #'
 #' @examples
+#' \dontrun{
 #' # An example of our COR implementation.
 #' # Make a model constructor
 #' COR_maker = model_constructor( "COR", c( "DOR", "depletion", "initial_reserve", "rft_schedule", "emission", "rft_duration" ) )
@@ -103,7 +104,7 @@
 #'
 #'# Run the model
 #' COR.do( COR_params, COR_model )
-#'
+#' }
 #' @seealso \link{COR_helpers} For functions associated with COR.
 #'
 #' @references

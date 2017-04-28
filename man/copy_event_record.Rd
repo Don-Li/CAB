@@ -12,4 +12,3 @@ copy_event_record( event_record )
 \description{
 A \code{event} record is typically implemented as an \code{environment} type class. This means that they have pass-by-reference semantics. As a result, assignment will not produce a copy of the object. Therefore, changing the object from the assigned value will change the original version.
 }
-

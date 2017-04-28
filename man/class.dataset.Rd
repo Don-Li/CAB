@@ -2,10 +2,10 @@
 % Please edit documentation in R/dataset.R
 \docType{class}
 \name{dataset-class}
-\alias{class.dataset}
 \alias{dataset-class}
-\alias{make.custom_dataset_object}
+\alias{class.dataset}
 \alias{set.custom_dataset}
+\alias{make.custom_dataset_object}
 \title{The \code{dataset} class.}
 \usage{
 set.custom_dataset(class_name, slotnames)
@@ -22,6 +22,7 @@ In the CAB package, experimental data that is imported for analysis is stored in
 
 \item{\code{analysis_object}}{A list, where each element is an \code{analysis_object}.}
 }}
+
 \section{{Custom \code{dataset} class}}{
 {
 If the user wishes to construct their own \code{dataset} class, the \code{set.custom_dataset()} function can be used.
@@ -53,8 +54,8 @@ To create an object of the newly set \code{dataset} child class, the \code{make.
     }
 }
 }
+
 \seealso{
 \code{\link{analysis_object}} For analogous examples for the usage of \code{set.custom_dataset} and \code{make.custom_dataset_object}.
 \code{\link{import_medpc_to_UOA}}
 }
-

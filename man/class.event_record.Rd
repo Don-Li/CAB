@@ -2,15 +2,15 @@
 % Please edit documentation in R/event_record.R
 \docType{class}
 \name{event_record-class}
-\alias{assign_event}
+\alias{event_record-class}
 \alias{class.event_record}
 \alias{event_record}
-\alias{event_record-class}
-\alias{get_event}
 \alias{make.formal_event_record}
-\alias{reset_event}
-\alias{show,formal_event_record-method}
 \alias{show,ragged_event_record-method}
+\alias{show,formal_event_record-method}
+\alias{assign_event}
+\alias{reset_event}
+\alias{get_event}
 \alias{trim_event_record}
 \title{\code{event_record} class}
 \usage{
@@ -130,6 +130,7 @@ The second slot, \code{variables} is a vector that contains the names of the var
     }
 }
 }
+
 \examples{
 # Create an "event_record" for storing the variables: "resp_time" and "rft_time"
 # Record a maximum of 100 of each type of event
@@ -158,4 +159,3 @@ reset_event( my_record )
 \seealso{
 \code{\link{convert_event_record}}
 }
-

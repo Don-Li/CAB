@@ -15,6 +15,7 @@ Previous implementations of COR simulated responding at each possible discrete t
 See examples for an example.
 }
 \examples{
+\dontrun{
 # An example of our COR implementation.
 # Make a model constructor
 COR_maker = model_constructor( "COR", c( "DOR", "depletion", "initial_reserve", "rft_schedule", "emission", "rft_duration" ) )
@@ -107,7 +108,7 @@ COR.do = function( COR_params, COR_model ){
 
 # Run the model
 COR.do( COR_params, COR_model )
-
+}
 }
 \references{
 Berg, J. P., & McDowell, J. J (2011). Quantitative, steady-state properties of Catania's computational model of the operant reserve. Behavioural Processes, 87(1), 71-83. \url{https://doi.org/10.1016/j.beproc.2011.01.006}
@@ -119,4 +120,3 @@ Li, D., Elliffe, D., & Hautus, M. J. (2017). Pre-Asymptotic Response Rates as a 
 \seealso{
 \link{COR_helpers} For functions associated with COR.
 }
-

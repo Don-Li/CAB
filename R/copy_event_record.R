@@ -32,11 +32,11 @@ copy_ragged_event_record = function( event_record ){
     record = event_record@events
     variables = event_record@variables
     lengths = event_record@lengths
-    new( "ragged_event_record", events = list2env( as.list( record, parent = emptyenv() ) ), variables = variables, lengths = lengths )
+    methods::new( "ragged_event_record", events = list2env( as.list( record, parent = emptyenv() ) ), variables = variables, lengths = lengths )
 }
 
 copy_formal_event_record = function( event_record ){
     variables = event_record@variables
     lengths = event_record@lengths
-    new( "formal_event_record", events = data.table::copy( event_record@events ), variables = variables, lengths = lengths )
+    methods::new( "formal_event_record", events = data.table::copy( event_record@events ), variables = variables, lengths = lengths )
 }

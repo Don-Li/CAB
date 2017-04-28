@@ -142,7 +142,7 @@ make.ragged_event_record = function( variables, len ){
     names( dummy_list$counts ) = variables
     length_vector = len
     names( length_vector ) = variables
-    new( "ragged_event_record", events = list2env( dummy_list, parent = emptyenv() ), variables = variables, lengths = length_vector )
+    methods::new( "ragged_event_record", events = list2env( dummy_list, parent = emptyenv() ), variables = variables, lengths = length_vector )
 }
 
 #' @rdname class.event_record
@@ -150,7 +150,7 @@ make.ragged_event_record = function( variables, len ){
 
 make.formal_event_record = function( variables, len ){
     event_record = data.table::data.table( time = rep( NaN, len ), event = rep( "", len ) )
-    new( "formal_event_record", events = event_record, variables = variables, lengths = len )
+    methods::new( "formal_event_record", events = event_record, variables = variables, lengths = len )
 }
 
 #' @rdname class.event_record

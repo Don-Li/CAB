@@ -160,11 +160,11 @@ COR.initial_reserve = function( initial_reserve_constant ){
 #' @export COR.shifted_exponential_vi
 
 COR.exponential_vi = function( inter_rft_interval, time ){
-    rexp( 1, 1/inter_rft_interval ) + time
+    stats::rexp( 1, 1/inter_rft_interval ) + time
 }
 
 COR.shifted_exponential_vi = function( inter_rft_interval, time, shift ){
-    rexp( 1, 1/inter_rft_interval ) + time + shift
+    stats::rexp( 1, 1/inter_rft_interval ) + time + shift
 }
 
 
@@ -198,7 +198,7 @@ COR.shifted_exponential_vi = function( inter_rft_interval, time, shift ){
 
 COR.G_E_emission = function( reserve_value, time, min_irt ){
     prob_to_rate = -log( 1 - reserve_value )
-    rexp( 1, prob_to_rate ) + min_irt + time
+    stats::rexp( 1, prob_to_rate ) + min_irt + time
 }
 
 #' @rdname COR_helpers

@@ -3,14 +3,14 @@
 \docType{methods}
 \name{compute.session_rates}
 \alias{compute.session_rates}
-\alias{compute.session_rates,formal_event_record,list,character,missing-method}
 \alias{compute.session_rates,formal_event_record,list,character,numeric-method}
-\alias{compute.session_rates,formal_event_record,list,missing,missing-method}
 \alias{compute.session_rates,formal_event_record,list,missing,numeric-method}
-\alias{compute.session_rates,ragged_event_record,list,character,missing-method}
+\alias{compute.session_rates,formal_event_record,list,missing,missing-method}
+\alias{compute.session_rates,formal_event_record,list,character,missing-method}
 \alias{compute.session_rates,ragged_event_record,list,character,numeric-method}
-\alias{compute.session_rates,ragged_event_record,list,missing,missing-method}
 \alias{compute.session_rates,ragged_event_record,list,missing,numeric-method}
+\alias{compute.session_rates,ragged_event_record,list,character,missing-method}
+\alias{compute.session_rates,ragged_event_record,list,missing,missing-method}
 \title{Compute session rates}
 \usage{
 compute.session_rates(data, event_offsets, dims = NULL,
@@ -82,4 +82,3 @@ With respect to efficiency, the \code{compute.session_rates} method for \code{si
 \seealso{
 \code{\link{class.analysis_object}} For constructing arguments for \code{data} parameter.
 }
-

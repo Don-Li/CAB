@@ -5,8 +5,8 @@
 \alias{CAB.model-class}
 \alias{class.CAB.model}
 \alias{model_constructor}
-\alias{set_derived}
 \alias{show,CAB.model-method}
+\alias{set_derived}
 \title{Construction of models in CAB}
 \usage{
 \S4method{show}{CAB.model}(object)
@@ -53,6 +53,7 @@ For constructing a model:
     }
 }
 }
+
 \examples{
 # Make a model called "good_times"
 # First set up the function to construct "good_time" models
@@ -82,4 +83,3 @@ good_times_model
 \seealso{
 \code{\link{event_record}}.
 }
-

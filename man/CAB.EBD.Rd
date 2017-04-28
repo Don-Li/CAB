@@ -19,4 +19,3 @@ McDowell, J. J., Caron, M. L., Kulubekova, S., & Berg, J. P. (2008). A computati
 McDowell, J. J., & Popa, A. (2010). Toward a mechanics of adaptive behavior: Evolutionary dynamics and matching theory statics. Journal of the Experimental Analysis of Behavior, 94(2), 241–260. \url{https://doi.org/10.1901/jeab.2010.94-241}
 McDowell, J. J., Soto, P. L., Dallery, J., & Kulubekova, S. (2006). A computational theory of adaptive behavior based on an evolutionary reinforcement mechanism, 175. \url{https://doi.org/10.1145/1143997.1144028}
 }
-

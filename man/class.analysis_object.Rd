@@ -2,12 +2,12 @@
 % Please edit documentation in R/analysis_object.R
 \docType{class}
 \name{analysis_object-class}
-\alias{UOA_analysis_object-class}
 \alias{analysis_object-class}
-\alias{make.custom_analysis_object}
-\alias{make.simulation_analysis_object}
+\alias{UOA_analysis_object-class}
 \alias{set.custom_analysis_object}
+\alias{make.custom_analysis_object}
 \alias{simulation_analysis_object-class}
+\alias{make.simulation_analysis_object}
 \title{\code{CAB} Analysis Objects}
 \usage{
 set.custom_analysis_object(class_name, slot_names)
@@ -32,6 +32,7 @@ The parent class \code{analysis_object} does not really do anything. The real wo
 
 \item{\code{meta_data}}{A \code{list} that contains the information about the experiment or simulation.}
 }}
+
 \section{{\code{UOA_analysis_object}}}{
 {
 The \code{UOA_analysis_object} class is made specially for the MED-PC files used at the University of Auckland.
@@ -93,6 +94,7 @@ By default, simulations will store the data in a \code{simulation_analysis_objec
     }
 }
 }
+
 \examples{
 # Make a custom "analysis_object"
 # With an unnamed list:
@@ -106,4 +108,3 @@ set.custom_analysis_object( class_name = "test_analysis", slot_names = list( slo
 make.custom_analysis_object( "test_analysis", slot1 = data.frame(1), slot2 = "a" )
 
 }
-

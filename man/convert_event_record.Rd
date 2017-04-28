@@ -21,4 +21,3 @@ The ordering of the \code{dim} arguemnt is very important. Often, events may be 
 \seealso{
 \code{\link{class.event_record}}
 }
-

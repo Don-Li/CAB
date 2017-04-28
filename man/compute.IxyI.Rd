@@ -3,9 +3,9 @@
 \docType{methods}
 \name{compute.I_xx_I.formal_event_record}
 \alias{compute.I_xx_I.formal_event_record}
+\alias{inter-response_time}
 \alias{compute.I_xx_I.ragged_event_record}
 \alias{compute.IxyI,dataset,ANY,ANY,ANY,ANY-method}
-\alias{inter-response_time}
 \title{Calulating the time elapsed between events in a simulation}
 \usage{
 compute.I_xx_I.formal_event_record(data, x_event, break_event, x_offset = 0)
@@ -52,4 +52,3 @@ prp_less_rft = compute.IxyI( d, x_event = "rft_time", y_event = "resp_time", x_o
 \seealso{
 \code{\link{class.analysis_object}} For constructing arguments for \code{data} parameter.
 }
-

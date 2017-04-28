@@ -3,6 +3,7 @@
 \name{CAB.srswo}
 \alias{CAB.srswo}
 \alias{CAB.srswo_2}
+\alias{CAB.srswo_2}
 \title{Grouped simple random sampling without replacement}
 \usage{
 CAB.srswo(size, group_size, n)
@@ -57,6 +58,7 @@ In comparison, the \code{sample} function employs a nested loop. So, if one wish
 
 }
 }
+
 \examples{
 require( microbenchmark )
 # Get 100 repeated samples by drawing twice from 1:100
@@ -85,4 +87,3 @@ microbenchmark(
 # CAB.srswo is now slower than sample
 
 }
-

@@ -9,4 +9,3 @@ not_duplicated(x)
 \description{
 Calls the \code{duplicated} function in \code{Rcpp} and does a logical inversion. This returns a logical value giving \code{TRUE} for values that are not duplicated and \code{FALSE} otherwise.
 }
-

@@ -34,7 +34,7 @@ setMethod( "convert_event_record", signature( event_record = "formal_event_recor
         names( z ) = dims
         lens = lengths(z)
         z$counts = as.list( lens )
-        new( "ragged_event_record", events = list2env( z, parent = emptyenv() ), variables = dims, lengths = lens )
+        methods::new( "ragged_event_record", events = list2env( z, parent = emptyenv() ), variables = dims, lengths = lens )
     }
 )
 
@@ -44,5 +44,5 @@ convert_event_record_ragged_to_formal = function( event_record, dims ){
     events = rep( dims, times = row_n )
     x = data.table::data.table( time = times, event = events )
     data.table::setorder( x, time )
-    new( "formal_event_record", events = x, variables = dims, lengths = sum(row_n) )
+    methods::new( "formal_event_record", events = x, variables = dims, lengths = sum(row_n) )
 }

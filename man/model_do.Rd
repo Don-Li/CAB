@@ -26,6 +26,7 @@ In the \code{CAB} package, models are implemented in \code{CAB.model} child clas
     }
 }
 }
+
 \examples{
 # Carrying on from the example in class.CAB.models:
 good_times_model
@@ -44,4 +45,3 @@ good_times_model
 \code{\link{class.CAB.model}}
 \code{\link{o_set}} also for the example
 }
-

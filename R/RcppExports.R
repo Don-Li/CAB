@@ -33,6 +33,10 @@ CAB_cpp_int2bin <- function(bits, n) {
     .Call('CAB_CAB_cpp_int2bin', PACKAGE = 'CAB', bits, n)
 }
 
+CAB_ks <- function(sample_1, sample_2) {
+    .Call('CAB_CAB_ks', PACKAGE = 'CAB', sample_1, sample_2)
+}
+
 CAB_cpp_local_times_formal_event_record <- function(data, event, marker, event_offset, n_markers) {
     .Call('CAB_CAB_cpp_local_times_formal_event_record', PACKAGE = 'CAB', data, event, marker, event_offset, n_markers)
 }

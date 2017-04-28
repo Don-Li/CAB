@@ -156,11 +156,11 @@ EBD.get_oc = function( last_resp, oc_lower_bounds ){
 #' @export EBD.shifted_geometric_vi
 
 EBD.geometric_vi = function( inter_rft_interval, min_irt, time ){
-    rgeom( 1, 1-exp(-1/inter_rft_interval) )/min_irt + 1 + time
+    stats::rgeom( 1, 1-exp(-1/inter_rft_interval) )/min_irt + 1 + time
 }
 
 EBD.shifted_geometric_vi = function( inter_rft_interval, min_irt, time, shift  ){
-    rgeom( 1, 1-exp(-1/inter_rft_interval) )/min_irt + 1 + time + shift / min_irt
+    stats::rgeom( 1, 1-exp(-1/inter_rft_interval) )/min_irt + 1 + time + shift / min_irt
 }
 
 

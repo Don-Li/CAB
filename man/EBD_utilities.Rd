@@ -2,10 +2,11 @@
 % Please edit documentation in R/EBD_utilities.R
 \docType{methods}
 \name{bin2int}
-\alias{EBD_set}
-\alias{EBD_set,EBD,integer,integer,missing-method}
 \alias{bin2int}
 \alias{int2bin}
+\alias{EBD_set}
+\alias{EBD_set,EBD,integer,integer,missing-method}
+\alias{EBD_set}
 \title{Evolutionary Behaviour Dynamics Utilities}
 \usage{
 bin2int(binaries, digits)

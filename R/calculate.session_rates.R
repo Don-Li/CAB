@@ -55,7 +55,7 @@ formal_event_record.session_rate_helper = function( formal_event_record, event_o
 
     counts = vapply( unique( c(dims, names(event_offset) ) ), function(x) sum(event==x) ,FUN.VALUE = 1 )
 
-    offset_at_end = names( event_offset )[which( names( event_offset ) %in% tail( event, 1 ) )]
+    offset_at_end = names( event_offset )[which( names( event_offset ) %in% utils::tail( event, 1 ) )]
     offset_counts = counts[ names(counts) %in% names( event_offset ) ]
 
     if ( length( offset_at_end ) == 1 ){
@@ -107,7 +107,7 @@ setMethod( "compute.session_rates", signature( data = "formal_event_record", eve
 
 setMethod( "compute.session_rates", signature( data = "formal_event_record", event_offsets = "list", dims = "character", session_duration = "missing" ),
     function( data, event_offsets, dims, session_duration ){
-        session_duration = data@events[, max(time)]
+        session_duration = max( formal@events$time )
         formal_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
     }
 )
@@ -138,7 +138,7 @@ setMethod( "compute.session_rates", signature( data = "ragged_event_record", eve
     function( data, event_offsets, dims ){
         session_duration = max( vapply( data@variables,
             function( x ){
-                tail( data@events[[x]], 1 )
+                utils::tail( data@events[[x]], 1 )
             }, FUN.VALUE = 1 ) )
         ragged_event_record.session_rate_helper( data, event_offsets, session_duration, dims )
     }
@@ -151,7 +151,7 @@ setMethod( "compute.session_rates", signature( data = "ragged_event_record", eve
     function( data, event_offsets ){
         session_duration = max( vapply( data@variables,
             function( x ){
-                tail( data@events[[x]], 1 )
+                utils::tail( data@events[[x]], 1 )
             }, FUN.VALUE = 1 ) )
         dims = data@variables
         ragged_event_record.session_rate_helper( data, event_offsets, session_duration, dims )

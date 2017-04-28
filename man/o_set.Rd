@@ -2,9 +2,9 @@
 % Please edit documentation in R/o_set.R
 \docType{methods}
 \name{o_set}
+\alias{o_set}
 \alias{CAB.repalcement}
 \alias{[<-,CAB.model,numeric,numeric-method}
-\alias{o_set}
 \title{Change values in a model}
 \usage{
 o_set(model, variable, value, i, j)
@@ -62,8 +62,8 @@ In the \code{CAB} package, models are implemented in \code{CAB.model} child clas
     }
 }
 }
+
 \seealso{
 \code{\link{model_do}} for an example of usage.
 \code{\link{set_param}} for setting all parameters.
 }
-

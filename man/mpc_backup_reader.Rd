@@ -40,4 +40,3 @@ data = import_medpc_to_formal_event_record( "Backup", variable_arrays, event_arr
 
 
 }
-

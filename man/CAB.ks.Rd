@@ -17,4 +17,3 @@ Calculates the two-sample Kolmogorov-Smirnov statistic
 \details{
 The KS statistic is computed the same way as it is in the \code{ks.test} function in the \code{stats} package. We just stripped away all the other stuff so that it is faster.
 }
-

@@ -2,14 +2,14 @@
 % Please edit documentation in R/calculate.local_rates.R
 \name{compute.local_counts}
 \alias{compute.local_counts}
-\alias{compute.local_rates}
 \alias{local_rates}
+\alias{compute.local_rates}
 \title{Compute local rates}
 \usage{
 compute.local_counts(data, event_name, marker, event_offset = 0,
   marker_offset)
 
-compute.local_rates(data, n_bins, bin_size)
+compute.local_rates(local_times, visit_lengths, n_bins, bin_size)
 }
 \arguments{
 \item{data}{Either an object of class \code{simulation_analysis_object}, \code{analysis_object}, or \code{dataset}.}
@@ -46,4 +46,3 @@ local_resp_rate = compute.local_rates( d, x_event = "resp_time", marker = "rft_t
 \seealso{
 \code{\link{class.analysis_object}} For constructing arguments for \code{data} parameter.
 }
-
