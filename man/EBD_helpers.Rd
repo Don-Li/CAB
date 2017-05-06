@@ -6,7 +6,6 @@
 \alias{EBD.response_emission}
 \alias{EBD.get_oc}
 \alias{EBD.geometric_vi}
-\alias{EBD.fit_parents}
 \alias{EBD.w_gaussian_mutation}
 \title{McDowell's Evolutionary Behaviour Dynamics}
 \usage{
@@ -18,8 +17,6 @@ EBD.get_oc(last_resp, oc_lower_bounds)
 
 EBD.geometric_vi(inter_rft_interval, min_irt, time)
 
-EBD.fit_parents(pop_size, n_bits, fitness, fitness_weights, genotypes)
-
 EBD.w_gaussian_mutation(tick, preallocated_mutant_change,
   preallocated_mutant_index, max_phenotype, phenotypes)
 }
@@ -27,7 +24,7 @@ EBD.w_gaussian_mutation(tick, preallocated_mutant_change,
 A list of functions in the \code{CAB} package's implementation of McDowell's Evolutionary Behaviour Dynamics. A list of lower level utility functions, such as for converting integers in base 10 to base 2 can be found in \link{EBD_utilities}. See \link{CAB.EBD} for more details.
 }
 \details{
-Stuff
+Stuff.
 }
 \section{Fitness functions}{
 {
@@ -137,62 +134,6 @@ Stuff
     }
     \subsection{Value}{
         Generates a Geometrically distributed inter-reinforcement interval by doing a continuous to discrete transformation of the inter-rft-interval and adds the time to return the time at which food will be available.
-    }
-}
-############################################################################
-}
-
-\section{Parental sampling functions}{
-{
-    Functions for selecting parents.
-    \subsection{\code{EBD.fit_parents}}{
-        Select parents with the following algorithm:
-        \enumerate{
-            \item Create a subpopulation comprised of behaviours with the first unique phenotype.
-            \item Select a father weighted by the fitness values.
-            \item Select a mother given that the mother cannot be the father.
-            \item Repeat.
-        }
-        This can be shown to be mathematically equivalent to the following algorithm used in McDowell (2013; \url{https://doi.org/10.1037/a0034244}):
-        \enumerate{
-            \item Sample a fitness value from a fitness function.
-            \item Loop through the population until a behaviour with the sampled fitness is found. Set this to be the father. If not, go to 1.
-            \item Sample a fitness value from a fitness function.
-            \item Loop through the population until a behaviour with the sampled fitness if found. Set this to be the mother. If not, go to 3.
-            \item Repeat.
-        }
-        Our sampling implementation is more efficient on average. When the behaviours have fitness values close to the mean of the fitness function, the second algorithm is marginally faster. However, when behaviours are far away, the first algorithm is significantly faster.
-    }
-    \subsection{Usage}{
-        \code{EBD.fit_parents( pop_size, n_bits, fitness, fitness_weights, genotypes )}
-    }
-    \subsection{Arguments}{
-        \describe{
-            \item{\code{pop_size}}{Numeric.}
-            \item{\code{n_bits}}{How long each genotype is.}
-            \item{\code{fitness}}{A vector of fitness values.}
-            \item{\code{fitness_weights}}{A vector of fitness weights.}
-            \item{\code{genotypes}}{A matrix of genotypes.}
-        }
-    }
-    \subsection{Value}{
-        Returns a list containing a matrix of father genotypes and one for mother genotypes.
-    }
-
-    \subsection{\code{EBD.random_parents}}{
-        Select parents at random.
-    }
-    \subsection{Usage}{
-        \code{random_parents( pop_size, genotypes )}
-    }
-    \subsection{Arguments}{
-        \describe{
-            \item{\code{pop_size}}{Numeric.}
-            \item{\code{genotypes}}{A matrix of genotypes.}
-        }
-    }
-    \subsection{Value}{
-        Returns a list containing a matrix of father genotypes and one for mother genotypes.
     }
 }
 ############################################################################

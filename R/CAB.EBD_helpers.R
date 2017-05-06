@@ -7,7 +7,7 @@ NULL
 #'
 #' A list of functions in the \code{CAB} package's implementation of McDowell's Evolutionary Behaviour Dynamics. A list of lower level utility functions, such as for converting integers in base 10 to base 2 can be found in \link{EBD_utilities}. See \link{CAB.EBD} for more details.
 #'
-#' Stuff
+#' Stuff.
 #'
 #'
 #'
@@ -163,86 +163,85 @@ EBD.shifted_geometric_vi = function( inter_rft_interval, min_irt, time, shift  )
     stats::rgeom( 1, 1-exp(-1/inter_rft_interval) )/min_irt + 1 + time + shift / min_irt
 }
 
+# #' @rdname EBD_helpers
+# #'
+# #' @section Parental sampling functions:{
+# #'     Functions for selecting parents.
+# #'     \subsection{\code{EBD.fit_parents}}{
+# #'         Select parents with the following algorithm:
+# #'         \enumerate{
+# #'             \item Create a subpopulation comprised of behaviours with the first unique phenotype.
+# #'             \item Select a father weighted by the fitness values.
+# #'             \item Select a mother given that the mother cannot be the father.
+# #'             \item Repeat.
+# #'         }
+# #'         This can be shown to be mathematically equivalent to the following algorithm used in McDowell (2013; \url{https://doi.org/10.1037/a0034244}):
+# #'         \enumerate{
+# #'             \item Sample a fitness value from a fitness function.
+# #'             \item Loop through the population until a behaviour with the sampled fitness is found. Set this to be the father. If not, go to 1.
+# #'             \item Sample a fitness value from a fitness function.
+# #'             \item Loop through the population until a behaviour with the sampled fitness if found. Set this to be the mother. If not, go to 3.
+# #'             \item Repeat.
+# #'         }
+# #'         Our sampling implementation is more efficient on average. When the behaviours have fitness values close to the mean of the fitness function, the second algorithm is marginally faster. However, when behaviours are far away, the first algorithm is significantly faster.
+# #'     }
+# #'     \subsection{Usage}{
+# #'         \code{EBD.fit_parents( pop_size, n_bits, fitness, fitness_weights, genotypes )}
+# #'     }
+# #'     \subsection{Arguments}{
+# #'         \describe{
+# #'             \item{\code{pop_size}}{Numeric.}
+# #'             \item{\code{n_bits}}{How long each genotype is.}
+# #'             \item{\code{fitness}}{A vector of fitness values.}
+# #'             \item{\code{fitness_weights}}{A vector of fitness weights.}
+# #'             \item{\code{genotypes}}{A matrix of genotypes.}
+# #'         }
+# #'     }
+# #'     \subsection{Value}{
+# #'         Returns a list containing a matrix of father genotypes and one for mother genotypes.
+# #'     }
+# #'
+# #'     \subsection{\code{EBD.random_parents}}{
+# #'         Select parents at random.
+# #'     }
+# #'     \subsection{Usage}{
+# #'         \code{random_parents( pop_size, genotypes )}
+# #'     }
+# #'     \subsection{Arguments}{
+# #'         \describe{
+# #'             \item{\code{pop_size}}{Numeric.}
+# #'             \item{\code{genotypes}}{A matrix of genotypes.}
+# #'         }
+# #'     }
+# #'     \subsection{Value}{
+# #'         Returns a list containing a matrix of father genotypes and one for mother genotypes.
+# #'     }
+# #' }
+# #' @export EBD.fit_parents
+# #' @export EBD.random_parents
 
-#' @rdname EBD_helpers
-#'
-#' @section Parental sampling functions:{
-#'     Functions for selecting parents.
-#'     \subsection{\code{EBD.fit_parents}}{
-#'         Select parents with the following algorithm:
-#'         \enumerate{
-#'             \item Create a subpopulation comprised of behaviours with the first unique phenotype.
-#'             \item Select a father weighted by the fitness values.
-#'             \item Select a mother given that the mother cannot be the father.
-#'             \item Repeat.
-#'         }
-#'         This can be shown to be mathematically equivalent to the following algorithm used in McDowell (2013; \url{https://doi.org/10.1037/a0034244}):
-#'         \enumerate{
-#'             \item Sample a fitness value from a fitness function.
-#'             \item Loop through the population until a behaviour with the sampled fitness is found. Set this to be the father. If not, go to 1.
-#'             \item Sample a fitness value from a fitness function.
-#'             \item Loop through the population until a behaviour with the sampled fitness if found. Set this to be the mother. If not, go to 3.
-#'             \item Repeat.
-#'         }
-#'         Our sampling implementation is more efficient on average. When the behaviours have fitness values close to the mean of the fitness function, the second algorithm is marginally faster. However, when behaviours are far away, the first algorithm is significantly faster.
-#'     }
-#'     \subsection{Usage}{
-#'         \code{EBD.fit_parents( pop_size, n_bits, fitness, fitness_weights, genotypes )}
-#'     }
-#'     \subsection{Arguments}{
-#'         \describe{
-#'             \item{\code{pop_size}}{Numeric.}
-#'             \item{\code{n_bits}}{How long each genotype is.}
-#'             \item{\code{fitness}}{A vector of fitness values.}
-#'             \item{\code{fitness_weights}}{A vector of fitness weights.}
-#'             \item{\code{genotypes}}{A matrix of genotypes.}
-#'         }
-#'     }
-#'     \subsection{Value}{
-#'         Returns a list containing a matrix of father genotypes and one for mother genotypes.
-#'     }
-#'
-#'     \subsection{\code{EBD.random_parents}}{
-#'         Select parents at random.
-#'     }
-#'     \subsection{Usage}{
-#'         \code{random_parents( pop_size, genotypes )}
-#'     }
-#'     \subsection{Arguments}{
-#'         \describe{
-#'             \item{\code{pop_size}}{Numeric.}
-#'             \item{\code{genotypes}}{A matrix of genotypes.}
-#'         }
-#'     }
-#'     \subsection{Value}{
-#'         Returns a list containing a matrix of father genotypes and one for mother genotypes.
-#'     }
-#' }
-#' ############################################################################
-#' @export EBD.fit_parents
-#' @export EBD.random_parents
 
-EBD.fit_parents = function( pop_size, n_bits, fitness, fitness_weights, genotypes ){
-
-    unique_fitnesses = not_duplicated( fitness )
-    father_fitnesses = sample( fitness[unique_fitnesses], size = pop_size, replace = T, prob = fitness_weights[unique_fitnesses] )
-    father_index = match( father_fitnesses, fitness )
-
-    mother_index = vapply( father_index, function(x){
-        candidate_fitnesses = fitness[-x]
-        unique_candidates = not_duplicated( candidate_fitnesses )
-        mother_fitness = sample( candidate_fitnesses[unique_candidates], 1, prob = fitness_weights[-x][unique_candidates] )
-        mother_index = match( mother_fitness, candidate_fitnesses )
-        (1:pop_size)[-x][mother_index]
-    }, FUN.VALUE = 1 )
-
-    list( fathers = genotypes[ , father_index ], mothers = genotypes[ , mother_index ] )
-}
-
-EBD.random_parents = function( pop_size, genotypes ){
-    z = CAB.srswo_2( pop_size, pop_size )
-    list( fathers = genotypes[ ,z[1,] ], mothers = genotypes[ ,z[2,] ] )
-}
+# EBD.fit_parents = function( pop_size, n_bits, fitness, fitness_weights, genotypes ){
+#
+#     unique_fitnesses = not_duplicated( fitness )
+#     father_fitnesses = sample( fitness[unique_fitnesses], size = pop_size, replace = T, prob = fitness_weights[unique_fitnesses] )
+#     father_index = match( father_fitnesses, fitness )
+#
+#     mother_index = vapply( father_index, function(x){
+#         candidate_fitnesses = fitness[-x]
+#         unique_candidates = not_duplicated( candidate_fitnesses )
+#         mother_fitness = sample( candidate_fitnesses[unique_candidates], 1, prob = fitness_weights[-x][unique_candidates] )
+#         mother_index = match( mother_fitness, candidate_fitnesses )
+#         (1:pop_size)[-x][mother_index]
+#     }, FUN.VALUE = 1 )
+#
+#     list( fathers = genotypes[ , father_index ], mothers = genotypes[ , mother_index ] )
+# }
+#
+# EBD.random_parents = function( pop_size, genotypes ){
+#     z = CAB.srswo_2( pop_size, pop_size )
+#     list( fathers = genotypes[ ,z[1,] ], mothers = genotypes[ ,z[2,] ] )
+# }
 
 #' @rdname EBD_helpers
 #'

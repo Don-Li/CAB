@@ -8,7 +8,7 @@
 \alias{make.formal_event_record}
 \alias{show,ragged_event_record-method}
 \alias{show,formal_event_record-method}
-\alias{assign_event}
+\alias{e_set}
 \alias{reset_event}
 \alias{get_event}
 \alias{trim_event_record}
@@ -20,8 +20,7 @@ make.formal_event_record(variables, len)
 
 \S4method{show}{formal_event_record}(object)
 
-assign_event(event_record, variable, index = NULL, values = NULL,
-  counts = NULL)
+e_set(event_record, variable, index = NULL, values = NULL, counts = NULL)
 
 reset_event(event_record)
 
@@ -72,11 +71,11 @@ The second slot, \code{variables} is a vector that contains the names of the var
 }
 }
 
-\section{\code{assign_event}}{
+\section{\code{e_set}}{
 {
     For changing events and counts in an \code{event_record}.
     \subsection{Usage}{
-        \code{assign_event( event_record, variable, index, values, counts )}
+        \code{e_set( event_record, variable, index, values, counts )}
     }
     \subsection{Arguments}{
         \describe{
@@ -139,11 +138,11 @@ my_record
 
 # Imagine an organism that emits responses every 1 time unit. Suppose that the experiment ran for 90 seconds
 # The "resp_time" in "my_record" should contain 1:90, so there should be 90 counts
-assign_event( event_record = my_record, variable = "resp_time", index = 1:90, values = 1:90, counts = 90 )
+e_set( event_record = my_record, variable = "resp_time", index = 1:90, values = 1:90, counts = 90 )
 my_record
 
 # Suppose the organism took a break for 2 time units and then made 3 responses. The next response times should then be 93:95.
-assign_event( event_record = my_record, variable = "resp_time", index = "next", values = 93:95 )
+e_set( event_record = my_record, variable = "resp_time", index = "next", values = 93:95 )
 my_record
 
 # Get the value of an event at a given index:

@@ -53,12 +53,12 @@ CAB_cpp_not_duplicated <- function(x) {
     .Call('CAB_CAB_cpp_not_duplicated', PACKAGE = 'CAB', x)
 }
 
-CAB_cpp_srswo <- function(size, group_size, n) {
-    .Call('CAB_CAB_cpp_srswo', PACKAGE = 'CAB', size, group_size, n)
+mcdowell_sampling <- function(fitness, fitness_weights) {
+    .Call('CAB_mcdowell_sampling', PACKAGE = 'CAB', fitness, fitness_weights)
 }
 
-CAB_cpp_srswo2 <- function(size, n) {
-    .Call('CAB_CAB_cpp_srswo2', PACKAGE = 'CAB', size, n)
+CAB_srswo <- function(choose, repeats, sample_size) {
+    .Call('CAB_CAB_srswo', PACKAGE = 'CAB', choose, repeats, sample_size)
 }
 
 CAB_cpp_unique <- function(x) {

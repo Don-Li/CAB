@@ -9,7 +9,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
-Collate:
+Collate: 
     'CAB.COR.R'
     'CAB.COR_helpers.R'
     'CAB.EBD.R'
@@ -72,6 +72,7 @@ Collate:
     'o_set.R'
     'remove.excesss__DEPRECATED.R'
     'reset_model.R'
+    'samplers.R'
     'sim_input__DEPRECATED.R'
     'stimulus__DEPRECATED.R'
     'store_data__DEPRECATED.R'

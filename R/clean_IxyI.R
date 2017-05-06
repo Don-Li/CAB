@@ -20,7 +20,7 @@ setGeneric( "clean_short_IxyI", function( data, x_event, y_event, gap ) standard
 setMethod( "clean_short_IxyI", signature( data = "formal_event_record", x_event = "character", y_event = "character", gap = "numeric" ),
     function( data, x_event, y_event, gap ){
         keep_vector = CAB_cpp_clean_short_ixyi( data@events, x_event, y_event, gap )
-        data@events <- data@events[ keep_vector ]
+        data@events <- data@events[ keep_vector, ]
         data
     }
 )
@@ -28,9 +28,7 @@ setMethod( "clean_short_IxyI", signature( data = "formal_event_record", x_event 
 setMethod( "clean_short_IxyI", signature( data = "formal_event_record", x_event = "character", y_event = "missing", gap = "numeric" ),
     function( data, x_event, gap ){
         keep_vector = CAB_cpp_clean_short_ixxi( data@events, x_event, gap )
-        data@events <- data@events[ keep_vector ]
+        data@events <- data@events[ keep_vector, ]
         data
     }
 )
-
-

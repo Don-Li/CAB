@@ -173,28 +173,28 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// CAB_cpp_srswo
-NumericMatrix CAB_cpp_srswo(int size, int group_size, int n);
-RcppExport SEXP CAB_CAB_cpp_srswo(SEXP sizeSEXP, SEXP group_sizeSEXP, SEXP nSEXP) {
+// mcdowell_sampling
+NumericMatrix mcdowell_sampling(NumericVector fitness, NumericVector fitness_weights);
+RcppExport SEXP CAB_mcdowell_sampling(SEXP fitnessSEXP, SEXP fitness_weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< int >::type size(sizeSEXP);
-    Rcpp::traits::input_parameter< int >::type group_size(group_sizeSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    __result = Rcpp::wrap(CAB_cpp_srswo(size, group_size, n));
+    Rcpp::traits::input_parameter< NumericVector >::type fitness(fitnessSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type fitness_weights(fitness_weightsSEXP);
+    __result = Rcpp::wrap(mcdowell_sampling(fitness, fitness_weights));
     return __result;
 END_RCPP
 }
-// CAB_cpp_srswo2
-NumericMatrix CAB_cpp_srswo2(int size, int n);
-RcppExport SEXP CAB_CAB_cpp_srswo2(SEXP sizeSEXP, SEXP nSEXP) {
+// CAB_srswo
+NumericMatrix CAB_srswo(NumericVector choose, int repeats, int sample_size);
+RcppExport SEXP CAB_CAB_srswo(SEXP chooseSEXP, SEXP repeatsSEXP, SEXP sample_sizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< int >::type size(sizeSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    __result = Rcpp::wrap(CAB_cpp_srswo2(size, n));
+    Rcpp::traits::input_parameter< NumericVector >::type choose(chooseSEXP);
+    Rcpp::traits::input_parameter< int >::type repeats(repeatsSEXP);
+    Rcpp::traits::input_parameter< int >::type sample_size(sample_sizeSEXP);
+    __result = Rcpp::wrap(CAB_srswo(choose, repeats, sample_size));
     return __result;
 END_RCPP
 }

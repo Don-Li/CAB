@@ -39,10 +39,10 @@
 #'     }
 #' }
 #'
-#' @section \code{assign_event}:{
+#' @section \code{e_set}:{
 #'     For changing events and counts in an \code{event_record}.
 #'     \subsection{Usage}{
-#'         \code{assign_event( event_record, variable, index, values, counts )}
+#'         \code{e_set( event_record, variable, index, values, counts )}
 #'     }
 #'     \subsection{Arguments}{
 #'         \describe{
@@ -104,11 +104,11 @@
 #'
 #' # Imagine an organism that emits responses every 1 time unit. Suppose that the experiment ran for 90 seconds
 #' # The "resp_time" in "my_record" should contain 1:90, so there should be 90 counts
-#' assign_event( event_record = my_record, variable = "resp_time", index = 1:90, values = 1:90, counts = 90 )
+#' e_set( event_record = my_record, variable = "resp_time", index = 1:90, values = 1:90, counts = 90 )
 #' my_record
 #'
 #' # Suppose the organism took a break for 2 time units and then made 3 responses. The next response times should then be 93:95.
-#' assign_event( event_record = my_record, variable = "resp_time", index = "next", values = 93:95 )
+#' e_set( event_record = my_record, variable = "resp_time", index = "next", values = 93:95 )
 #' my_record
 #'
 #' # Get the value of an event at a given index:
@@ -179,45 +179,41 @@ setMethod( "show", signature( object = "formal_event_record" ),
 )
 
 #' @rdname class.event_record
-#' @exportMethod assign_event
+#' @exportMethod e_set
 
-setGeneric( "assign_event", function( event_record, variable, index = NULL, values = NULL, counts = NULL ) standardGeneric( "assign_event" ) )
+setGeneric( "e_set", function( event_record, variable, index = NULL, values = NULL, counts = NULL ) standardGeneric( "e_set" ) )
 
-setMethod( "assign_event", signature( event_record = "ragged_event_record" , variable = "character", index = "numeric", values = "numeric" ,counts = "numeric" ),
+setMethod( "e_set", signature( event_record = "ragged_event_record" , variable = "character", index = "numeric", values = "numeric" ,counts = "numeric" ),
     function( event_record, variable, index, values, counts ){
-        if ( length( variable ) > 1 ) stop( "Only change one variable at a time" )
-        assign_event_helper( event_record@events, variable, index, values, counts )
+#        if ( length( variable ) > 1 ) stop( "Only change one variable at a time" )
+        reference = event_record@events
+        env[[variable]][index] = values
+        env$counts[[variable]] = counts
     } )
 
-assign_event_helper = function( env, variable, index, values, counts ){
-    env[[variable]][ index ] = values
-    env[["counts"]][[variable]] = counts
-}
-
-setMethod( "assign_event", signature( event_record = "ragged_event_record", variable = "character", index = "missing", values = "missing", counts = "numeric" ),
+setMethod( "e_set", signature( event_record = "ragged_event_record", variable = "character", index = "missing", values = "missing", counts = "numeric" ),
     function( event_record, variable, counts ){
-        assign_event_helper_value_missing( event_record@events, variable, counts )
+        reference = event_record@events
+        reference$counts[[variable]] = counts
     }
 )
 
-assign_event_helper_value_missing = function( env, variable, counts ){
-    env$counts[[variable]] <- counts
-}
 
-setMethod( "assign_event", signature( event_record = "ragged_event_record", variable = "character", index = "numeric", values = "numeric" ),
+setMethod( "e_set", signature( event_record = "ragged_event_record", variable = "character", index = "numeric", values = "numeric" ),
     function( event_record, variable, index, values ){
-        assign_event_helper_counts_missing( event_record@events, variable, index, counts )
+        reference = event_record@events
+        reference[[variable]][index] = values
     }
 )
 
-assign_event_helper_counts_missing = function( env, variable, index, counts ){
-    env[[variable]][index] <- values
-}
-
-setMethod( "assign_event", signature( event_record = "ragged_event_record", variable = "character", index = "character", values = "numeric" ),
+setMethod( "e_set", signature( event_record = "ragged_event_record", variable = "character", index = "character", values = "numeric" ),
     function( event_record, variable, index, values ){
-        if ( index != "next" ) stop( "if 'index' is character, it must be 'next'" )
-        next_event_helper( event_record@events, variable, values )
+        # if ( index != "next" ) stop( "if 'index' is character, it must be 'next'" )
+        reference = event_record@events
+        len_values = length(values)
+        count = reference$counts[[variable]]
+        reference[[variable]][ (count+1):(count_len_values) ] = values
+        reference$counts[[ variable ]] = count + len_values
     } )
 
 next_event_helper = function( env, variable, values ){
@@ -243,10 +239,10 @@ reset_event_helper = function( event_record ){
     env = event_record@events
     variables = event_record@variables
     dims = event_record@lengths
-    lapply( variables, function(x){
-        env[[x]] = rep( NaN, dims[x] )
-        env$counts[[x]] = 0
-    } )
+    for ( i in variables ){
+        env[[i]] = rep( NaN, dims[i] )
+        env$counts[[i]] = 0
+    }
 }
 
 #' @rdname class.event_record

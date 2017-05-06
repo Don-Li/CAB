@@ -64,70 +64,59 @@ setGeneric( "o_set", function( model, variable, value, i, j ) standardGeneric( "
 
 setMethod( "o_set", signature( model = "CAB.model", variable = "character", value = "ANY", i = "numeric", j = "numeric" ),
     function( model, variable, value, i, j ){
-        o_set.helper2( model@organism, variable, value, i, j )
+        reference = model@organism
+        reference[[variable]][i,j] = value
     }
 )
 
 setMethod( "o_set", signature( model = "CAB.model", variable = "character", value = "ANY", i = "numeric", j = "missing" ),
     function( model, variable, value, i ){
-        o_set.helper( model@organism, variable, value, i )
+        reference = model@organism
+        reference[[variable]][i] = value
     }
 )
 
 setMethod( "o_set", signature( model = "CAB.model", variable = "character", value = "ANY", i = "missing", j = "missing" ),
     function( model, variable, value ){
-        o_set.helper3( model@organism, variable, value )
+        reference = model@organism
+        reference[[variable]] = value
     }
 )
 
-o_set.helper = function( env, variable, value, i ){
-    env[[variable]][i] = value
-}
-
-
-o_set.helper2 = function( env, variable, value, i, j ){
-    env[[variable]][i, j] <- value
-}
-
-o_set.helper3 = function( env, variable, value ){
-    if( class( env[[ variable ]] ) != class( value ) ) stop( "Replacement value is of wrong class" )
-    env[[variable]] = value
-}
-
-
-#' @rdname o_set
-#' @exportMethod "[<-"
-
-setMethod( "[<-", signature( x = "CAB.model", i = "numeric", j = "numeric", value = "ANY" ),
-    function( x, v, i, j, value ){
-        x@organism[[v]][i,j] <- value
-        x
-    }
-)
-
-setMethod( "[<-", signature( x = "CAB.model", i = "numeric", j = "missing", value = "ANY" ),
-    function( x, v, i, j, value ){
-        if ( is.matrix( x@organism[[v]] ) ){
-            x@organism[[v]][i,] <- value
-            return( x )
-        }
-        if ( is.numeric( x@organism[[v]] ) ){
-            x@organism[[v]][i] <- value
-            return( x )
-        }
-    }
-)
-
-setMethod( "[<-", signature( x = "CAB.model", i = "missing", j = "numeric", value = "ANY" ),
-    function( x, v, i, j, value ){
-        x@organism[[v]][,j] <- value
-        x
-    }
-)
-
-setMethod( "[<-", signature( x = "CAB.model", i = "missing", j = "missing", value = "ANY" ),
-    function( x, v, value ){
-        x@organism[[v]] <- value
-        x
-    }
-)
+#'
+#' #' @rdname o_set
+#' #' @exportMethod "[<-"
+#'
+#' setMethod( "[<-", signature( x = "CAB.model", i = "numeric", j = "numeric", value = "ANY" ),
+#'     function( x, v, i, j, value ){
+#'         x@organism[[v]][i,j] <- value
+#'         x
+#'     }
+#' )
+#'
+#' setMethod( "[<-", signature( x = "CAB.model", i = "numeric", j = "missing", value = "ANY" ),
+#'     function( x, v, i, j, value ){
+#'         if ( is.matrix( x@organism[[v]] ) ){
+#'             x@organism[[v]][i,] <- value
+#'             return( x )
+#'         }
+#'         if ( is.numeric( x@organism[[v]] ) ){
+#'             x@organism[[v]][i] <- value
+#'             return( x )
+#'         }
+#'     }
+#' )
+#'
+#' setMethod( "[<-", signature( x = "CAB.model", i = "missing", j = "numeric", value = "ANY" ),
+#'     function( x, v, i, j, value ){
+#'         x@organism[[v]][,j] <- value
+#'         x
+#'     }
+#' )
+#'
+#' setMethod( "[<-", signature( x = "CAB.model", i = "missing", j = "missing", value = "ANY" ),
+#'     function( x, v, value ){
+#'         x@organism[[v]] <- value
+#'         x
+#'     }
+#' )

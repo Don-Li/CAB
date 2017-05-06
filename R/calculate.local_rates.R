@@ -62,8 +62,7 @@ setMethod( "compute.local_counts", signature( data = "ragged_event_record", even
     function( data, event_name, marker, event_offset, marker_offset ){
         event_times = data@events[[event_name]]
         marker_times = data@events[[marker]]
-        if ( length( marker_times ) <= 2 ) return( Inf )
-        if ( length( event_times ) <= 1 ) return( Inf )
+        if ( length( marker_times ) < 2 | length( event_times ) <= 1 ) return( list( local_times = Inf, visit_lengths = Inf ) )
         local_data = CAB_cpp_local_times_ragged_event_record( event_times, marker_times, event_offset )
         if ( !missing(marker_offset) ){
             local_data$local_times  = local_data$local_times - marker_offset
@@ -75,9 +74,9 @@ setMethod( "compute.local_counts", signature( data = "ragged_event_record", even
 
 setMethod( "compute.local_counts", signature( data = "formal_event_record", event_name = "character", marker = "character" ),
     function( data, event_name, marker, event_offset, marker_offset ){
-        if ( nrow( data@events ) <= 2 ) return( list( local_times = NaN, visit_bins = NaN ) )
+        if ( nrow( data@events ) < 2 ) return( list( local_times = Inf, visit_bins = Inf ) )
         n_markers = sum( data@events$event == marker )
-        if ( n_markers <= 1 ) return( list( local_times = NaN, visit_bins = NaN ) )
+        if ( n_markers <= 1 ) return( list( local_times = Inf, visit_bins = Inf ) )
         local_data = CAB_cpp_local_times_formal_event_record( data = data@events, event = event_name, marker = marker, event_offset, n_markers = n_markers )
         if ( !missing(marker_offset) ){
             local_data$local_times = local_data$local_times - marker_offset
@@ -134,7 +133,7 @@ setGeneric( "compute.local_rates", function( local_times, visit_lengths, n_bins,
 #####
 local_rate_bin_helper = function( local_times, visit_lengths, max_bins, bin_resolution ){
     local_bins = CAB_cpp_local_binning( local_times, visit_lengths, max_bins, bin_resolution )
-    local_bins$local_rate = local_bins$local_times / local_bins$visit_lengths
+    local_bins$local_rate = local_bins$response_bins / local_bins$visit_bins
     local_bins$local_rate[ is.nan(local_bins$local_rate) ] = 0
     local_bins$bin_names = seq( 0, max_bins ) * bin_resolution
     local_bins
