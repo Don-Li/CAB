@@ -4,7 +4,7 @@
 \alias{bitwise_reproduction}
 \title{For parental sampling for Evolutionary Behaviour Dynamics}
 \usage{
-bitwise_reproduction(pop_size, fathers, mothers, parent_sampling_bias = 0.5)
+bitwise_reproduction(fathers, mothers)
 }
 \description{
 Stuff1212

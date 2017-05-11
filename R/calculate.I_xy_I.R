@@ -1,4 +1,4 @@
-#### Calulating the time elapsed between events
+                                                          #### Calulating the time elapsed between events
 
 #' @include analysis_object.R dataset.R event_record.R RcppExports.R
 NULL
@@ -42,116 +42,37 @@ NULL
 #' @aliases prp
 #' @exportMethod compute.IxyI
 
-#Skips over specified intervening events
-compute.I_xx_I.formal_event_record = function( data, x_event, break_event, x_offset = 0 ){
-    times = data@events$time
-    events = data@events$event
-    times[ events %in% break_event ] = NaN
-
-    x1 = times[ events %in% c(break_event, x_event) ]
-    if ( length( x1 ) == 0 ) return(Inf)
-
-    x = CAB_cpp_diff( x1 )
-    x = x[ !is.nan(x) ]
-
-    if ( length(x) <= 1 ) return(Inf)
-
-    if ( x_offset != 0 ) x + x_offset
-    else x
-}
-
-#Skips over all intervening events
-compute.I_xx_I.all_break.formal_event_record = function( data, x_event, x_offset = 0 ){
-    times = data@events$time
-    events = data@events$event
-    times[ events != x_event ] = NaN
-
-    if ( length( times ) == 0 ) return(Inf)
-
-    x = CAB_cpp_diff( times )
-    x = x[ !is.nan(x) ]
-
-    if ( length(x) == 0 ) return(Inf)
-
-    if ( x_offset != 0 ) x + x_offset
-    else x
-}
-
-#Does not skip over intervening events
-compute.I_xx_I.no_break.formal_event_record = function( data, x_event, x_offset = 0 ){
-    times = data@events$time[ data@events$event == x_event ]
-
-    if (length( times ) == 0 ) return(Inf)
-
-    x = CAB_cpp_diff( times )
-
-    if ( length(x) == 0 ) return(Inf)
-
-    if ( x_offset != 0 ) x + x_offset
-    else x
-}
-
-#Skips over all intervening events
-compute.I_xy_I.all_break.formal_event_record = function( data, x_event, y_event, x_offset = 0 ){
-    x_event_indices = which( data@events$event %in% x_event )
-    y_event_indices = which( data@events$event %in% y_event )
-    y_post = y_event_indices[ ( y_event_indices %in% (x_event_indices + 1) ) ]
-    new_x_indices = x_event_indices[ (x_event_indices + 1) %in% y_event_indices ]
-    x = data@events$time[ y_post ] - data@events$time[ new_x_indices ]
-
-    if ( length(x) == 0 ) return(Inf)
-
-    if ( x_offset != 0 ) x + x_offset
-    else x
-}
-
-
-#Does not skip over intervening events
-compute.I_xy_I.no_break.formal_event_record = function( data, x_event, y_event, x_offset = 0 ){
-    x_event_times = data@events$time[ data@events$event %in% x_event]
-    y_event_times = data@events$time[ data@events$event %in% y_event ]
-    interval_vector = findInterval( x_event_times, y_event_times )
-    next_y = y_event_times[ interval_vector + 1 ]
-    x = next_y - x_event_times
-    if ( length(x) == 0 ) return(Inf)
-
-    if ( NA %in% x ) x = x[ !is.na(x) ]
-    if ( x_offset != 0 ) x+ x_offset
-    else x[!is.na(x)]
-}
-
-#Skips over selected intervening events
-#Use CAB_cpp_compute__I_xy_I__formal_event_record( data, x_event, y_event, break_event )
-
 setGeneric( "compute.IxyI", function( data, x_event, x_offset = 0 , y_event, break_event ) standardGeneric( "compute.IxyI" ) )
 
 setMethod( "compute.IxyI", signature( data = "formal_event_record", y_event = "missing", break_event = "character" ),
-    function( data, x_event, x_offset, break_event ){
-        if ( break_event == "ALL" ) compute.I_xx_I.all_break.formal_event_record( data, x_event, x_offset )
-        else compute.I_xx_I.formal_event_record( data, x_event, break_event, x_offset )
+    function( data, x_event, x_offset = 0, break_event ){
+        ixxi = compute_ixxi_FER_breaks( data@events, x_event, break_events, x_offset )
+        if ( length(ixxi) == 0 ) return( Inf )
+        else ixxi
     }
 )
 
 setMethod( "compute.IxyI", signature( data = "formal_event_record", y_event = "missing", break_event = "missing" ),
-    function( data, x_event, x_offset ){
-        compute.I_xx_I.no_break.formal_event_record( data, x_event, x_offset )
+    function( data, x_event, x_offset = 0 ){
+        ixxi = compute_ixxi_FER( data@events, x_event, x_offset )
+        if ( length(ixxi) == 0 ) return( Inf )
+        else ixxi
     }
 )
 
 setMethod( "compute.IxyI", signature( data = "formal_event_record", y_event = "character", break_event = "character" ),
-    function( data, x_event, x_offset, y_event, break_event ){
-        if ( break_event == "ALL" ) compute.I_xy_I.all_break.formal_event_record( data, x_event, y_event, x_offset )
-        else {
-            IxyI = CAB_cpp_compute__I_xy_I__formal_event_record( data@events, x_event, y_event, break_event )
-            if ( length( IxyI ) == 0 ) return( Inf )
-            if ( x_offset != 0 ) IxyI + x_offset
-        }
+    function( data, x_event, x_offset = 0, y_event, break_event ){
+        ixyi = compute_ixyi_FER_breaks( data = data@events, x_event = x_event, y_event = y_event, break_events = break_events, x_offset = x_offset )
+        if ( length(ixxi) == 0 ) return( Inf )
+        else ixxi
     }
 )
 
 setMethod( "compute.IxyI", signature( data = "formal_event_record", y_event = "character", break_event = "missing" ),
-    function( data, x_event, x_offset, y_event ){
-        compute.I_xy_I.no_break.formal_event_record( data, x_event, y_event, x_offset )
+    function( data, x_event, x_offset = 0, y_event ){
+        ixyi = compute_ixyi_FER( data@events, x_event, y_event, x_offset )
+        if ( length(ixxi) == 0 ) return( Inf )
+        else ixyi
     }
 )
 
@@ -308,11 +229,11 @@ setMethod( "compute.IxyI", signature( data = "ragged_event_record", y_event = "c
     }
 )
 
-#' @rdname compute.IxyI
-#' @exportMethod compute.IxyI
-
-setMethod( "compute.IxyI", signature( data = "dataset" ),
-    function( data, x_event, x_offset, y_event, break_event ){
-        expt_data = data@analysis_objects
-        lapply( expt_data, compute.IxyI, x_event = x_event, x_offset = x_offset, y_event = y_event, break_event = break_event )
-} )
+#' #' @rdname compute.IxyI
+#' #' @exportMethod compute.IxyI
+#'
+#' setMethod( "compute.IxyI", signature( data = "dataset" ),
+#'     function( data, x_event, x_offset, y_event, break_event ){
+#'         expt_data = data@analysis_objects
+#'         lapply( expt_data, compute.IxyI, x_event = x_event, x_offset = x_offset, y_event = y_event, break_event = break_event )
+#' } )

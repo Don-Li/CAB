@@ -274,14 +274,37 @@ EBD.shifted_geometric_vi = function( inter_rft_interval, min_irt, time, shift  )
 #' @export EBD.w_gaussian_mutation
 
 EBD.w_gaussian_mutation = function( tick ,preallocated_mutant_change, preallocated_mutant_index, max_phenotype, phenotypes ){
-    mut_index = preallocated_mutant_index[ , tick +1 ]
-    mutants = { phenotypes[ mut_index ] + preallocated_mutant_change[ , tick + 1] } %% ( max_phenotype+1 )
+    mut_index = preallocated_mutant_index[ tick +1, ]
+    mutants = { phenotypes[ mut_index ] + preallocated_mutant_change[ tick + 1, ] } %% ( max_phenotype+1 )
     list( mutants = as.integer(mutants), mutant_index = as.integer(mut_index) )
 }
 
+#' @rdname EBD_helpers
+#'
+#' @section Fitness weights:{
+#'     Sampling weights for sampling fitness values.
+#'     \subsection{\code{EBD.geometric_fitness_weights}}{
+#'         Sampling weights from a geometric distribution
+#'     }
+#'     \subsection{Usage}{
+#'         \code{EBD.geometric_fitness_weights( fitness, parental_selection_p )}
+#'     }
+#'     \subsection{Arguments}{
+#'         \describe{
+#'             \item{\code{fitness}}{Numeric vector of fitness values}
+#'             \item{\code{parental_selection_p}}{Parameter for the geometric distribution}
+#'         }
+#'     }
+#'     \subsection{Value}{
+#'         Returns a vector of fitness weights.
+#'     }
+#' }
+#' ############################################################################
+#' @export EBD.geometric_fitness_weights
 
-
-
+EBD.geometric_fitness_weights = function( fitness, parental_selection_p ){
+   dgeom( fitness, parental_selection_p )
+}
 
 
 

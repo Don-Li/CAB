@@ -7,6 +7,7 @@
 \alias{EBD.get_oc}
 \alias{EBD.geometric_vi}
 \alias{EBD.w_gaussian_mutation}
+\alias{EBD.geometric_fitness_weights}
 \title{McDowell's Evolutionary Behaviour Dynamics}
 \usage{
 EBD.wrapped_si_fitness(max_phenotype, phenotypes, last_resp)
@@ -19,6 +20,8 @@ EBD.geometric_vi(inter_rft_interval, min_irt, time)
 
 EBD.w_gaussian_mutation(tick, preallocated_mutant_change,
   preallocated_mutant_index, max_phenotype, phenotypes)
+
+EBD.geometric_fitness_weights(fitness, parental_selection_p)
 }
 \description{
 A list of functions in the \code{CAB} package's implementation of McDowell's Evolutionary Behaviour Dynamics. A list of lower level utility functions, such as for converting integers in base 10 to base 2 can be found in \link{EBD_utilities}. See \link{CAB.EBD} for more details.
@@ -163,6 +166,28 @@ Stuff.
     }
     \subsection{Value}{
         Returns a list containing the new phenotype values and the indices to which they belong.
+    }
+}
+############################################################################
+}
+
+\section{Fitness weights}{
+{
+    Sampling weights for sampling fitness values.
+    \subsection{\code{EBD.geometric_fitness_weights}}{
+        Sampling weights from a geometric distribution
+    }
+    \subsection{Usage}{
+        \code{EBD.geometric_fitness_weights( fitness, parental_selection_p )}
+    }
+    \subsection{Arguments}{
+        \describe{
+            \item{\code{fitness}}{Numeric vector of fitness values}
+            \item{\code{parental_selection_p}}{Parameter for the geometric distribution}
+        }
+    }
+    \subsection{Value}{
+        Returns a vector of fitness weights.
     }
 }
 ############################################################################

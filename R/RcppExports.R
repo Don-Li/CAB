@@ -33,6 +33,22 @@ CAB_cpp_int2bin <- function(bits, n) {
     .Call('CAB_CAB_cpp_int2bin', PACKAGE = 'CAB', bits, n)
 }
 
+compute_ixyi_FER <- function(data, x_event, y_event, x_offset) {
+    .Call('CAB_compute_ixyi_FER', PACKAGE = 'CAB', data, x_event, y_event, x_offset)
+}
+
+compute_ixyi_FER_breaks <- function(data, x_event, y_event, break_events, x_offset) {
+    .Call('CAB_compute_ixyi_FER_breaks', PACKAGE = 'CAB', data, x_event, y_event, break_events, x_offset)
+}
+
+compute_ixxi_FER <- function(data, x_event, x_offset) {
+    .Call('CAB_compute_ixxi_FER', PACKAGE = 'CAB', data, x_event, x_offset)
+}
+
+compute_ixxi_FER_breaks <- function(data, x_event, break_events, x_offset) {
+    .Call('CAB_compute_ixxi_FER_breaks', PACKAGE = 'CAB', data, x_event, break_events, x_offset)
+}
+
 CAB_ks <- function(sample_1, sample_2) {
     .Call('CAB_CAB_ks', PACKAGE = 'CAB', sample_1, sample_2)
 }

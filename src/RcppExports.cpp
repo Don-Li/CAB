@@ -108,6 +108,62 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// compute_ixyi_FER
+NumericVector compute_ixyi_FER(List data, CharacterVector x_event, CharacterVector y_event, double x_offset);
+RcppExport SEXP CAB_compute_ixyi_FER(SEXP dataSEXP, SEXP x_eventSEXP, SEXP y_eventSEXP, SEXP x_offsetSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< List >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type x_event(x_eventSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type y_event(y_eventSEXP);
+    Rcpp::traits::input_parameter< double >::type x_offset(x_offsetSEXP);
+    __result = Rcpp::wrap(compute_ixyi_FER(data, x_event, y_event, x_offset));
+    return __result;
+END_RCPP
+}
+// compute_ixyi_FER_breaks
+NumericVector compute_ixyi_FER_breaks(List data, CharacterVector x_event, CharacterVector y_event, CharacterVector break_events, double x_offset);
+RcppExport SEXP CAB_compute_ixyi_FER_breaks(SEXP dataSEXP, SEXP x_eventSEXP, SEXP y_eventSEXP, SEXP break_eventsSEXP, SEXP x_offsetSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< List >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type x_event(x_eventSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type y_event(y_eventSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type break_events(break_eventsSEXP);
+    Rcpp::traits::input_parameter< double >::type x_offset(x_offsetSEXP);
+    __result = Rcpp::wrap(compute_ixyi_FER_breaks(data, x_event, y_event, break_events, x_offset));
+    return __result;
+END_RCPP
+}
+// compute_ixxi_FER
+NumericVector compute_ixxi_FER(List data, CharacterVector x_event, double x_offset);
+RcppExport SEXP CAB_compute_ixxi_FER(SEXP dataSEXP, SEXP x_eventSEXP, SEXP x_offsetSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< List >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type x_event(x_eventSEXP);
+    Rcpp::traits::input_parameter< double >::type x_offset(x_offsetSEXP);
+    __result = Rcpp::wrap(compute_ixxi_FER(data, x_event, x_offset));
+    return __result;
+END_RCPP
+}
+// compute_ixxi_FER_breaks
+NumericVector compute_ixxi_FER_breaks(List data, CharacterVector x_event, CharacterVector break_events, double x_offset);
+RcppExport SEXP CAB_compute_ixxi_FER_breaks(SEXP dataSEXP, SEXP x_eventSEXP, SEXP break_eventsSEXP, SEXP x_offsetSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< List >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type x_event(x_eventSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type break_events(break_eventsSEXP);
+    Rcpp::traits::input_parameter< double >::type x_offset(x_offsetSEXP);
+    __result = Rcpp::wrap(compute_ixxi_FER_breaks(data, x_event, break_events, x_offset));
+    return __result;
+END_RCPP
+}
 // CAB_ks
 double CAB_ks(arma::colvec sample_1, arma::colvec sample_2);
 RcppExport SEXP CAB_CAB_ks(SEXP sample_1SEXP, SEXP sample_2SEXP) {

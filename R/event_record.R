@@ -212,7 +212,7 @@ setMethod( "e_set", signature( event_record = "ragged_event_record", variable = 
         reference = event_record@events
         len_values = length(values)
         count = reference$counts[[variable]]
-        reference[[variable]][ (count+1):(count_len_values) ] = values
+        reference[[variable]][ (count+1):(len_values+count) ] = values
         reference$counts[[ variable ]] = count + len_values
     } )
 
