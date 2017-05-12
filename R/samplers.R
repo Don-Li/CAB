@@ -52,7 +52,7 @@ CAB.srswo = function( choose, repeats, sample_size ){
 #'         Returns a \code{matrix} with two columns and rows equal to the number of fitnss values. This matrix contains the indices of the values that are sampled. The indexing starts from zero.
 #'     }
 #' }
-#' @export CAB.srswo
+#' @export CAB.mcdowell_sampling
 
 CAB.mcdowell_sampling = function( fitness, fitness_weights ){
     mcdowell_sampling( fitness, fitness_weights )
