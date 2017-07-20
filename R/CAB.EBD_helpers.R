@@ -45,12 +45,14 @@ NULL
 #'     }
 #' }
 #' ############################################################################
-#' @export EBD.wrapped_si_fitness
+#' @export EBD_WSI_fitness
 
-EBD.wrapped_si_fitness  = function( max_phenotype, phenotypes, last_resp ){
+EBD_WSI_fitness  = function( max_phenotype, phenotypes, last_resp ){
     maximum = max_phenotype+1
     abs_diff = abs( phenotypes - last_resp )
-    abs( ( abs_diff > as.integer( maximum/2 ) ) * maximum - abs_diff )
+    wrap_this = abs_diff > as.integer( maximum/2 )
+    abs_diff[ wrap_this ] = maximum - abs_diff[ wrap_this ]
+    abs_diff
 }
 
 #' @rdname EBD_helpers

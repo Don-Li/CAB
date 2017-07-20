@@ -1,4 +1,4 @@
-                                                          #### Calulating the time elapsed between events
+#### Calulating the time elapsed between events
 
 #' @include analysis_object.R dataset.R event_record.R RcppExports.R
 NULL

@@ -1,22 +1,18 @@
 //[[Rcpp:depends(RccpArmadillo)]]
 
-#include "RcppArmadillo.h"
+#include <RcppArmadillo.h>
 
-// This is a simple example of exporting a C++ function to R. You can
-// source this function into an R session using the Rcpp::sourceCpp
-// function (or via the Source button on the editor toolbar). Learn
-// more about Rcpp at:
-//
-//   http://www.rcpp.org/
-//   http://adv-r.had.co.nz/Rcpp.html
-//   http://gallery.rcpp.org/
-//
-
+//'@export ks
+//'@rdname ks
 // [[Rcpp::export]]
-double CAB_ks( arma::colvec sample_1, arma::colvec sample_2 ){
+double ks( arma::colvec sample_1, arma::colvec sample_2 ){
 
     double n1 = sample_1.n_rows;
     double n2 = sample_2.n_rows;
+
+    if ( n1 < 1 | n2 < 1 ){
+        return( R_PosInf );
+    }
 
     arma::colvec all_samples = arma::join_cols( sample_1, sample_2 );
     arma::uvec sorted = arma::sort_index( all_samples );

@@ -12,8 +12,5 @@
 #' @details
 #' The KS statistic is computed the same way as it is in the \code{ks.test} function in the \code{stats} package. We just stripped away all the other stuff so that it is faster.
 #'
-#' @export CAB.ks
-
-CAB.ks = function( sample1, sample2 ){
-    CAB_ks( sample1, sample2 )
-}
+#' @name ks
+NULL

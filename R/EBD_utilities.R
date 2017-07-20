@@ -30,8 +30,7 @@ NULL
 #' @export bin2int
 
 bin2int = function( binaries, digits ){
-    x = crossprod( binaries, 2^(0:(digits-1)) )
-    drop( x )
+    crossprod( binaries, 2^(0:(digits-1)) )[,1]
 }
 
 #' @rdname EBD_utilities

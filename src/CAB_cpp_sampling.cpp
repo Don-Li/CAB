@@ -1,9 +1,10 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
-#include <RcppArmadilloExtensions/sample.h>
+#include <RcppArmadillo.h>
+using namespace Rcpp;
 
-using namespace Rcpp ;
-
+//'@export mcdowell_sampling
+//'@rdname CAB_samplers
 // [[Rcpp::export]]
 NumericMatrix mcdowell_sampling( NumericVector fitness, NumericVector fitness_weights ){
     int size = fitness.length();
@@ -15,7 +16,7 @@ NumericMatrix mcdowell_sampling( NumericVector fitness, NumericVector fitness_we
     NumericVector fitness2 = clone( fitness );
 
     fitness_weights2[ !unique_fitness_indicator ] = 0;
-    NumericVector selected_father_indices = RcppArmadillo::sample( indices, size, true, fitness_weights2 );
+    NumericVector selected_father_indices = sample( indices, size, true, fitness_weights2 );
     LogicalVector matching_vector(size);
     NumericVector selected_mother_indices(size);
     int duplicated_value = 0;
@@ -34,7 +35,7 @@ NumericMatrix mcdowell_sampling( NumericVector fitness, NumericVector fitness_we
             fitness_weights2[ matching_vector ] = fitness_weights[ matching_vector ];
             duplicated_value = 1;
         }
-        selected_mother_indices(i) = RcppArmadillo::sample( indices, 1, true, fitness_weights2 )(0);
+        selected_mother_indices(i) = sample( indices, 1, true, fitness_weights2 )(0);
 
         fitness2( father_index ) = fitness( father_index );
         fitness_weights2( father_index ) = fitness_weights[ father_index ];
@@ -49,16 +50,30 @@ NumericMatrix mcdowell_sampling( NumericVector fitness, NumericVector fitness_we
     return( return_matrix );
 }
 
+//'@export srswo
+//'@rdname CAB_samplers
 // [[Rcpp::export]]
-NumericMatrix CAB_srswo( NumericVector choose, int repeats, int sample_size ){
+NumericMatrix srswo( NumericVector choose, int repeats, int sample_size ){
 
     NumericMatrix return_matrix( repeats, sample_size );
 
     for ( int i = 0; i < repeats; i++ ){
-        return_matrix.row(i) = RcppArmadillo::sample( choose, sample_size, false );
+        return_matrix.row(i) = sample( choose, sample_size, false );
     }
 
     return( return_matrix );
 }
 
+//'@export srs
+//'@rdname CAB_samplers
+// [[Rcpp::export]]
+NumericMatrix srs( int choose_max, int repeats, int sample_size ){
 
+    NumericMatrix return_matrix( repeats, sample_size );
+
+    for ( int i = 0; i < repeats; i++ ){
+        return_matrix.row(i) = sample( choose_max, sample_size, true );
+    }
+
+    return( return_matrix );
+}
