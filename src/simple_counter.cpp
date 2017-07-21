@@ -36,7 +36,7 @@ arma::umat simple_factorial_counts(
         // Check for rft
         if ( rft_match(i) != NA_INTEGER ){
             component_rft += 1;
-            if ( component_rft > max_rfts + 1 ){
+            if ( component_rft > max_rfts ){
                 stop( "More rft than maximum" );
             }
         }
