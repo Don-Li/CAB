@@ -113,6 +113,11 @@ EBD_prp_race <- function(phenotypes, oc_lower, prp_size) {
     .Call('_CAB_EBD_prp_race', PACKAGE = 'CAB', phenotypes, oc_lower, prp_size)
 }
 
+#'@export preference_pulse_2A
+preference_pulse_2A <- function(event, time, rft_labels, component_label, response_labels, max_iri, bin_resolution, offset = 0) {
+    .Call('_CAB_preference_pulse_2A', PACKAGE = 'CAB', event, time, rft_labels, component_label, response_labels, max_iri, bin_resolution, offset)
+}
+
 #'@export simple_factorial_counts
 #'@rdname tabulation
 simple_factorial_counts <- function(event, time, rft_labels, component_label, response_labels, max_rfts) {

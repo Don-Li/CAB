@@ -314,6 +314,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// preference_pulse_2A
+List preference_pulse_2A(CharacterVector event, NumericVector time, CharacterVector rft_labels, CharacterVector component_label, CharacterVector response_labels, double max_iri, double bin_resolution, double offset);
+RcppExport SEXP _CAB_preference_pulse_2A(SEXP eventSEXP, SEXP timeSEXP, SEXP rft_labelsSEXP, SEXP component_labelSEXP, SEXP response_labelsSEXP, SEXP max_iriSEXP, SEXP bin_resolutionSEXP, SEXP offsetSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< CharacterVector >::type event(eventSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type time(timeSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type rft_labels(rft_labelsSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type component_label(component_labelSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type response_labels(response_labelsSEXP);
+    Rcpp::traits::input_parameter< double >::type max_iri(max_iriSEXP);
+    Rcpp::traits::input_parameter< double >::type bin_resolution(bin_resolutionSEXP);
+    Rcpp::traits::input_parameter< double >::type offset(offsetSEXP);
+    rcpp_result_gen = Rcpp::wrap(preference_pulse_2A(event, time, rft_labels, component_label, response_labels, max_iri, bin_resolution, offset));
+    return rcpp_result_gen;
+END_RCPP
+}
 // simple_factorial_counts
 arma::umat simple_factorial_counts(CharacterVector event, NumericVector time, CharacterVector rft_labels, CharacterVector component_label, CharacterVector response_labels, int max_rfts);
 RcppExport SEXP _CAB_simple_factorial_counts(SEXP eventSEXP, SEXP timeSEXP, SEXP rft_labelsSEXP, SEXP component_labelSEXP, SEXP response_labelsSEXP, SEXP max_rftsSEXP) {
@@ -382,6 +400,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_CAB_CAB_cpp_unique", (DL_FUNC) &_CAB_CAB_cpp_unique, 1},
     {"_CAB_EBD_B_premutate", (DL_FUNC) &_CAB_EBD_B_premutate, 4},
     {"_CAB_EBD_prp_race", (DL_FUNC) &_CAB_EBD_prp_race, 3},
+    {"_CAB_preference_pulse_2A", (DL_FUNC) &_CAB_preference_pulse_2A, 8},
     {"_CAB_simple_factorial_counts", (DL_FUNC) &_CAB_simple_factorial_counts, 6},
     {"_CAB_simple_ixyi", (DL_FUNC) &_CAB_simple_ixyi, 5},
     {"_CAB_timesTwo", (DL_FUNC) &_CAB_timesTwo, 1},
